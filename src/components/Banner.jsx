@@ -6,7 +6,7 @@ import { ImPlay2 } from "react-icons/im";
 
 const Banner = () => {
     return (
-        <div className="bg-gradient-to-r from-[#C5E1F2] to-[#8FCBFF] h-[650px] ">
+        <div className="relative z-10 bg-gradient-to-r from-[#C5E1F2] to-[#8FCBFF] h-[650px] ">
             <div className="flex items-center lg:h-[700px] h-[500px]">
                 {/* left side */}
                 <div className='lg:w-[40%] lg:mx-32 lg:space-y-5 space-y-6'>
@@ -19,15 +19,14 @@ const Banner = () => {
                 </div>
             </div>
             <div>
-                <Image className="absolute bottom-0 lg:right-24 right-2 lg:w-[55%]" src={doctor} width={500} height={300} draggable={false} />
+                <Image className="absolute bottom-0 lg:right-24 right-2 lg:w-[55%]" src={doctor} width={500} height={300} draggable={false} alt='banner.png' />
             </div>
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             <dialog id="my_modal_2" className="modal">
                 <div className="modal-box bg-none">
-                    <video 
-                    controls
-                    autoPlay
-                    
+                    <video
+                        controls
+                        autoPlay
                     >
                         <source src='/image/intro_video.mp4' type='video/mp4'></source>
                     </video>
