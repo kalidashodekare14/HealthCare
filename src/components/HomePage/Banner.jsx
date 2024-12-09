@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 import React from 'react'
-import doctor from '../../public/image/doctor.png'
+import doctor from '../../../public/image/doctor.png'
 import { ImPlay2 } from "react-icons/im";
 
 const Banner = () => {
