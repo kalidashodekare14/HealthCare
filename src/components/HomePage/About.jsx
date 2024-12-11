@@ -8,10 +8,10 @@ const About = () => {
     return (
         <div className='lg:mx-32 my-5 flex flex-col lg:flex-row items-center justify-between'>
             <div className='relative lg:w-[40%]'>
-                <Image className='w-full' src={image} width={500} height={300}></Image>
+                <Image className='w-full' src={image} width={500} height={300} alt='doctor'></Image>
                 <div className='flex w-[50%]'>
-                    <Image className='w-full' src={image1} width={500} height={300}></Image>
-                    <Image className='w-full' src={image2} width={500} height={300}></Image>
+                    <Image className='w-full' src={image1} width={500} height={300} alt='doctor'></Image>
+                    <Image className='w-full' src={image2} width={500} height={300} alt='doctor'></Image>
                 </div>
                 <div className='absolute top-1/2 left-[35%] bg-[#307bc4]  text-white w-32 h-32 rounded-full flex flex-col justify-center items-center'>
                     <h1 className='text-4xl'>26+</h1>

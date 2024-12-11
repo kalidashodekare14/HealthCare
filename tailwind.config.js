@@ -13,6 +13,10 @@ module.exports = {
       },
       backgroundImage: {
         'banner_img': "url('/image/banner.png')",
+        'checkUp': "url('/image/check_up.png')",
+        'doctor1': "url('/image/meetDoctors/doctor1.jpg')",
+        'doctor2': "url('/image/meetDoctors/doctor2.jpg')",
+        'doctor3': "url('/image/meetDoctors/doctor3.jpg')",
       },
       fontFamily: {
         "roboto": "Roboto sans-serif"
