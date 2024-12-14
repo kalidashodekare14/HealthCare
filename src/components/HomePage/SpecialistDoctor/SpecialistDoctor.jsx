@@ -1,26 +1,18 @@
-
 "use client"
-import useEmblaCarousel from 'embla-carousel-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+// import required modules
+import { Pagination } from 'swiper/modules';
+
 import './SpecialistDoctor.css'
-import doctor1 from '../../../../public/image/meetDoctors/doctor3.jpg'
-import doctor2 from '../../../../public/image/meetDoctors/doctor1.jpg'
 import Image from 'next/image'
 import { FaFacebookF, FaLinkedinIn } from 'react-icons/fa6'
 import { LuInstagram } from "react-icons/lu";
 import { FiLinkedin } from "react-icons/fi";
 
 const SpecialistDoctor = () => {
-
-    const [emblaRef, emblaApi] = useEmblaCarousel({
-        loop: false,
-        slidesToScroll: 1,
-        speed: 50,
-        easing: 'ease-in-out'
-    });
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    // const [dots, setdots] = useState([]);
-
 
     const doctors = [
         {
@@ -82,70 +74,71 @@ const SpecialistDoctor = () => {
         // Add more doctors as needed
     ];
 
-    const DoctorCard = ({ doctor }) => (
-        <div className='flex-none lg:w-1/4 p-2 group duration-300'>
-            <div className='relative h-72 group-hover:bg-[#307bc4] duration-300  flex justify-center items-center'>
-                <Image className='w-full h-full opacity-100 group-hover:opacity-0 duration-300' src={doctor.image} width={500} height={300} alt=""></Image>
-                <div style={{ backgroundImage: `url(${doctor.subImage})` }} className={`absolute top-5 opacity-0 group-hover:opacity-100 duration-700 group-hover:rounded-full bg-no-repeat bg-top bg-cover w-36 h-36`}></div>
-                <div className='absolute bottom-0 group-hover:bottom-5 duration-300 opacity-0 group-hover:opacity-100 text-white flex flex-col justify-center items-center gap-1'>
-                    <h1 className='font-bold text-2xl'>{doctor.name}</h1>
-                    <p className='font-[400]'>{doctor.role}</p>
-                    <div className='flex items-center gap-2'>
-                        <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
-                            <FaFacebookF />
-                        </div>
-                        <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
-                            <LuInstagram />
-                        </div>
-                        <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
-                            <FiLinkedin />
-                        </div>
-                        <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
-                            <FaLinkedinIn />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-
-
-    // data api length
-    const dosts = Array.from({ length: doctors.length })
-
-    // index setup
-    const onSelect = useCallback(() => {
-        if (!emblaApi) return
-        setSelectedIndex(emblaApi.selectedScrollSnap());
-    }, [emblaApi])
-
-    useEffect(() => {
-        if (emblaApi) {
-            emblaApi.on("select", onSelect)
-            onSelect()
-        }
-    }, [emblaApi, onSelect])
-
 
     return (
         <div className='lg:mx-32'>
             <h1 className='text-center text-4xl font-bold'>Meet Our Specialist Doctor</h1>
-            <div className='overflow-hidden my-10' ref={emblaRef}>
-                <div className='flex transition-transform duration-1000 ease-in-out cursor-pointer'>
-                    {
-                        doctors.map((doctor) => (
-                            <DoctorCard key={doctor.id} doctor={doctor} />
-                        ))
-                    }
-                </div>
-            </div>
-            <div className='my-10  hidden lg:flex justify-center items-center gap-5 mb-5'>
+            <Swiper
+                slidesPerView={3}
+                spaceBetween={10}
+                pagination={{
+                    clickable: true,
+                }}
+                modules={[Pagination]}
+                speed={500}
+                breakpoints={{
+                    200: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 10,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                    },
+                }}
+                className="my-10 h-[340px]"
+            >
                 {
-                    dosts.map((dot, i) => (
-                        <div key={i} onClick={() => emblaApi && emblaApi.scrollTo(i)} className={`${i === selectedIndex ? "w-14 bg-[#307bc4]" : "bg-[#264a61]"} w-10 h-3 rounded-3xl`}></div>
+                    doctors.map((doctor) => (
+                        <SwiperSlide>
+                            <div className='w-full p-2 group duration-300'>
+                                <div className='relative h-72 group-hover:bg-[#307bc4] duration-300  flex justify-center items-center'>
+                                    <Image className='w-full h-full opacity-100 group-hover:opacity-0 duration-300' src={doctor.image} width={500} height={300} alt=""></Image>
+                                    <div style={{ backgroundImage: `url(${doctor.subImage})` }} className={`absolute top-5 opacity-0 group-hover:opacity-100 duration-700 group-hover:rounded-full bg-no-repeat bg-top bg-cover w-36 h-36`}></div>
+                                    <div className='absolute bottom-0 group-hover:bottom-5 duration-300 opacity-0 group-hover:opacity-100 text-white flex flex-col justify-center items-center gap-1'>
+                                        <h1 className='font-bold text-2xl'>{doctor.name}</h1>
+                                        <p className='font-[400]'>{doctor.role}</p>
+                                        <div className='flex items-center gap-2'>
+                                            <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
+                                                <FaFacebookF />
+                                            </div>
+                                            <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
+                                                <LuInstagram />
+                                            </div>
+                                            <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
+                                                <FiLinkedin />
+                                            </div>
+                                            <div className='flex justify-center items-center w-8 h-8 rounded-full text-[#307bc4] bg-white'>
+                                                <FaLinkedinIn />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </SwiperSlide>
                     ))
                 }
-            </div>
+
+
+            </Swiper>
         </div>
     )
 }
