@@ -104,14 +104,14 @@ const SpecialistDoctor = () => {
                         spaceBetween: 10,
                     },
                 }}
-                className="my-10 h-[340px]"
+                className="my-10 h-[360px]"
             >
                 {
                     doctors.map((doctor) => (
-                        <SwiperSlide>
+                        <SwiperSlide key={doctor.id}>
                             <div className='w-full p-2 group duration-300'>
-                                <div className='relative h-72 group-hover:bg-[#307bc4] duration-300  flex justify-center items-center'>
-                                    <Image className='w-full h-full opacity-100 group-hover:opacity-0 duration-300' src={doctor.image} width={500} height={300} alt=""></Image>
+                                <div className='relative h-[300px] group-hover:bg-[#307bc4] duration-300  flex justify-center items-center rounded-2xl'>
+                                    <Image className='w-full h-full opacity-100 group-hover:opacity-0 duration-300 rounded-2xl' src={doctor.image} width={500} height={300} alt=""></Image>
                                     <div style={{ backgroundImage: `url(${doctor.subImage})` }} className={`absolute top-5 opacity-0 group-hover:opacity-100 duration-700 group-hover:rounded-full bg-no-repeat bg-top bg-cover w-36 h-36`}></div>
                                     <div className='absolute bottom-0 group-hover:bottom-5 duration-300 opacity-0 group-hover:opacity-100 text-white flex flex-col justify-center items-center gap-1'>
                                         <h1 className='font-bold text-2xl'>{doctor.name}</h1>
