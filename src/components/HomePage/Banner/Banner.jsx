@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
+import SwiperButton from './SwiperButton';
 
 const Banner = () => {
 
@@ -45,15 +46,16 @@ const Banner = () => {
 
     return (
         <Swiper
-            navigation={true}
+            // navigation={true}
             modules={[Navigation]}
+            className='relative'
         >
 
             {
                 doctors.map((doctor) => (
                     <SwiperSlide key={doctor.id}>
-                        <div style={{ backgroundImage: `url(${doctor.image})` }} className='bg-no-repeat bg-top bg-cover w-full h-[650px] font-poppins'>
-                            <div className='pt-[14%] pl-[20%] space-y-5'>
+                        <div style={{ backgroundImage: `url(${doctor.image})` }} className='bg-no-repeat bg-top bg-cover w-full lg:h-[650px] h-[500px] font-poppins'>
+                            <div className='pt-[14%] lg:pl-[20%] space-y-5'>
                                 <p className='text-[#307bc4] font-bold'>{doctor.header}</p>
                                 <p className='text-4xl w-[20rem]'>{doctor.title}</p>
                                 <p className='w-[29rem]'>{doctor.description}</p>
@@ -66,6 +68,7 @@ const Banner = () => {
                     </SwiperSlide>
                 ))
             }
+            <SwiperButton />
         </Swiper>
     )
 }
