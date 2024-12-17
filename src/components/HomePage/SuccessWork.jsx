@@ -8,7 +8,7 @@ import Link from 'next/link'
 const SuccessWork = () => {
   return (
     <div className='lg:mx-10'>
-      <h1 className='text-3xl'>Our Completed Works</h1>
+      <h1 className='text-3xl font-bold'>Our Completed Works</h1>
       <div className='m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10'>
         <div className='group'>
           <Image className='relative z-10 w-full h-72' src={img1} width={500} height={300} alt='success work 1' />

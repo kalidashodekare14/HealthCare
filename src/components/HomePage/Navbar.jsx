@@ -42,6 +42,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div className='flex items-center gap-5 text-[19px]'>
+          
           <IoSearchOutline className='hidden lg:flex' />
           <button className='btn w-32 bg-[#307bc4] border-0 text-white'>Login</button>
           <FaBars onClick={handleToggle} className='lg:hidden' />

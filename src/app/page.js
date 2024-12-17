@@ -1,5 +1,6 @@
 
 import About from "@/components/HomePage/About";
+import ArticleBlog from "@/components/HomePage/ArticleBlog/ArticleBlog";
 import Banner from "@/components/HomePage/Banner/Banner";
 import BookNow from "@/components/HomePage/BookNow";
 import Counter from "@/components/HomePage/Counter";
@@ -24,6 +25,7 @@ export default function Home() {
       <HealthServices />
       <SuccessWork />
       <ServiceOffering />
+      <ArticleBlog />
     </div>
   );
 }
