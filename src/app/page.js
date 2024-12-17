@@ -6,6 +6,7 @@ import Counter from "@/components/HomePage/Counter";
 import HealthServices from "@/components/HomePage/HealthServices";
 import HighService from "@/components/HomePage/HighService";
 import SpecialistDoctor from "@/components/HomePage/SpecialistDoctor/SpecialistDoctor";
+import SuccessWork from "@/components/HomePage/SuccessWork";
 import Image from "next/image";
 
 
@@ -20,6 +21,7 @@ export default function Home() {
       <HighService />
       <SpecialistDoctor />
       <HealthServices />
+      <SuccessWork></SuccessWork>
     </div>
   );
 }

@@ -77,7 +77,7 @@ const SpecialistDoctor = () => {
 
     return (
         <div className='lg:mx-32'>
-            <h1 className='text-center text-4xl font-bold'>Meet Our Specialist Doctor</h1>
+            <h1 className='text-4xl font-bold'>Meet Our Specialist Doctor</h1>
             <Swiper
                 slidesPerView={3}
                 spaceBetween={10}
