@@ -6,7 +6,7 @@ import image2 from '../../../public/image/about_doc2.jpg'
 
 const About = () => {
     return (
-        <div className='lg:mx-32 my-5 flex flex-col lg:flex-row items-center justify-between'>
+        <div className='lg:mx-10 my-5 flex flex-col lg:flex-row items-center justify-between'>
             <div className='relative lg:w-[40%]'>
                 <Image className='w-full' src={image} width={500} height={300} alt='doctor'></Image>
                 <div className='flex w-[50%]'>

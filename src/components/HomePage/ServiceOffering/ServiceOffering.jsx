@@ -6,21 +6,36 @@ import certified from '../../../../public/image/tab_section/certified.jpg'
 import medical from '../../../../public/image/tab_section/medical.jpg'
 import Image from 'next/image'
 import { FaCheck } from 'react-icons/fa6'
+import { GrCertificate, GrTechnology } from "react-icons/gr";
+import { GiHospitalCross } from 'react-icons/gi'
+import { FaFileMedicalAlt } from 'react-icons/fa'
 
 const ServiceOffering = () => {
 
-    const [activeTab, setActiveTab] = useState("mordern_technology")
+    const [activeTab, setActiveTab] = useState("modern_technology")
     console.log(activeTab)
 
 
     return (
-        <div className='lg:mx-10 mx-3 my-10'>
-            <h1 className='text-3xl'>Service Offerings</h1>
-            <div role="tablist" className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:w-[70%] m-auto py-10">
-                <a onClick={() => setActiveTab("modern_technology")} role="tab" className={`${activeTab === "modern_technology" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>Mordern Technology</a>
-                <a onClick={() => setActiveTab("success_of_treatment")} role="tab" className={`${activeTab === "success_of_treatment" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>Success of Treatment</a>
-                <a onClick={() => setActiveTab("certified_doctors")} role="tab" className={`${activeTab === "certified_doctors" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} cursor-pointer   px-3 py-4 text-[16px] font-[600] rounded-md`}>Certified Doctors</a>
-                <a onClick={() => setActiveTab("medical_advice")} role="tab" className={`${activeTab === "medical_advice" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>Medical Advice</a>
+        <div className='lg:mx-10 mx-3 my-20'>
+            <h1 className='text-3xl font-bold'>Service Offerings</h1>
+            <div role="tablist" className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:w-[80%] m-auto py-10">
+                <a onClick={() => setActiveTab("modern_technology")} role="tab" className={`${activeTab === "modern_technology" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} flex items-center gap-3 cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>
+                    <span><GrTechnology className={`${activeTab === "modern_technology" && "text-white"} text-2xl text-[#307bc4]`} /></span>
+                    <span>Mordern Technology</span>
+                </a>
+                <a onClick={() => setActiveTab("success_of_treatment")} role="tab" className={`${activeTab === "success_of_treatment" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} flex items-center gap-3 cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>
+                    <span><GiHospitalCross className={`${activeTab === "success_of_treatment" && "text-white"} text-2xl text-[#307bc4]`} /></span>
+                    <span>Success of Treatment</span>
+                </a>
+                <a onClick={() => setActiveTab("certified_doctors")} role="tab" className={`${activeTab === "certified_doctors" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} flex items-center gap-3 cursor-pointer   px-3 py-4 text-[16px] font-[600] rounded-md`}>
+                    <span ><GrCertificate className={`${activeTab === "certified_doctors" && "text-white"} text-2xl text-[#307bc4]`} /></span>
+                    <span>Certified Doctors</span>
+                </a>
+                <a onClick={() => setActiveTab("medical_advice")} role="tab" className={`${activeTab === "medical_advice" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} flex items-center gap-3 cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>
+                    <span><FaFileMedicalAlt className={`${activeTab === "medical_advice" && "text-white"} text-2xl text-[#307bc4]`} /></span>
+                    <span>Medical Advice</span>
+                </a>
             </div>
             {
                 activeTab === "modern_technology" && (

@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa6";
 const BookNow = () => {
     return (
         <div className='-mt-10 z-20 relative mb-10 '>
-            <div className='grid grid-cols-2 lg:grid-cols-4 gap-2 lg:w-[70%] m-auto bg-white shadow-lg p-5'>
+            <div className='grid grid-cols-2 lg:grid-cols-4 gap-2 lg:w-[80%] m-auto bg-white shadow-lg p-5'>
                 <div className='flex items-center gap-2'>
                     <div className='bg-[#307bc4] p-2 text-white rounded-full'>
                         <MdDateRange className='text-2xl' />

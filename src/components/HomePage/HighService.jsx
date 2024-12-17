@@ -10,7 +10,7 @@ import { FaLungs } from "react-icons/fa";
 
 const HighService = () => {
   return (
-    <div className='lg:mx-32 my-20'>
+    <div className='lg:mx-10 my-20'>
       <h1 className='text-4xl font-bold mb-10'>High quality service</h1>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
