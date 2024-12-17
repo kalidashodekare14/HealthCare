@@ -5,6 +5,7 @@ import BookNow from "@/components/HomePage/BookNow";
 import Counter from "@/components/HomePage/Counter";
 import HealthServices from "@/components/HomePage/HealthServices";
 import HighService from "@/components/HomePage/HighService";
+import ServiceOffering from "@/components/HomePage/ServiceOffering/ServiceOffering";
 import SpecialistDoctor from "@/components/HomePage/SpecialistDoctor/SpecialistDoctor";
 import SuccessWork from "@/components/HomePage/SuccessWork";
 import Image from "next/image";
@@ -13,7 +14,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="font-poppins ">
+    <div className="">
       <Banner />
       <BookNow />
       <About />
@@ -21,7 +22,8 @@ export default function Home() {
       <HighService />
       <SpecialistDoctor />
       <HealthServices />
-      <SuccessWork></SuccessWork>
+      <SuccessWork />
+      <ServiceOffering />
     </div>
   );
 }
