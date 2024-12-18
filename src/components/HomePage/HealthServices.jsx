@@ -10,16 +10,16 @@ const HealthServices = () => {
     return (
         <div className='relative lg:h-[600px]  bg-[#e8edf0]  lg:overflow-hidden my-10'>
             <div className='lg:mx-32 flex'>
-                <div className='z-20 px-3 pt-20'>
-                    <h1 className='text-3xl lg:w-[427px] mb-10'>Ready to Serve You with Trusted Health Solutions.</h1>
+                <div className='font-poppins z-20 px-3 pt-20'>
+                    <h1 className='text-3xl lg:w-[427px] mb-10 font-poppins'>Ready to Serve You with Trusted Health Solutions.</h1>
                     <div className='grid grid-cols-2 lg:gap-5'>
                         <div className='flex flex-col lg:flex-row gap-5'>
                             <div className='mt-[9px] w-14 h-14 text-2xl rounded-xl bg-white flex justify-center items-center'>
                                 <FaToolbox />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Service & Check</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Service & Check</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                         <div className='flex flex-col lg:flex-row gap-5'>
@@ -27,8 +27,8 @@ const HealthServices = () => {
                                 <FaHospitalUser />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Medical Advices</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Medical Advices</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                         <div className='flex flex-col lg:flex-row gap-5'>
@@ -37,8 +37,8 @@ const HealthServices = () => {
                                 <FaHeartbeat />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Emergency Help</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Emergency Help</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                         <div className='flex flex-col lg:flex-row gap-5'>
@@ -46,8 +46,8 @@ const HealthServices = () => {
                                 <FaPrescriptionBottle />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Medical Research</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Medical Research</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                         <div className='flex flex-col lg:flex-row gap-5'>
@@ -55,8 +55,8 @@ const HealthServices = () => {
                                 <FaUserDoctor />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Qualified Doctors</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Qualified Doctors</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                         <div className='flex flex-col lg:flex-row gap-5'>
@@ -64,8 +64,8 @@ const HealthServices = () => {
                                 <GiChemicalDrop />
                             </div>
                             <div className='lg:w-[220px] space-y-1'>
-                                <h1 className='text-xl font-bold'>Affordable Prices</h1>
-                                <p>Medical competitor research startup to financial</p>
+                                <h1 className='text-[18px] font-bold'>Affordable Prices</h1>
+                                <p className='text-[15px]'>Medical competitor research startup to financial</p>
                             </div>
                         </div>
                     </div>

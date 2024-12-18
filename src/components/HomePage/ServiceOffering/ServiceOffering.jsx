@@ -19,7 +19,7 @@ const ServiceOffering = () => {
     return (
         <div className='lg:mx-10 mx-3 my-20'>
             <h1 className='text-3xl font-bold'>Service Offerings</h1>
-            <div role="tablist" className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:w-[80%] m-auto py-10">
+            <div role="tablist" className="font-rubik grid grid-cols-2 lg:grid-cols-4 gap-5 lg:w-[80%] m-auto py-10">
                 <a onClick={() => setActiveTab("modern_technology")} role="tab" className={`${activeTab === "modern_technology" ? "bg-[#307bc4] text-white" : "bg-[#f1f7fc]"} flex items-center gap-3 cursor-pointer  px-3 py-4 text-[16px] font-[600] rounded-md`}>
                     <span><GrTechnology className={`${activeTab === "modern_technology" && "text-white"} text-2xl text-[#307bc4]`} /></span>
                     <span>Mordern Technology</span>
@@ -39,7 +39,7 @@ const ServiceOffering = () => {
             </div>
             {
                 activeTab === "modern_technology" && (
-                    <div className='flex flex-col lg:flex-row justify-between gap-5 items-center border p-3 rounded-md'>
+                    <div className='font-rubik flex flex-col lg:flex-row justify-between gap-5 items-center border p-3 rounded-md'>
                         <Image className='w-full h-[22rem]' src={modern} width={500} height={300} alt='modern technology' />
                         <div className='space-y-2'>
                             <h1 className='text-2xl font-bold'>Empowering Tomorrow with Modern Technology</h1>
@@ -56,7 +56,7 @@ const ServiceOffering = () => {
 
             {
                 activeTab === "success_of_treatment" && (
-                    <div className='flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
+                    <div className='font-rubik flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
                         <Image className='w-full h-[22rem]' src={success} width={500} height={300} alt='modern technology' />
                         <div className='space-y-2'>
                             <h1 className='text-2xl font-bold'>Success of Treatment Pathways to Healing</h1>
@@ -72,7 +72,7 @@ const ServiceOffering = () => {
             }
             {
                 activeTab === "certified_doctors" && (
-                    <div className='flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
+                    <div className='font-rubik flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
                         <Image className='w-full h-[22rem]' src={certified} width={500} height={300} alt='modern technology' />
                         <div className='space-y-2'>
                             <h1 className='text-2xl font-bold'>Certified Doctors Experts in Healthcare</h1>
@@ -88,7 +88,7 @@ const ServiceOffering = () => {
             }
             {
                 activeTab === "medical_advice" && (
-                    <div className='flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
+                    <div className='font-rubik flex flex-col lg:flex-row justify-between gap-5   items-center border p-3 rounded-md'>
                         <Image className='w-full h-[22rem]' src={medical} width={500} height={300} alt='modern technology' />
                         <div className='space-y-2'>
                             <h1 className='text-2xl font-bold'>Medical Advice Your Path to Better Health</h1>

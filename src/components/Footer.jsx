@@ -10,7 +10,7 @@ import { FaFacebookF, FaInstagramSquare, FaLinkedinIn, FaTwitter } from 'react-i
 const Footer = () => {
     return (
         <div className=''>
-            <footer className="footer bg-[#307bc4] text-base-content p-10 lg:px-32">
+            <footer className="footer font-rubik bg-[#307bc4] text-base-content p-10 lg:px-32">
                 <aside className='space-y-3'>
                     <Image className='w-40' src={logo} width={500} height={300} alt='logo' />
                     <p className='text-white lg:w-[20rem]'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut et facere ducimus natus. Suscipit cumque nemo, repudiandae soluta vel debitis.</p>
@@ -76,7 +76,7 @@ const Footer = () => {
                     </div>
                 </nav>
             </footer>
-            <footer className="footer footer-center bg-[#307bc4] p-4 text-white border-t">
+            <footer className="footer font-rubik footer-center bg-[#307bc4] p-4 text-white border-t">
                 <aside>
                     <p>Copyright © {new Date().getFullYear()} - All right reserved.</p>
                 </aside>

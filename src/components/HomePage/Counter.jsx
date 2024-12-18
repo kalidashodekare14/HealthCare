@@ -16,7 +16,7 @@ const Counter = () => {
         <h1 className='text-4xl text-white font-bold'>
         <CountUp start={0} end={500} duration={5} />+
         </h1>
-        <p className='text-xl text-white'>Active Clients</p>
+        <p className='text-[18px] text-white'>Active Clients</p>
       </div>
       <div className='flex flex-col items-center'>
         <div className='bg-white p-3 rounded-full'>
@@ -25,7 +25,7 @@ const Counter = () => {
         <h1 className='text-4xl text-white font-bold'>
         <CountUp start={0} end={20} duration={5} />K
         </h1>
-        <p className='text-xl text-white'>Team Support</p>
+        <p className='text-[18px] text-white'>Team Support</p>
       </div>
       <div className='flex flex-col items-center'>
         <div className='bg-white p-3 rounded-full'>
@@ -34,7 +34,7 @@ const Counter = () => {
         <h1 className='text-4xl text-white font-bold'>
         <CountUp start={0} end={300} duration={5} />+
         </h1>
-        <p className='text-xl text-white'>Project Complete</p>
+        <p className='text-[18px] text-white'>Project Complete</p>
       </div>
       <div className='flex flex-col items-center'>
         <div className='bg-white p-3 rounded-full'>
@@ -43,7 +43,7 @@ const Counter = () => {
         <h1 className='text-4xl text-white font-bold'>
         <CountUp start={0} end={10} duration={5} />K
         </h1>
-        <p className='text-xl text-white'>Award winner</p>
+        <p className='text-[18px] text-white'>Award winner</p>
       </div>
     </div>
   )

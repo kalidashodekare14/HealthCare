@@ -67,7 +67,7 @@ const ArticleBlog = () => {
 
     return (
         <div className='mx-10'>
-            <h1 className='text-3xl font-bold'>Recent Articles and Blogs</h1>
+            <h1 className='text-3xl font-bold font-poppins'>Recent Articles and Blogs</h1>
             <Swiper
                 slidesPerView={3}
                 spaceBetween={30}
@@ -98,7 +98,7 @@ const ArticleBlog = () => {
                 {
                     blogs.map((blog) => (
                         <SwiperSlide key={blog.id}>
-                            <div className="card bg-base-100  h-[400px] shadow-md">
+                            <div className="font-rubik card bg-base-100  h-[400px] shadow-md">
                                 <figure className='relative'>
                                     <Image className='w-full h-60' src={blog.image} width={500} height={300} alt={blog.title} />
                                     <div className='absolute bottom-0 right-0 bg-[#307bc4] text-white py-2 px-3'>
@@ -106,8 +106,8 @@ const ArticleBlog = () => {
                                     </div>
                                 </figure>
                                 <div className="p-5 border-b space-y-3">
-                                    <h1 className='text-xl font-bold'>{blog.title}</h1>
-                                    <p className='text-[16px]'>{blog.description}</p>
+                                    <h1 className='text-[18px] font-[500]'>{blog.title}</h1>
+                                    <p className='text-[15px]'>{blog.description}</p>
                                 </div>
                                 <div className='px-5 py-2 flex justify-between'>
                                     <p>By {blog.author}</p>
