@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaBars } from "react-icons/fa";
 import dynamic from 'next/dynamic';
-
+import Image from 'next/image';
+import logo from '../../public/logo.png'
 
 
 const Navbar = () => {
@@ -29,10 +30,12 @@ const Navbar = () => {
   }, [])
 
   return (
-    <div className={`${isSticky ? "sticky top-0 z-50 bg-[#ffffffb9] backdrop-blur-lg transition-all duration-300 opacity-100" : "bg-white"}`}>
+    <div className={`${isSticky ? "sticky top-0 z-50 bg-[#ffffffb9] shadow-xl backdrop-blur-lg transition-all duration-300 opacity-100" : "bg-white"}`}>
       <nav className={` z-50 w-full lg:px-32 px-3 flex justify-between py-3 font-roboto font-[200]`}>
         <div className='flex items-center gap-20'>
-          <h1 className='text-3xl'>HealthCare</h1>
+          <h1 className='text-3xl'>
+            <Image className='w-40' src={logo} width={500} height={300} alt='Logo' />
+          </h1>
           <ul className='hidden lg:flex items-center gap-5 text-[18px] font-[300]'>
             <li>Home</li>
             <li>About</li>
