@@ -43,16 +43,21 @@ const Navbar = () => {
     },
     {
       "id": "3",
+      "name": "Service",
+      "path": "/services"
+    },
+    {
+      "id": "4",
       "name": "Doctors",
       "path": "/doctors"
     },
     {
-      "id": "4",
+      "id": "5",
       "name": "Blog",
       "path": "/blog"
     },
     {
-      "id": "5",
+      "id": "6",
       "name": "Contact",
       "path": "/contact"
     },
