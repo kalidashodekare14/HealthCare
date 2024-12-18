@@ -6,7 +6,7 @@ import { IoMdAnalytics } from "react-icons/io";
 import { FaAward } from "react-icons/fa6";
 import CountUp from 'react-countup';
 
-const Counter = () => {
+const AboutCounting = () => {
   return (
     <div className='lg:mx-10 font-rubik  my-20 bg-[#307bc4] p-5 grid grid-cols-2 lg:grid-cols-4 gap-5'>
       <div className='flex flex-col items-center'>
@@ -49,4 +49,4 @@ const Counter = () => {
   )
 }
 
-export default Counter
+export default AboutCounting

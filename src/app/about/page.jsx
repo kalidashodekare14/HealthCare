@@ -1,11 +1,17 @@
+import AboutBanner from '@/components/AboutPage/AboutBanner'
+import AboutCounting from '@/components/AboutPage/AboutCounting'
+import AboutSection from '@/components/AboutPage/AboutSection'
 import React from 'react'
 
-const AboutSection = () => {
+
+const AboutPage = () => {
   return (
     <div>
-        <h1>This is a About Section</h1>
+       <AboutBanner />
+       <AboutSection />
+       <AboutCounting />
     </div>
   )
 }
 
-export default AboutSection
+export default AboutPage
