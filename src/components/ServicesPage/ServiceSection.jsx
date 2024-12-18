@@ -11,7 +11,7 @@ import { FaLungs } from "react-icons/fa";
 const ServiceSection = () => {
   return (
     <div className='lg:mx-10 my-20'>
-      <h1 className='text-4xl font-bold mb-10 font-poppins'>High quality service</h1>
+      <h1 className='text-4xl text-center font-bold mb-10 font-poppins'>High quality service</h1>
 
       <div className='font-rubik grid grid-cols-1 lg:grid-cols-4 gap-5'>
         <div className='overflow-hidden relative group bg-white shadow-2xl rounded-lg p-5'>
