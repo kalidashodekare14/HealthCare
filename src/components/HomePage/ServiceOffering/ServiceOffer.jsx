@@ -10,7 +10,7 @@ import { GrCertificate, GrTechnology } from "react-icons/gr";
 import { GiHospitalCross } from 'react-icons/gi'
 import { FaFileMedicalAlt } from 'react-icons/fa'
 
-const ServiceOffering = () => {
+const ServiceOffer = () => {
 
     const [activeTab, setActiveTab] = useState("modern_technology")
     console.log(activeTab)
@@ -107,4 +107,4 @@ const ServiceOffering = () => {
     )
 }
 
-export default ServiceOffering
+export default ServiceOffer

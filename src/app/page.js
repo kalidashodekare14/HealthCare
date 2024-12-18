@@ -6,7 +6,7 @@ import BookNow from "@/components/HomePage/BookNow";
 import Counter from "@/components/HomePage/Counter";
 import HealthServices from "@/components/HomePage/HealthServices";
 import HighService from "@/components/HomePage/HighService";
-import ServiceOffering from "@/components/HomePage/ServiceOffering/ServiceOffering";
+import ServiceOffer from "@/components/HomePage/ServiceOffering/ServiceOffer";
 import SpecialistDoctor from "@/components/HomePage/SpecialistDoctor/SpecialistDoctor";
 import SuccessWork from "@/components/HomePage/SuccessWork";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export default function Home() {
       <SpecialistDoctor />
       <HealthServices />
       <SuccessWork />
-      <ServiceOffering />
+      <ServiceOffer />
       <ArticleBlog />
     </div>
   );
