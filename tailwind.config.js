@@ -19,8 +19,8 @@ module.exports = {
         'doctor3': "url('/image/meetDoctors/doctor3.jpg')",
       },
       fontFamily: {
-        "roboto": "Roboto sans-serif",
-        "poppins": "Poppins serif"
+        "poppins": "Poppins, serif",
+        "rubik": "Rubik, serif"
       }
     },
   },

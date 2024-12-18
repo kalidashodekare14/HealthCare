@@ -10,10 +10,10 @@ import { FaFacebookF, FaInstagramSquare, FaLinkedinIn, FaTwitter } from 'react-i
 const Footer = () => {
     return (
         <div className=''>
-            <footer className="footer bg-[#307bc4] text-base-content p-10 px-32">
+            <footer className="footer bg-[#307bc4] text-base-content p-10 lg:px-32">
                 <aside className='space-y-3'>
                     <Image className='w-40' src={logo} width={500} height={300} alt='logo' />
-                    <p className='text-white w-[20rem]'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut et facere ducimus natus. Suscipit cumque nemo, repudiandae soluta vel debitis.</p>
+                    <p className='text-white lg:w-[20rem]'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut et facere ducimus natus. Suscipit cumque nemo, repudiandae soluta vel debitis.</p>
                     <div className='text-white space-y-2'>
                         <div className='flex items-center gap-2 text-[16px]'>
                             <IoCallOutline />
