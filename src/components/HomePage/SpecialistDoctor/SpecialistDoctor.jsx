@@ -77,7 +77,7 @@ const SpecialistDoctor = () => {
 
     return (
         <div className='lg:mx-10'>
-            <h1 className='text-4xl font-bold'>Meet Our Specialist Doctor</h1>
+            <h1 className='text-4xl font-bold font-poppins'>Meet Our Specialist Doctor</h1>
             <Swiper
                 slidesPerView={3}
                 spaceBetween={10}
@@ -109,7 +109,7 @@ const SpecialistDoctor = () => {
                 {
                     doctors.map((doctor) => (
                         <SwiperSlide key={doctor.id}>
-                            <div className='w-full p-2 group duration-300'>
+                            <div className='font-rubik w-full p-2 group duration-300'>
                                 <div className='relative h-[300px] group-hover:bg-[#307bc4] duration-300  flex justify-center items-center rounded-2xl'>
                                     <Image className='w-full h-full opacity-100 group-hover:opacity-0 duration-300 rounded-2xl' src={doctor.image} width={500} height={300} alt=""></Image>
                                     <div style={{ backgroundImage: `url(${doctor.subImage})` }} className={`absolute top-5 opacity-0 group-hover:opacity-100 duration-700 group-hover:rounded-full bg-no-repeat bg-top bg-cover w-36 h-36`}></div>
