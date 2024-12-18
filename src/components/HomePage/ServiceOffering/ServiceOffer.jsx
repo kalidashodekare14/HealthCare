@@ -69,6 +69,8 @@ const ServiceOffer = () => {
                         </div>
                     </div>
                 )
+
+                
             }
             {
                 activeTab === "certified_doctors" && (
