@@ -1,9 +1,12 @@
+import DoctorsBanner from '@/components/DoctorsPage/DoctorsBanner'
+import DoctorsSection from '@/components/DoctorsPage/DoctorsSection'
 import React from 'react'
 
 const DoctorsPage = () => {
   return (
     <div>
-        <h1>This is a doctor</h1>
+      <DoctorsBanner />
+      <DoctorsSection />
     </div>
   )
 }

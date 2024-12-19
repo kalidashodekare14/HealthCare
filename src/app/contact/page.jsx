@@ -1,9 +1,10 @@
+import ContactBanner from '@/components/ContactPage/ContactBanner'
 import React from 'react'
 
 const ContactPage = () => {
   return (
     <div>
-        <h1>This is a Contact Page</h1>
+       <ContactBanner />
     </div>
   )
 }
