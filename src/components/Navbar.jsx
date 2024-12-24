@@ -83,7 +83,9 @@ const Navbar = () => {
         <div className='flex items-center gap-5 text-[19px]'>
 
           <IoSearchOutline className='hidden lg:flex' />
-          <button className='btn w-32 bg-[#307bc4] border-0 text-white font-rubik'>Login</button>
+          <Link href={"/signin"}>
+            <button className='btn w-32 bg-[#307bc4] border-0 text-white font-rubik'>Login</button>
+          </Link>
           <FaBars onClick={handleToggle} className='lg:hidden' />
         </div>
         <ul className={`z-50 absolute left-0 p-5 lg:hidden  bg-green-600 w-full flex flex-col  gap-5 text-[19px] font-[300] translate-y-14 duration-700  ${toggle ? "translate-x-0" : "-translate-x-full"}`}>
