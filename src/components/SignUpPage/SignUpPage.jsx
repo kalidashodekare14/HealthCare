@@ -7,6 +7,7 @@ import PhoneInput from 'react-phone-number-input'
 import './SignUpPage.css'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
+import axios from 'axios'
 
 const SignUpPage = () => {
 
@@ -19,8 +20,18 @@ const SignUpPage = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data)
+        const newUser = {
+            name: data.full_name,
+            email: data.email,
+            phone_number: data.phone_number,
+            date_of_birth: data.date_of_birth,
+            gender: data.gender
+        }
+        // console.log("check", newUser)
+        const res = await axios.post("http://localhost:3000/signup/api", newUser)
+        console.log(res)
     }
 
 
@@ -52,14 +63,14 @@ const SignUpPage = () => {
                     <div className='flex items-center gap-6 w-full'>
                         <div className='flex flex-col gap-2 w-full font-rubik'>
                             <label htmlFor="">Date Of Birth</label>
-                            <input className='w-full input input-bordered rounded-none' type="date" placeholder='Email' />
+                            <input {...register("date_of_birth")} className='w-full input input-bordered rounded-none' type="date" placeholder='Email' />
                         </div>
                         <div className='mt-8 border w-full font-rubik'>
                             <select {...register("gender")} defaultValue={"Default"} className="select w-full">
                                 <option value="DEFAULT" disabled selected>Gender</option>
-                                <option value={"1"} >Male</option>
-                                <option value={"2"} >Female</option>
-                                <option value={"3"} >Others</option>
+                                <option value={"Male"} >Male</option>
+                                <option value={"Female"} >Female</option>
+                                <option value={"Others"} >Others</option>
                             </select>
                         </div>
                     </div>
