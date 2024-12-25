@@ -8,6 +8,7 @@ import './SignUpPage.css'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const SignUpPage = () => {
 
@@ -17,6 +18,7 @@ const SignUpPage = () => {
         register,
         handleSubmit,
         watch,
+        reset,
         formState: { errors },
     } = useForm()
 
@@ -27,11 +29,22 @@ const SignUpPage = () => {
             email: data.email,
             phone_number: data.phone_number,
             date_of_birth: data.date_of_birth,
-            gender: data.gender
+            gender: data.gender,
+            password: data.password
         }
         // console.log("check", newUser)
         const res = await axios.post("http://localhost:3000/signup/api", newUser)
         console.log(res)
+        if (res.status === 200) {
+            reset()
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
     }
 
 

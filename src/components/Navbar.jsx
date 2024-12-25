@@ -7,6 +7,7 @@ import Image from 'next/image';
 import logo from '../../public/logo.png'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 
 const Navbar = () => {
@@ -14,6 +15,8 @@ const Navbar = () => {
   const [toggle, setToggle] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
+  const session = useSession()
+  console.log(session)
 
   const handleToggle = () => {
     setToggle(!toggle)
@@ -83,9 +86,39 @@ const Navbar = () => {
         <div className='flex items-center gap-5 text-[19px]'>
 
           <IoSearchOutline className='hidden lg:flex' />
-          <Link href={"/signin"}>
-            <button className='btn w-32 bg-[#307bc4] border-0 text-white font-rubik'>Login</button>
-          </Link>
+          {
+            session.data ? (
+              <div>
+                <div className="dropdown dropdown-end">
+                  <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                    <div className="w-10 rounded-full">
+                      <img
+                        alt="Tailwind CSS Navbar component"
+                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    </div>
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                    <li>
+                      <a className="justify-between">
+                        Profile
+                        <span className="badge">New</span>
+                      </a>
+                    </li>
+                    <li><a>Settings</a></li>
+                    <li><a>Logout</a></li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <Link href={"/signin"}>
+                  <button className='btn w-32 bg-[#307bc4] border-0 text-white font-rubik'>Login</button>
+                </Link>
+              </div>
+            )
+          }
           <FaBars onClick={handleToggle} className='lg:hidden' />
         </div>
         <ul className={`z-50 absolute left-0 p-5 lg:hidden  bg-green-600 w-full flex flex-col  gap-5 text-[19px] font-[300] translate-y-14 duration-700  ${toggle ? "translate-x-0" : "-translate-x-full"}`}>

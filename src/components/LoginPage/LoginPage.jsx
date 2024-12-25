@@ -4,9 +4,11 @@ import rb from '../../../public/image/rb.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 const LoginPage = () => {
 
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -14,8 +16,24 @@ const LoginPage = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data)
+        const { email, password } = data
+
+        try {
+            const res = await signIn('credentials', {
+                email,
+                password,
+                redirect: false
+            })
+            if (res.status === 200) {
+                router.push("/")
+            }
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     return (
