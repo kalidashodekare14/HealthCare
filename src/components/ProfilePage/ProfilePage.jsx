@@ -33,11 +33,11 @@ const ProfilePage = () => {
             </div>
             <div className='lg:mx-[2rem] mx-2 my-20'>
                 <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-5 items-center font-rubik'>
-                    <div onClick={() => setIsActive("patient_infomation")} className={`cursor-pointer ${isActive === "patient_infomation" && "border-b-2  border-[#307bc4]"}`}>
-                        <h1>Patient Information</h1>
+                    <div onClick={() => setIsActive("persoanl_infomation")} className={`cursor-pointer ${isActive === "persoanl_infomation" && "border-b-2  border-[#307bc4]"}`}>
+                        <h1>Personal Information</h1>
                     </div>
-                    <div onClick={() => setIsActive("appointment_history")} className={`cursor-pointer ${isActive === "appointment_history" && "border-b-2  border-[#307bc4]"}`}>
-                        <h1>Appointment History</h1>
+                    <div onClick={() => setIsActive("medical_information")} className={`cursor-pointer ${isActive === "medical_information" && "border-b-2  border-[#307bc4]"}`}>
+                        <h1>Medical Information</h1>
                     </div>
                     <div onClick={() => setIsActive("next_treatment")} className={`cursor-pointer ${isActive === "next_treatment" && "border-b-2  border-[#307bc4]"}`}>
                         <h1>Next Treatment</h1>
@@ -48,7 +48,7 @@ const ProfilePage = () => {
                 </div>
                 <div className='my-10'>
                     {
-                        isActive === "patient_infomation" && (
+                        isActive === "persoanl_infomation" && (
                             <div className='border p-5'>
                                 <div className='flex justify-end items-end'>
                                     <FaEdit onClick={handleIntoEdit} className='text-2xl cursor-pointer' />
@@ -123,6 +123,71 @@ const ProfilePage = () => {
                                                 )
                                             }
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+                    {
+                        isActive === "medical_information" && (
+                            <div className='border p-5'>
+                                <div className='flex justify-end items-end'>
+                                    <FaEdit onClick={handleIntoEdit} className='text-2xl cursor-pointer' />
+                                </div>
+                                <div className='grid grid-cols-1 lg:grid-cols-3 gap-5'>
+                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                        <label htmlFor="">Patient ID:</label>
+                                        {
+                                            isEditActive ? (
+                                                <input className='input border border-[#000] w-full' type="email" />
+                                            ) : (
+                                                <div className='border p-3 rounded-lg'>
+                                                    <p>5421</p>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                        <label htmlFor="">Blood Group:</label>
+                                        {
+                                            isEditActive ? (
+                                                <input className='input border border-[#000] w-full' type="text" />
+                                            ) : (
+                                                <div className='border p-3 rounded-lg'>
+                                                    <p>A+</p>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                        <label htmlFor="">Date Of Birth</label>
+                                        {
+                                            isEditActive ? (
+
+                                                <input className='input border border-[#000] w-full' type="date" placeholder='Email' />
+                                            ) : (
+                                                <div className='border p-3 rounded-lg'>
+                                                    <p>10/1/2004</p>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                        <label htmlFor="">Gender</label>
+                                        {
+                                            isEditActive ? (
+                                                <select defaultValue={"Default"} className="select w-full">
+                                                    <option value="DEFAULT" disabled selected>Gender</option>
+                                                    <option value={"Male"} >Male</option>
+                                                    <option value={"Female"} >Female</option>
+                                                    <option value={"Others"} >Others</option>
+                                                </select>
+                                            ) : (
+                                                <div className='border p-3 rounded-lg'>
+                                                    <p>Male</p>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
