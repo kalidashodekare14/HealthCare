@@ -30,7 +30,11 @@ const SignUpPage = () => {
             phone_number: data.phone_number,
             date_of_birth: data.date_of_birth,
             gender: data.gender,
-            password: data.password
+            password: data.password,
+            current_address: 'N/A',
+            blood_group: 'N/A',
+            health_condition: "N/A",
+            chronic_diseases_history: "N/A"
         }
         // console.log("check", newUser)
         const res = await axios.post("http://localhost:3000/signup/api", newUser)

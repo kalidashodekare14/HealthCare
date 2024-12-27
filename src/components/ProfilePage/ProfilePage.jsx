@@ -1,16 +1,54 @@
 "use client"
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { CiEdit } from 'react-icons/ci'
-import { FaEdit } from 'react-icons/fa'
+import { FaEdit, FaSave } from 'react-icons/fa'
+import { MdCancel } from 'react-icons/md'
 
-const ProfilePage = () => {
+const ProfilePage = async () => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
-    const [isEditActive, setIsEditActive] = useState(false)
+    const [personalInfoActive, setPersonalInfoActive] = useState(false)
+    const [medicalInfoActive, setMedicalInfoActive] = useState(false)
+    const session = useSession()
+    console.log(session?.data?.user?.email)
 
-    const handleIntoEdit = () => {
-        setIsEditActive(!isEditActive)
+    const handlePersonalIntoEdit = () => {
+        setPersonalInfoActive(!personalInfoActive)
     }
+    const handleMedicalInfoEdit = () => {
+        setMedicalInfoActive(!medicalInfoActive)
+    }
+
+    const {
+        register: register1,
+        handleSubmit: handlePersonalInfoSubmit,
+        formState: { errors: errors1 },
+    } = useForm()
+
+    const onPersonalInfoSubmit = (data) => {
+        console.log(data)
+    }
+
+    const {
+        register: register2,
+        handleSubmit: handleMedicalInfoSubmit,
+        formState: { errors: errors2 },
+    } = useForm()
+
+    const onMedicalInfoSubmit = (data) => {
+        console.log(data)
+    }
+
+    // TODO:
+
+    // const email = session?.data?.user?.email
+    // const res = await axios.get(`http://localhost:3000/profile/api`, {
+    //     params: email
+    // })
+    // console.log(res)
 
     return (
         <div className='lg:mx-32'>
@@ -49,17 +87,31 @@ const ProfilePage = () => {
                 <div className='my-10'>
                     {
                         isActive === "persoanl_infomation" && (
-                            <div className='border p-5'>
+                            <form onSubmit={handlePersonalInfoSubmit(onPersonalInfoSubmit)} className='border p-5'>
                                 <div className='flex justify-end items-end'>
-                                    <FaEdit onClick={handleIntoEdit} className='text-2xl cursor-pointer' />
+                                    {
+                                        personalInfoActive ? (
+                                            <div className='flex items-center gap-3'>
+                                                <button onClick={handlePersonalIntoEdit}>
+                                                    <MdCancel className='text-2xl cursor-pointer' />
+                                                </button>
+                                                <button type='submit'>
+                                                    <FaSave className='text-2xl cursor-pointer' />
+                                                </button>
+                                            </div>
+
+                                        ) : (
+                                            <FaEdit onClick={handlePersonalIntoEdit} className='text-2xl cursor-pointer' />
+                                        )
+                                    }
                                 </div>
                                 <div>
                                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
                                         <div className='flex flex-col font-rubik w-full gap-1'>
                                             <label htmlFor="">Email:</label>
                                             {
-                                                isEditActive ? (
-                                                    <input className='input border border-[#000] w-full' type="email" />
+                                                personalInfoActive ? (
+                                                    <input {...register1("email")} className='input border border-[#000] w-full' type="email" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
                                                         <p>kalidashodekare14@gmail.com</p>
@@ -70,8 +122,8 @@ const ProfilePage = () => {
                                         <div className='flex flex-col font-rubik w-full gap-1'>
                                             <label htmlFor="">Phone Number:</label>
                                             {
-                                                isEditActive ? (
-                                                    <input className='input border border-[#000] w-full' type="text" />
+                                                personalInfoActive ? (
+                                                    <input {...register1("phone_number")} className='input border border-[#000] w-full' type="text" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
                                                         <p>+8801728659562</p>
@@ -84,8 +136,8 @@ const ProfilePage = () => {
                                         <div className='flex flex-col font-rubik w-full gap-1'>
                                             <label htmlFor="">Current Address</label>
                                             {
-                                                isEditActive ? (
-                                                    <input className='input border border-[#000] w-full' type="text" />
+                                                personalInfoActive ? (
+                                                    <input {...register1("current_address")} className='input border border-[#000] w-full' type="text" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
                                                         <p>Bairbari,Birgonj,Dinajpur</p>
@@ -96,9 +148,9 @@ const ProfilePage = () => {
                                         <div className='flex flex-col font-rubik w-full gap-1'>
                                             <label htmlFor="">Date Of Birth</label>
                                             {
-                                                isEditActive ? (
+                                                personalInfoActive ? (
 
-                                                    <input className='input border border-[#000] w-full' type="date" placeholder='Email' />
+                                                    <input {...register1("date_of_birth")} className='input border border-[#000] w-full' type="date" placeholder='Email' />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
                                                         <p>10/1/2004</p>
@@ -109,8 +161,8 @@ const ProfilePage = () => {
                                         <div className='flex flex-col font-rubik w-full gap-1'>
                                             <label htmlFor="">Gender</label>
                                             {
-                                                isEditActive ? (
-                                                    <select defaultValue={"Default"} className="select w-full">
+                                                personalInfoActive ? (
+                                                    <select {...register1("gender")} defaultValue={"Default"} className="select w-full">
                                                         <option value="DEFAULT" disabled selected>Gender</option>
                                                         <option value={"Male"} >Male</option>
                                                         <option value={"Female"} >Female</option>
@@ -125,21 +177,36 @@ const ProfilePage = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         )
                     }
                     {
                         isActive === "medical_information" && (
-                            <div className='border p-5'>
+                            <form onSubmit={handleMedicalInfoSubmit(onMedicalInfoSubmit)} className='border p-5'>
                                 <div className='flex justify-end items-end'>
-                                    <FaEdit onClick={handleIntoEdit} className='text-2xl cursor-pointer' />
+                                    {
+                                        medicalInfoActive ? (
+                                            <div className='flex items-center gap-3'>
+                                                <button onClick={handlePersonalIntoEdit}>
+                                                    <MdCancel className='text-2xl cursor-pointer' />
+                                                </button>
+                                                <button type='submit'>
+                                                    <FaSave className='text-2xl cursor-pointer' />
+                                                </button>
+                                            </div>
+
+                                        ) : (
+                                            <FaEdit onClick={handleMedicalInfoEdit} className='text-2xl cursor-pointer' />
+                                        )
+                                    }
                                 </div>
+
                                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-5'>
                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                         <label htmlFor="">Patient ID:</label>
                                         {
-                                            isEditActive ? (
-                                                <input className='input border border-[#000] w-full' type="email" />
+                                            medicalInfoActive ? (
+                                                <input {...register2("patient_id")} className='input border border-[#000] w-full' type="email" />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     <p>5421</p>
@@ -150,8 +217,8 @@ const ProfilePage = () => {
                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                         <label htmlFor="">Blood Group:</label>
                                         {
-                                            isEditActive ? (
-                                                <input className='input border border-[#000] w-full' type="text" />
+                                            medicalInfoActive ? (
+                                                <input {...register2("blood_group")} className='input border border-[#000] w-full' type="text" />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     <p>A+</p>
@@ -162,8 +229,8 @@ const ProfilePage = () => {
                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                         <label htmlFor=""> Health Condition </label>
                                         {
-                                            isEditActive ? (
-                                                <select defaultValue={"Default"} className="select w-full">
+                                            medicalInfoActive ? (
+                                                <select {...register2("health_condition")} defaultValue={"Default"} className="select w-full">
                                                     <option value="Good">Good</option>
                                                     <option value={"Moderate"} >Moderate</option>
                                                     <option value={"Critical"} >Critical</option>
@@ -179,8 +246,8 @@ const ProfilePage = () => {
                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                         <label htmlFor="">Chronic Diseases History</label>
                                         {
-                                            isEditActive ? (
-                                                <select className='w-full' name="cars" id="cars" multiple>
+                                            medicalInfoActive ? (
+                                                <select {...register2("chronic_diseases_history")} className='w-full' name="cars" id="cars" multiple>
                                                     <option value="volvo">Diabetes</option>
                                                     <option value="saab">Hypertension</option>
                                                     <option value="opel">Heart Disease</option>
@@ -195,7 +262,7 @@ const ProfilePage = () => {
                                         }
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         )
                     }
 

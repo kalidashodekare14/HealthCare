@@ -16,7 +16,7 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
   const session = useSession()
-  console.log(session)
+  // console.log(session)
 
   const handleToggle = () => {
     setToggle(!toggle)
