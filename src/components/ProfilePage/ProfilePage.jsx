@@ -5,7 +5,7 @@ import { CiEdit } from 'react-icons/ci'
 import { FaEdit } from 'react-icons/fa'
 
 const ProfilePage = () => {
-    const [isActive, setIsActive] = useState("patient_infomation")
+    const [isActive, setIsActive] = useState("persoanl_infomation")
     const [isEditActive, setIsEditActive] = useState(false)
 
     const handleIntoEdit = () => {
@@ -160,27 +160,32 @@ const ProfilePage = () => {
                                         }
                                     </div>
                                     <div className='flex flex-col font-rubik w-full gap-1'>
-                                        <label htmlFor="">Date Of Birth</label>
+                                        <label htmlFor=""> Health Condition </label>
                                         {
                                             isEditActive ? (
-
-                                                <input className='input border border-[#000] w-full' type="date" placeholder='Email' />
+                                                <select defaultValue={"Default"} className="select w-full">
+                                                    <option value="Good">Good</option>
+                                                    <option value={"Moderate"} >Moderate</option>
+                                                    <option value={"Critical"} >Critical</option>
+                                                    <option value={"Recovering"} >Recovering</option>
+                                                </select>
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>10/1/2004</p>
+                                                    <p>Good</p>
                                                 </div>
                                             )
                                         }
                                     </div>
                                     <div className='flex flex-col font-rubik w-full gap-1'>
-                                        <label htmlFor="">Gender</label>
+                                        <label htmlFor="">Chronic Diseases History</label>
                                         {
                                             isEditActive ? (
-                                                <select defaultValue={"Default"} className="select w-full">
-                                                    <option value="DEFAULT" disabled selected>Gender</option>
-                                                    <option value={"Male"} >Male</option>
-                                                    <option value={"Female"} >Female</option>
-                                                    <option value={"Others"} >Others</option>
+                                                <select className='w-full' name="cars" id="cars" multiple>
+                                                    <option value="volvo">Diabetes</option>
+                                                    <option value="saab">Hypertension</option>
+                                                    <option value="opel">Heart Disease</option>
+                                                    <option value="audi">Chronic Asthma</option>
+                                                    <option value="audi">Cancer</option>
                                                 </select>
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
