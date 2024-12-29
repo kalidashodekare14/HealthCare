@@ -1,10 +1,21 @@
 import ProfilePage from '@/components/ProfilePage/ProfilePage'
+import axios from 'axios'
+import { getServerSession } from 'next-auth'
 import React from 'react'
+import { authOptions } from '../api/auth/[...nextauth]/route'
 
-const profilePage = () => {
+const profilePage = async () => {
+
+  const email = "kalidashodekare14@gmail.com"
+  const session = await getServerSession(authOptions)
+  console.log("server email", session)
+
+  const res = await axios.get(`http://localhost:3000/profile/api?email=${session?.user?.email}`)
+  console.log(res.data)
+
   return (
     <div>
-        <ProfilePage />
+      <ProfilePage user={res.data} />
     </div>
   )
 }

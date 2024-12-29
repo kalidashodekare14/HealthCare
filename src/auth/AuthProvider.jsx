@@ -10,4 +10,4 @@ const AuthProvider = ({ children }) => {
         </SessionProvider>
     )
 }
-export default dynamic(() => Promise.resolve(AuthProvider), { ssr: false })
+export default AuthProvider

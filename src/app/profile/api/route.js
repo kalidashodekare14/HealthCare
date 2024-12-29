@@ -1,15 +1,17 @@
-import { connectDB } from "@/lib/connectDB"
+import { connectDB } from "@/lib/connectDB";
 
 export const GET = async (request) => {
-    // TODO:
-    // const url = new URL(request.url)
-    // const email = url.searchParams.get('email')
+    const url = new URL(request.url)
+    const searchParams = new URLSearchParams(url.searchParams)
+    const email = searchParams.get('email')
+
     try {
         const db = await connectDB()
-        const usersCollection = db.collection("users")
-        const userData = await usersCollection.findOne({ email: email })
-        return Response.json({userData})
+        const userCollection =  db.collection('users')
+        const check = await userCollection.findOne({ email: email })
+        return Response.json(JSON.stringify(check))
     } catch (error) {
         console.log(error)
     }
+
 }

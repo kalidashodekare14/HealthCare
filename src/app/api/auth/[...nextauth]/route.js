@@ -2,11 +2,13 @@ import { connectDB } from "@/lib/connectDB";
 import NextAuth from "next-auth"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from "bcrypt";
-const handler = NextAuth({
+
+export const authOptions = {
+    secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
     session: {
-        secret: process.env.NEXT_SECRET,
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60
+
     },
     providers: [
         CredentialsProvider({
@@ -37,6 +39,8 @@ const handler = NextAuth({
     pages: {
         signIn: '/signin'
     }
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

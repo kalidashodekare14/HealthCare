@@ -8,12 +8,10 @@ import { CiEdit } from 'react-icons/ci'
 import { FaEdit, FaSave } from 'react-icons/fa'
 import { MdCancel } from 'react-icons/md'
 
-const ProfilePage = async () => {
+const ProfilePage =  () => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
-    const session = useSession()
-    console.log(session?.data?.user?.email)
 
     const handlePersonalIntoEdit = () => {
         setPersonalInfoActive(!personalInfoActive)
@@ -41,14 +39,6 @@ const ProfilePage = async () => {
     const onMedicalInfoSubmit = (data) => {
         console.log(data)
     }
-
-    // TODO:
-
-    // const email = session?.data?.user?.email
-    // const res = await axios.get(`http://localhost:3000/profile/api`, {
-    //     params: email
-    // })
-    // console.log(res)
 
     return (
         <div className='lg:mx-32'>
