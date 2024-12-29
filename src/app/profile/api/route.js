@@ -9,7 +9,7 @@ export const GET = async (request) => {
         const db = await connectDB()
         const userCollection =  db.collection('users')
         const check = await userCollection.findOne({ email: email })
-        return Response.json(JSON.stringify(check))
+        return Response.json(check)
     } catch (error) {
         console.log(error)
     }

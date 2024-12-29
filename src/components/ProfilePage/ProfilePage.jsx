@@ -2,16 +2,18 @@
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { CiEdit } from 'react-icons/ci'
 import { FaEdit, FaSave } from 'react-icons/fa'
 import { MdCancel } from 'react-icons/md'
 
-const ProfilePage =  () => {
+const ProfilePage = ({user_bio}) => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
+    
+    
 
     const handlePersonalIntoEdit = () => {
         setPersonalInfoActive(!personalInfoActive)
@@ -104,7 +106,7 @@ const ProfilePage =  () => {
                                                     <input {...register1("email")} className='input border border-[#000] w-full' type="email" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
-                                                        <p>kalidashodekare14@gmail.com</p>
+                                                        <p>{user_bio?.email}</p>
                                                     </div>
                                                 )
                                             }
@@ -116,7 +118,7 @@ const ProfilePage =  () => {
                                                     <input {...register1("phone_number")} className='input border border-[#000] w-full' type="text" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
-                                                        <p>+8801728659562</p>
+                                                        <p>{user_bio?.phone_number}</p>
                                                     </div>
                                                 )
                                             }
@@ -130,7 +132,7 @@ const ProfilePage =  () => {
                                                     <input {...register1("current_address")} className='input border border-[#000] w-full' type="text" />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
-                                                        <p>Bairbari,Birgonj,Dinajpur</p>
+                                                        <p>{user_bio?.current_address}</p>
                                                     </div>
                                                 )
                                             }
@@ -143,7 +145,7 @@ const ProfilePage =  () => {
                                                     <input {...register1("date_of_birth")} className='input border border-[#000] w-full' type="date" placeholder='Email' />
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
-                                                        <p>10/1/2004</p>
+                                                        <p>{user_bio?.date_of_birth}</p>
                                                     </div>
                                                 )
                                             }
@@ -160,7 +162,7 @@ const ProfilePage =  () => {
                                                     </select>
                                                 ) : (
                                                     <div className='border p-3 rounded-lg'>
-                                                        <p>Male</p>
+                                                        <p>{user_bio?.gender}</p>
                                                     </div>
                                                 )
                                             }
@@ -199,7 +201,7 @@ const ProfilePage =  () => {
                                                 <input {...register2("patient_id")} className='input border border-[#000] w-full' type="email" />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>5421</p>
+                                                    <p>{user_bio?.patiend_id}</p>
                                                 </div>
                                             )
                                         }
@@ -211,7 +213,7 @@ const ProfilePage =  () => {
                                                 <input {...register2("blood_group")} className='input border border-[#000] w-full' type="text" />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>A+</p>
+                                                    <p>{user_bio?.blood_group}</p>
                                                 </div>
                                             )
                                         }
@@ -228,7 +230,7 @@ const ProfilePage =  () => {
                                                 </select>
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>Good</p>
+                                                    <p>{user_bio?.health_condition}</p>
                                                 </div>
                                             )
                                         }
@@ -246,7 +248,7 @@ const ProfilePage =  () => {
                                                 </select>
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>Male</p>
+                                                    <p>{user_bio?.chronic_diseases_history}</p>
                                                 </div>
                                             )
                                         }
