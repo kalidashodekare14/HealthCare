@@ -1,20 +1,22 @@
 "use client"
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { CiEdit } from 'react-icons/ci'
-import { FaEdit, FaSave, FaUserAlt } from 'react-icons/fa'
-import { FaCircleUser, FaUser } from 'react-icons/fa6'
+import { FaEdit, FaSave } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa6'
 import { MdCancel } from 'react-icons/md'
+import { RotatingLines } from 'react-loader-spinner'
+
 
 const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
 console.log(image_hosting_key)
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
 
 
-const ProfilePage = ({ user_bio }) => {
+const ProfilePage = () => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
@@ -22,7 +24,17 @@ const ProfilePage = ({ user_bio }) => {
     const session = useSession()
     const sessionEmail = session?.data?.user?.email
 
-    // console.log('is loading', imageLoading)
+
+    const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
+        queryKey: ["user_bio"],
+        queryFn: async () => {
+            const res = await axios.get(`http://localhost:3000/profile/api?email=${sessionEmail}`)
+            console.log(res.data)
+            return res.data
+        }
+    })
+
+
 
 
     const handlePersonalIntoEdit = () => {
@@ -47,12 +59,15 @@ const ProfilePage = ({ user_bio }) => {
             gender: data.gender,
             current_address: data.current_address
         }
-        
         const res = await axios.patch(`http://localhost:3000/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
         console.log(res)
-        if(res.data.matchedCount > 0){
+        if (res.data.matchedCount > 0) {
             setPersonalInfoActive(false)
+            refetch()
         }
+
+
+
     }
 
     const {
@@ -90,9 +105,25 @@ const ProfilePage = ({ user_bio }) => {
             console.log(error.message)
         } finally {
             setImageLoading(false)
+            refetch()
         }
     }
 
+    if (userLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
     return (
         <div className='lg:mx-32'>
@@ -103,24 +134,45 @@ const ProfilePage = ({ user_bio }) => {
                 <div onClick={() => document.querySelector('input[type="file"]').click()} className="w-32 lg:w-40 h-32 lg:h-40  rounded-full -mt-12">
                     <div>
                         {
-                            user_bio?.image ? (
-                                <div className='w-32 lg:w-40 h-32 lg:h-40'>
-                                    <Image
-                                        className='w-full h-full rounded-full'
-                                        width={500}
-                                        height={300}
-                                        alt="Tailwind CSS Navbar component"
-                                        src={user_bio.image} />
+                            imageLoading ? (
+                                <div className='flex justify-center items-center w-32 lg:w-40 h-32 lg:h-40 bg-white border-2 border-[#307bc4] rounded-full'>
+                                    <RotatingLines
+                                        visible={true}
+                                        height="96"
+                                        width="96"
+                                        color="#307bc4"
+                                        strokeWidth="5"
+                                        animationDuration="0.75"
+                                        ariaLabel="rotating-lines-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                    />
                                 </div>
-
                             ) : (
-                                <div className='relative group cursor-pointer'>
-                                    <FaUser className='w-full h-full text-white rounded-full border bg-[#307bc4] p-3' />
-                                    <div className='shadow-lg shadow-black opacity-0 group-hover:opacity-100 duration-100'>
-                                        <h1 className='absolute top-[45%] left-[28%]  text-black text-2xl'>Upload</h1>
-                                    </div>
+                                <div>
+                                    {
+                                        user_bio?.image ? (
+                                            <div className='w-32 lg:w-40 h-32 lg:h-40 border-2 border-[#307bc4] rounded-full'>
+                                                <Image
+                                                    className='w-full h-full rounded-full'
+                                                    width={500}
+                                                    height={300}
+                                                    alt="Tailwind CSS Navbar component"
+                                                    src={user_bio.image} />
+                                            </div>
+
+                                        ) : (
+                                            <div className='relative group cursor-pointer border-2 border-[#307bc4] rounded-full'>
+                                                <FaUser className='w-full h-full text-white rounded-full border bg-[#307bc4] p-3' />
+                                                <div className='shadow-lg shadow-black opacity-0 group-hover:opacity-100 duration-100'>
+                                                    <h1 className='absolute top-[45%] left-[28%]  text-black text-2xl'>Upload</h1>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             )
+
                         }
                     </div>
                     <input onChange={handleImageHosting} hidden type="file" name="" id="" />

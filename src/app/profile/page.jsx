@@ -8,12 +8,12 @@ const profilePage = async () => {
 
   const session = await getServerSession(authOptions)
 
-  const res = await axios.get(`http://localhost:3000/profile/api?email=${session?.user?.email}`)
-  console.log(res.data)
+  // const res = await axios.get(`http://localhost:3000/profile/api?email=${session?.user?.email}`)
+  // console.log(res.data)
 
   return (
     <div>
-      <ProfilePage user_bio={res.data}  />
+      <ProfilePage   />
     </div>
   )
 }
