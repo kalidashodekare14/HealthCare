@@ -7,7 +7,7 @@ import Image from 'next/image';
 import logo from '../../public/logo.png'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 
 const Navbar = () => {
@@ -101,13 +101,17 @@ const Navbar = () => {
                     tabIndex={0}
                     className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow">
                     <li>
-                      <a className="justify-between">
-                        Profile
-                        <span className="badge">New</span>
-                      </a>
+                      <Link href={'/profile'}>
+                        <button className="justify-between">
+                          Profile
+                        </button>
+                      </Link>
                     </li>
                     <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+                    <li>
+                      <button onClick={() => signOut()}>Logout</button>
+                    </li>
+
                   </ul>
                 </div>
               </div>
