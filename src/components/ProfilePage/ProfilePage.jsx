@@ -9,6 +9,7 @@ import { FaEdit, FaSave } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdCancel } from 'react-icons/md'
 import { RotatingLines } from 'react-loader-spinner'
+import Select from 'react-select';
 
 
 const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
@@ -23,7 +24,25 @@ const ProfilePage = () => {
     const [imageLoading, setImageLoading] = useState(false)
     const session = useSession()
     const sessionEmail = session?.data?.user?.email
-
+    const optionHistory = [
+        {
+            value: 'Cancer', label: 'Cancer'
+        },
+        {
+            value: 'Chronic Asthma', label: 'Chronic Asthma'
+        },
+        {
+            value: 'Diabetes', label: 'Diabetes'
+        },
+        {
+            value: 'Heart Disease', label: 'Heart Disease'
+        },
+        {
+            value: 'Hypertension', label: 'Hypertension'
+        },
+        
+    ]
+    
 
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio"],
@@ -275,8 +294,7 @@ const ProfilePage = () => {
                                             <label htmlFor="">Gender</label>
                                             {
                                                 personalInfoActive ? (
-                                                    <select {...register1("gender")} defaultValue={user_bio?.gender} className="select w-full">
-                                                        <option value="DEFAULT" disabled selected>Gender</option>
+                                                    <select {...register1("gender")} defaultValue={user_bio?.gender || 'Gender'} className="select w-full border border-[#000]">
                                                         <option value={"Male"} >Male</option>
                                                         <option value={"Female"} >Female</option>
                                                         <option value={"Others"} >Others</option>
@@ -300,7 +318,7 @@ const ProfilePage = () => {
                                     {
                                         medicalInfoActive ? (
                                             <div className='flex items-center gap-3'>
-                                                <button onClick={handlePersonalIntoEdit}>
+                                                <button onClick={handleMedicalInfoEdit}>
                                                     <MdCancel className='text-2xl cursor-pointer' />
                                                 </button>
                                                 <button type='submit'>
@@ -319,7 +337,7 @@ const ProfilePage = () => {
                                         <label htmlFor="">Patient ID:</label>
                                         {
                                             medicalInfoActive ? (
-                                                <input {...register2("patient_id")} defaultValue={user_bio?.patiend_id} className='input border border-[#000] w-full' type="email" />
+                                                <input disabled {...register2("patient_id")} defaultValue={user_bio?.patiend_id} className='disabled input border border-[#000] w-full' type="email" />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     <p>{user_bio?.patiend_id || 'N/A'}</p>
@@ -343,7 +361,7 @@ const ProfilePage = () => {
                                         <label htmlFor=""> Health Condition </label>
                                         {
                                             medicalInfoActive ? (
-                                                <select {...register2("health_condition")} defaultValue={user_bio?.health_condition} className="select w-full">
+                                                <select {...register2("health_condition")} defaultValue={user_bio?.health_condition || 'Good'} className="select w-full border border-[#000]">
                                                     <option value="Good">Good</option>
                                                     <option value={"Moderate"} >Moderate</option>
                                                     <option value={"Critical"} >Critical</option>
@@ -360,13 +378,14 @@ const ProfilePage = () => {
                                         <label htmlFor="">Chronic Diseases History</label>
                                         {
                                             medicalInfoActive ? (
-                                                <select {...register2("chronic_diseases_history")} defaultValue={user_bio?.chronic_diseases_history} className='w-full' name="cars" id="cars" multiple>
-                                                    <option value="volvo">Diabetes</option>
-                                                    <option value="saab">Hypertension</option>
-                                                    <option value="opel">Heart Disease</option>
-                                                    <option value="audi">Chronic Asthma</option>
-                                                    <option value="audi">Cancer</option>
-                                                </select>
+                                                <Select
+                                                    {...register2("chronic_diseases_history")}
+                                                    isMulti
+                                                    name="colors"
+                                                    options={optionHistory}
+                                                    className="basic-multi-select"
+                                                    classNamePrefix="select"
+                                                />
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     <p>{user_bio?.chronic_diseases_history || 'N/A'}</p>
