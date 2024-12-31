@@ -95,14 +95,19 @@ const ProfilePage = () => {
         formState: { errors: errors2 },
     } = useForm()
 
-    const onMedicalInfoSubmit = (data) => {
+    const onMedicalInfoSubmit = async (data) => {
         console.log(data)
         const medicalInfo = {
             blood_group: data.blood_group,
             health_condition: data.health_condition,
             chronic_diseases_history: selectedOption
         }
-        
+        const res = await axios.patch(`http://localhost:3000/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
+        console.log(res.data)
+        if (res.data.matchedCount > 0) {
+            setMedicalInfoActive(false)
+            refetch()
+        }
     }
 
     // image hosting 
@@ -396,7 +401,11 @@ const ProfilePage = () => {
 
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
-                                                    <p>{user_bio?.chronic_diseases_history || 'N/A'}</p>
+                                                    {
+                                                        user_bio?.chronic_diseases_history.map(dh => (
+                                                            <p key={dh.label}>{dh.value}</p>
+                                                        ))
+                                                    }
                                                 </div>
                                             )
                                         }
