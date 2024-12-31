@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/auth/AuthProvider";
-import TanstackProvider from "@/auth/TanstackProvider/tanstackProvider";
+import TanstackProvider from "@/auth/TanstackProvider/TanstackProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
