@@ -45,6 +45,8 @@ const ProfilePage = () => {
     ]
 
 
+
+
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio"],
         queryFn: async () => {
@@ -54,6 +56,10 @@ const ProfilePage = () => {
         }
     })
 
+    // select default value implement
+    const profileData = user_bio?.chronic_diseases_history || []
+    const defalutOption = optionHistory.filter(option => profileData.some(userHistory => userHistory.value === option.value))
+  
 
     const handlePersonalIntoEdit = () => {
         setPersonalInfoActive(!personalInfoActive)
@@ -392,6 +398,7 @@ const ProfilePage = () => {
                                                 <div>
                                                     <Select
                                                         isMulti
+                                                        defaultValue={defalutOption}
                                                         options={optionHistory}
                                                         onChange={(seleced) => setSelectedOption(seleced)}
                                                         className="basic-multi-select"
