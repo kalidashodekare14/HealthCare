@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { FaEdit, FaSave } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdCancel } from 'react-icons/md'
@@ -22,6 +22,7 @@ const ProfilePage = () => {
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
+    const [selectedOption, setSelectedOption] = useState(null)
     const session = useSession()
     const sessionEmail = session?.data?.user?.email
     const optionHistory = [
@@ -40,9 +41,9 @@ const ProfilePage = () => {
         {
             value: 'Hypertension', label: 'Hypertension'
         },
-        
+
     ]
-    
+
 
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio"],
@@ -52,8 +53,6 @@ const ProfilePage = () => {
             return res.data
         }
     })
-
-
 
 
     const handlePersonalIntoEdit = () => {
@@ -92,11 +91,18 @@ const ProfilePage = () => {
     const {
         register: register2,
         handleSubmit: handleMedicalInfoSubmit,
+        control,
         formState: { errors: errors2 },
     } = useForm()
 
     const onMedicalInfoSubmit = (data) => {
         console.log(data)
+        const medicalInfo = {
+            blood_group: data.blood_group,
+            health_condition: data.health_condition,
+            chronic_diseases_history: selectedOption
+        }
+        
     }
 
     // image hosting 
@@ -378,14 +384,16 @@ const ProfilePage = () => {
                                         <label htmlFor="">Chronic Diseases History</label>
                                         {
                                             medicalInfoActive ? (
-                                                <Select
-                                                    {...register2("chronic_diseases_history")}
-                                                    isMulti
-                                                    name="colors"
-                                                    options={optionHistory}
-                                                    className="basic-multi-select"
-                                                    classNamePrefix="select"
-                                                />
+                                                <div>
+                                                    <Select
+                                                        isMulti
+                                                        options={optionHistory}
+                                                        onChange={(seleced) => setSelectedOption(seleced)}
+                                                        className="basic-multi-select"
+                                                        classNamePrefix="select"
+                                                    />
+                                                </div>
+
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     <p>{user_bio?.chronic_diseases_history || 'N/A'}</p>
