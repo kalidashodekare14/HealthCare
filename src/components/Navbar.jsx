@@ -8,6 +8,8 @@ import logo from '../../public/logo.png'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
+import UserData from '@/hooks/UserData';
+import { FaUser } from 'react-icons/fa6';
 
 
 const Navbar = () => {
@@ -16,7 +18,7 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false)
   const pathname = usePathname()
   const session = useSession()
-  // console.log(session)
+  const [user_bio] = UserData()
 
   const handleToggle = () => {
     setToggle(!toggle)
@@ -71,7 +73,7 @@ const Navbar = () => {
       <nav className={` z-50 w-full lg:px-32 px-3 flex justify-between py-3 font-roboto font-[200]`}>
         <div className='flex items-center gap-20'>
           <h1 className='text-3xl'>
-            <Image className='w-40' src={logo} width={500} height={300} alt='Logo' />
+            <Image className='w-40' src={logo} width={500} height={300} alt="Logo" />
           </h1>
           <ul className='hidden lg:flex items-center gap-5 text-[16px] font-[400]'>
             {
@@ -91,10 +93,25 @@ const Navbar = () => {
               <div>
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                    <div className="w-10 rounded-full">
-                      <img
-                        alt="Tailwind CSS Navbar component"
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <div className="w-32 rounded-full">
+                      {
+                        user_bio.image ? (
+                          <div>
+                            <Image
+                              src={user_bio.image}
+                              width={500}
+                              height={300}
+                              alt="user image"
+                              priority={false}
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <FaUser className='w-full' />
+                          </div>
+                        )
+                      }
+
                     </div>
                   </div>
                   <ul
