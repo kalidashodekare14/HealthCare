@@ -86,7 +86,6 @@ const Navbar = () => {
           </ul>
         </div>
         <div className='flex items-center gap-5 text-[19px]'>
-
           <IoSearchOutline className='hidden lg:flex' />
           {
             session.data ? (
@@ -145,10 +144,10 @@ const Navbar = () => {
           }
           <FaBars onClick={handleToggle} className='lg:hidden' />
         </div>
-        <ul className={`z-50 absolute left-0 p-5 lg:hidden  bg-green-600 w-full flex flex-col  gap-5 text-[19px] font-[300] translate-y-14 duration-700  ${toggle ? "translate-x-0" : "-translate-x-full"}`}>
+        <ul className={`z-50 absolute left-0 p-5 lg:hidden  bg-[#307bc4] text-white w-full flex flex-col  gap-5 text-[19px] font-[300] translate-y-14 duration-700  ${toggle ? "translate-x-0" : "-translate-x-full"}`}>
           {
             navgicaton.map((navi) => (
-              <Link className={`${pathname == navi.path && "text-[#307bc4] border-b-2 border-[#307bc4]"} hover:text-[#307bc4]`} key={navi.id} href={navi.path}>
+              <Link className={`${pathname == navi.path && "text-white border-b-2 border-[#000000]"} hover:text-[#307bc4]`} key={navi.id} href={navi.path}>
                 <li className='font-rubik'>{navi.name}</li>
               </Link>
             ))

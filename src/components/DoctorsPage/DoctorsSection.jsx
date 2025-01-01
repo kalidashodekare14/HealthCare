@@ -67,9 +67,9 @@ const DoctorsSection = () => {
     ];
 
     return (
-        <div className='mx-10'>
+        <div className='lg:mx-10 mx-5'>
             <h1 className='text-4xl text-center my-10 font-bold font-poppins'>Meet Our Specialist Doctor</h1>
-            <div className='grid grid-cols-4 my-10'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-10'>
                 {
                     doctors.map(doctor => (
                         <div key={doctor.id} className='font-rubik w-full p-2 group duration-300'>
