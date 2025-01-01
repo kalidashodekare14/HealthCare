@@ -4,10 +4,11 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import {  useForm } from 'react-hook-form'
-import { FaEdit, FaSave } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
+import { CiEdit } from 'react-icons/ci'
+import { FaEdit, FaRegSave, FaSave } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
-import { MdCancel } from 'react-icons/md'
+import { MdCancel, MdOutlineCancel } from 'react-icons/md'
 import { RotatingLines } from 'react-loader-spinner'
 import Select from 'react-select';
 
@@ -21,6 +22,7 @@ const ProfilePage = () => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
+    const [fullNameActive, setFullNameActive] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null)
     const session = useSession()
@@ -56,6 +58,9 @@ const ProfilePage = () => {
     const handleMedicalInfoEdit = () => {
         setMedicalInfoActive(!medicalInfoActive)
     }
+    const handleFullNameEdit = () => {
+        setFullNameActive(!fullNameActive)
+    }
 
     const {
         register: register1,
@@ -86,7 +91,6 @@ const ProfilePage = () => {
     const {
         register: register2,
         handleSubmit: handleMedicalInfoSubmit,
-        control,
         formState: { errors: errors2 },
     } = useForm()
 
@@ -104,6 +108,26 @@ const ProfilePage = () => {
             refetch()
         }
     }
+
+    const {
+        register: register3,
+        handleSubmit: handleFullNameSubmit,
+        formState: { errors: errors3 },
+    } = useForm()
+
+    const onFullNameSubmit = async (data) => {
+        console.log(data)
+        const fullNameData = {
+            name: data.name
+        }
+        const res = await axios.patch(`http://localhost:3000/profile/api/fullname?email=${sessionEmail}`, fullNameData)
+        console.log(res)
+        if (res.data.matchedCount > 0) {
+            setFullNameActive(false)
+            refetch()
+        }
+    }
+
 
     // image hosting 
     const handleImageHosting = async (event) => {
@@ -203,10 +227,35 @@ const ProfilePage = () => {
                     <input onChange={handleImageHosting} hidden type="file" name="" id="" />
                 </div>
                 <div className='font-rubik'>
-                    <h1 className='text-[20px] lg:text-3xl'>{user_bio?.name || 'N/A'}</h1>
+                    <form onSubmit={handleFullNameSubmit(onFullNameSubmit)} className='flex items-center gap-3'>
+                        {
+                            fullNameActive ? (
+                                <input    {...register3("name")} defaultValue={user_bio?.name} className='input border border-[#000]' type="text" name="name" />
+                            ) : (
+                                <h1 className='text-[20px] lg:text-3xl'>{user_bio?.name || 'N/A'}</h1>
+                            )
+                        }
+                        <div>
+                            {
+                                fullNameActive ? (
+                                    <div className='flex items-center gap-3'>
+                                        <MdOutlineCancel onClick={handleFullNameEdit} className='text-2xl cursor-pointer' />
+                                        <button type='submit'>
+                                            <FaRegSave className='text-xl cursor-pointer' />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button>
+                                        <CiEdit onClick={handleFullNameEdit} className='text-3xl cursor-pointer' />
+                                    </button>
+                                )
+                            }
+                        </div>
+
+                    </form>
                     <p>Admin</p>
                 </div>
-            </div>
+            </div >
             <div className='lg:mx-[2rem] mx-2 my-20'>
                 <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-5 items-center font-rubik'>
                     <div onClick={() => setIsActive("persoanl_infomation")} className={`cursor-pointer ${isActive === "persoanl_infomation" && "border-b-2  border-[#307bc4]"}`}>
@@ -398,10 +447,19 @@ const ProfilePage = () => {
                                             ) : (
                                                 <div className='border p-3 rounded-lg'>
                                                     {
-                                                        user_bio?.chronic_diseases_history.map(dh => (
-                                                            <p key={dh.label}>{dh.value}</p>
-                                                        ))
+                                                        user_bio?.chronic_diseases_history ? (
+                                                            <div>
+                                                                {
+                                                                    user_bio?.chronic_diseases_history.map(dh => (
+                                                                        <p key={dh.label}>{dh.value}</p>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        ) : (
+                                                            <p>N/A</p>
+                                                        )
                                                     }
+
                                                 </div>
                                             )
                                         }
