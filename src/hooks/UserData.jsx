@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react'
 const UserData = () => {
     const session = useSession()
     const sessionEmail = session?.data?.user?.email
-    console.log(sessionEmail)
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio", sessionEmail],
         queryFn: async () => {

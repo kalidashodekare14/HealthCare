@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import UserData from '@/hooks/UserData';
 import { FaUser } from 'react-icons/fa6';
-
+import nav_img from '../../public/image/nav_img.png'
 
 const Navbar = () => {
 
@@ -93,7 +93,7 @@ const Navbar = () => {
               <div>
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                    <div className="w-32 rounded-full">
+                    <div className="w-32 border flex justify-center items-center rounded-full">
                       {
                         user_bio.image ? (
                           <div>
@@ -106,9 +106,12 @@ const Navbar = () => {
                             />
                           </div>
                         ) : (
-                          <div>
-                            <FaUser className='w-full' />
-                          </div>
+                          <Image
+                            src={nav_img}
+                            width={500}
+                            height={300}
+                            alt='user image'
+                          />
                         )
                       }
 

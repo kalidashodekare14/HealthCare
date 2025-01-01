@@ -9,10 +9,12 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation'
 
 const SignUpPage = () => {
 
     const [value, setValue] = useState()
+    const router = useRouter()
 
     const {
         register,
@@ -44,6 +46,7 @@ const SignUpPage = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
+            router.push('/signin')
         }
     }
 
