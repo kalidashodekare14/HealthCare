@@ -1,10 +1,10 @@
 "use client"
-import { useQuery } from '@tanstack/react-query'
+import UserData from '@/hooks/UserData'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import {  useForm } from 'react-hook-form'
 import { FaEdit, FaSave } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdCancel } from 'react-icons/md'
@@ -43,23 +43,23 @@ const ProfilePage = () => {
         },
 
     ]
+    const [user_bio, refetch, userLoading] = UserData()
 
+    console.log(user_bio)
 
-
-
-    const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
-        queryKey: ["user_bio"],
-        queryFn: async () => {
-            const res = await axios.get(`http://localhost:3000/profile/api?email=${sessionEmail}`)
-            console.log(res.data)
-            return res.data
-        }
-    })
+    // const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
+    //     queryKey: ["user_bio"],
+    //     queryFn: async () => {
+    //         const res = await axios.get(`http://localhost:3000/profile/api?email=${sessionEmail}`)
+    //         console.log(res.data)
+    //         return res.data
+    //     }
+    // })
 
     // select default value implement
     const profileData = user_bio?.chronic_diseases_history || []
     const defalutOption = optionHistory.filter(option => profileData.some(userHistory => userHistory.value === option.value))
-  
+
 
     const handlePersonalIntoEdit = () => {
         setPersonalInfoActive(!personalInfoActive)
