@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 import { FaRegHospital } from 'react-icons/fa6';
 import { GrCertificate } from 'react-icons/gr';
@@ -54,7 +55,9 @@ const DoctorsSection = () => {
                                 <p className='text-[15px]'>{doctor?.availability?.time}</p>
                             </div>
                             <div className='flex justify-center items-center gap-2'>
-                                <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white w-32'>Profile</button>
+                                <Link href={`/doctors/${doctor?._id}`}>
+                                    <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white w-32'>Profile</button>
+                                </Link>
                                 <button className='btn hover:bg-[#307bc4] bg-white text-[#307bc4]  hover:text-white border-1 w-32 border-[#307bc4]'>Appointment</button>
                             </div>
                         </div>
