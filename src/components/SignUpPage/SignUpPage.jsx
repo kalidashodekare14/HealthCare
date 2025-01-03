@@ -10,13 +10,11 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
-import UseAxios from '@/hooks/useAxios'
 
 const SignUpPage = () => {
 
     const [value, setValue] = useState()
     const router = useRouter()
-    const useAxios = UseAxios()
 
     const {
         register,
@@ -37,7 +35,7 @@ const SignUpPage = () => {
             password: data.password,
         }
         // console.log("check", newUser)
-        const res = await useAxios.post("/signup/api", newUser)
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/signup/api`, newUser)
         console.log(res)
         if (res.status === 200) {
             reset()

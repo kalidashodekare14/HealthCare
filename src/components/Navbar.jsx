@@ -94,11 +94,11 @@ const Navbar = () => {
                   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                     <div className="w-32 h-full border flex justify-center items-center rounded-full">
                       {
-                        user_bio.image ? (
+                        user_bio?.image ? (
                           <div>
                             <Image
                               className='w-full h-full'
-                              src={user_bio.image}
+                              src={user_bio?.image}
                               width={500}
                               height={300}
                               alt="user image"

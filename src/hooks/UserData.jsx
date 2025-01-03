@@ -2,16 +2,14 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import UseAxios from './useAxios'
 
 const UserData = () => {
     const session = useSession()
-    const useAxios = UseAxios()
     const sessionEmail = session?.data?.user?.email
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio", sessionEmail],
         queryFn: async () => {
-            const res = await useAxios.get(`/profile/api?email=${sessionEmail}`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/profile/api?email=${sessionEmail}`)
             console.log(res.data)
             return res.data
         }

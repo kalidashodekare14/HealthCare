@@ -1,5 +1,4 @@
 "use client"
-import UseAxios from '@/hooks/useAxios'
 import UserData from '@/hooks/UserData'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
@@ -47,7 +46,6 @@ const ProfilePage = () => {
 
     ]
     const [user_bio, refetch, userLoading] = UserData()
-    const useAxios = UseAxios()
 
     // select default value implement
     const profileData = user_bio?.chronic_diseases_history || []
@@ -79,7 +77,7 @@ const ProfilePage = () => {
             gender: data.gender,
             current_address: data.current_address
         }
-        const res = await useAxios.patch(`/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER}/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
         console.log(res)
         if (res.data.matchedCount > 0) {
             setPersonalInfoActive(false)
@@ -103,7 +101,7 @@ const ProfilePage = () => {
             health_condition: data.health_condition,
             chronic_diseases_history: selectedOption
         }
-        const res = await useAxios.patch(`/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
         console.log(res.data)
         if (res.data.matchedCount > 0) {
             setMedicalInfoActive(false)
@@ -122,7 +120,7 @@ const ProfilePage = () => {
         const fullNameData = {
             name: data.name
         }
-        const res = await useAxios.patch(`/profile/api/fullname?email=${sessionEmail}`, fullNameData)
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER}/profile/api/fullname?email=${sessionEmail}`, fullNameData)
         console.log(res)
         if (res.data.matchedCount > 0) {
             setFullNameActive(false)
@@ -148,7 +146,7 @@ const ProfilePage = () => {
                     image: data.data.url
                 }
                 // const email = session?.data?.user?.email
-                const res = await useAxios.patch(`/profile/api/image_host?email=${sessionEmail}`, imageHost)
+                const res = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER}/profile/api/image_host?email=${sessionEmail}`, imageHost)
                 console.log(res)
 
             }
