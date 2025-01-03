@@ -35,11 +35,11 @@ const DoctorsSection = () => {
                             <div className='space-y-2 border-b pb-2'>
                                 <h1 className='text-xl font-bold'>{doctor.name}</h1>
                                 <div className='flex items-center gap-2'>
-                                    <GrCertificate />
+                                    <GrCertificate className='text-[15px] text-[#307bc4]' />
                                     <p className='text-[15px]'>{doctor.qualification}</p>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <FaRegHospital />
+                                    <FaRegHospital className='text-[15px] text-[#307bc4]' />
                                     <p className='text-[15px]'>{doctor?.address.clinic}</p>
                                 </div>
                             </div>
