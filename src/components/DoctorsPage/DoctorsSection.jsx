@@ -21,22 +21,22 @@ const DoctorsSection = () => {
 
     console.log(doctors)
 
-    
-        if (doctorDataLoading) {
-            return <div className='h-[600px] flex justify-center items-center'>
-                <RotatingLines
-                    visible={true}
-                    height="96"
-                    width="96"
-                    color="grey"
-                    strokeWidth="5"
-                    animationDuration="0.75"
-                    ariaLabel="rotating-lines-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                />
-            </div>
-        }
+
+    if (doctorDataLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
 
     return (
@@ -76,7 +76,9 @@ const DoctorsSection = () => {
                                 <Link href={`/doctors/${doctor?._id}`}>
                                     <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white w-32'>Profile</button>
                                 </Link>
-                                <button className='btn hover:bg-[#307bc4] bg-white text-[#307bc4]  hover:text-white border-1 w-32 border-[#307bc4]'>Appointment</button>
+                                <Link href={`/appoinment/${doctor?._id}`}>
+                                    <button className='btn hover:bg-[#307bc4] bg-white text-[#307bc4]  hover:text-white border-1 w-32 border-[#307bc4]'>Appointment</button>
+                                </Link>
                             </div>
                         </div>
                     ))
