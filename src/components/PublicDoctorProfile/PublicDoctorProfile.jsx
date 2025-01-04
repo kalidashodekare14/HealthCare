@@ -5,11 +5,12 @@ import Image from 'next/image'
 import React from 'react'
 import '@smastrom/react-rating/style.css'
 import { Rating } from '@smastrom/react-rating'
+import { RotatingLines } from 'react-loader-spinner'
 
 const PublicDoctorProfile = ({ profileId }) => {
 
 
-    const { data: publicProfile = [] } = useQuery({
+    const { data: publicProfile = [], refetch, isLoading: doctorDataLoading } = useQuery({
         queryKey: ["publicProfile", profileId],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/doctors/public_doctor_profile?id=${profileId}`)
@@ -18,6 +19,23 @@ const PublicDoctorProfile = ({ profileId }) => {
     })
 
     console.log(publicProfile)
+    console.log('data loading', doctorDataLoading)
+
+    if (doctorDataLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
     return (
         <div className='mx-32'>
@@ -71,9 +89,9 @@ const PublicDoctorProfile = ({ profileId }) => {
                     </div>
                 </div>
                 <div className='my-10'>
-                    {/* <div className='border p-5 my-3 font-rubik'>
-                    <p>{publicProfile?.bio}</p>
-                </div> */}
+                    <div className='border p-5 my-3 font-rubik'>
+                        <p>{publicProfile?.bio}</p>
+                    </div>
                     <div className='my-10'>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
                             <div className='font-rubik'>
@@ -152,7 +170,6 @@ const PublicDoctorProfile = ({ profileId }) => {
                                     {
                                         publicProfile?.rating ? (
                                             <div>
-
                                                 <Rating
                                                     style={{ maxWidth: 120 }}
                                                     value={publicProfile?.rating}
@@ -161,6 +178,32 @@ const PublicDoctorProfile = ({ profileId }) => {
                                             </div>
                                         ) : (
                                             <p>No Time</p>
+                                        )
+                                    }
+
+                                </div>
+                            </div>
+                            <div className='font-rubik'>
+                                <p>Phone Number</p>
+                                <div className='border p-3'>
+                                    {
+                                        publicProfile?.contact?.phone ? (
+                                            <p>{publicProfile?.contact?.phone}</p>
+                                        ) : (
+                                            <p>No Phone Number</p>
+                                        )
+                                    }
+
+                                </div>
+                            </div>
+                            <div className='font-rubik'>
+                                <p>Email</p>
+                                <div className='border p-3'>
+                                    {
+                                        publicProfile?.contact?.email ? (
+                                            <p>{publicProfile?.contact?.email}</p>
+                                        ) : (
+                                            <p>No Email</p>
                                         )
                                     }
 

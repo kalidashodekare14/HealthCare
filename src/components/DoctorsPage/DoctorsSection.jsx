@@ -6,11 +6,12 @@ import Link from 'next/link';
 import React from 'react'
 import { FaRegHospital } from 'react-icons/fa6';
 import { GrCertificate } from 'react-icons/gr';
+import { RotatingLines } from 'react-loader-spinner';
 
 const DoctorsSection = () => {
 
 
-    const { data: doctors = [] } = useQuery({
+    const { data: doctors = [], refetch, isLoading: doctorDataLoading } = useQuery({
         queryKey: ["doctors"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/doctors/api`)
@@ -19,6 +20,23 @@ const DoctorsSection = () => {
     })
 
     console.log(doctors)
+
+    
+        if (doctorDataLoading) {
+            return <div className='h-[600px] flex justify-center items-center'>
+                <RotatingLines
+                    visible={true}
+                    height="96"
+                    width="96"
+                    color="grey"
+                    strokeWidth="5"
+                    animationDuration="0.75"
+                    ariaLabel="rotating-lines-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+            </div>
+        }
 
 
     return (
