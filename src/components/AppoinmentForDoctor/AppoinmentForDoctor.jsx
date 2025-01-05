@@ -23,6 +23,16 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         }
     })
 
+    const { data: apponmentData = [] } = useQuery({
+        queryKey: ["apponmentData"],
+        queryFn: async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`)
+            return res.data
+        }
+    })
+
+    console.log(apponmentData)
+
     const availableDays = doctorData?.availability?.days
     const isTileDisabled = ({ date, view }) => {
         if (view === 'month') {
@@ -36,7 +46,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
     return (
         <div className='flex justify-center items-center bg-[#e8edf0]'>
-            <div className='w-[48rem] bg-white p-5'>
+            <div className='lg:w-[48rem] bg-white p-5 my-10'>
                 <form className='font-rubik '>
                     <div className='my-10'>
                         <h1 className='text-2xl text-center'>Appoinment Form</h1>
@@ -65,12 +75,14 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                 <option value={"Others"} >Others</option>
                             </select>
                         </div>
+                    </div>
+                    <div className='flex gap-3 mt-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Contact Number</label>
                             <PhoneInput
                                 className={""}
                                 country={'us'}
-                                containerClass='w-full'
+                                containerClass='w-32'
                                 inputClass='p-6'
                             />
                         </div>
@@ -79,31 +91,51 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <input className='input border border-[#000] rounded-md w-full' placeholder='Enter Email' type="email" />
                         </div>
                     </div>
-                    <div className='border-b pb-1 my-10'>
+                    <div className='border-b pb-1 my-5'>
                         <h1 className='text-[18px]'>Appointment Details</h1>
                     </div>
                     <div className='grid grid-cols-2 gap-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Doctor Name</label>
-                            <select defaultValue={'Gender'} className="select w-full border border-[#000]">
-                                <option value="Male">Male</option>
-                                <option value={"Female"} >Female</option>
-                                <option value={"Others"} >Others</option>
-                            </select>
+                            {
+                                apponmentData?.doctorsName ? (
+                                    <select defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                        {
+                                            apponmentData?.doctorsName.map((doctorName, index) => (
+                                                <option key={index} value={doctorName}>{doctorName}</option>
+                                            ))
+                                        }
+                                    </select>
+                                ) : (
+                                    <p>N/A</p>
+                                )
+                            }
+
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Department</label>
-                            <select defaultValue={'Gender'} className="select w-full border border-[#000]">
-                                <option value="Male">Male</option>
-                                <option value={"Female"} >Female</option>
-                                <option value={"Others"} >Others</option>
-                            </select>
+                            {
+                                apponmentData?.deparmentNames ? (
+                                    <select defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                        {
+                                            apponmentData?.deparmentNames.map((deparment, index) => (
+                                                <option key={index} value={deparment}>{deparment}</option>
+                                            ))
+                                        }
+                                    </select>
+                                ) : (
+                                    <p>N/A</p>
+                                )
+                            }
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Appointment Date</label>
                             <Calendar className={"font-rubik"} tileDisabled={isTileDisabled} value={value} />
                         </div>
 
+                    </div>
+                    <div className='flex justify-center items-center my-5'>
+                        <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Appoinment Submit</button>
                     </div>
                 </form>
             </div>
