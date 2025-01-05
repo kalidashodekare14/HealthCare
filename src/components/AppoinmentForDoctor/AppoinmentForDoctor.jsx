@@ -8,12 +8,13 @@ import 'react-calendar/dist/Calendar.css';
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import UserData from '@/hooks/UserData'
 
 const AppoinmentForDoctor = ({ doctorId }) => {
 
     const [value, setValue] = useState(new Date())
     const session = useSession()
-    const sessionEmail = session?.data?.user?.email
+    const [user_bio, refetch, userLoading] = UserData()
 
     const { data: doctorData = [] } = useQuery({
         queryKey: ["doctorData"],
@@ -57,7 +58,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='grid grid-cols-2 gap-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Full Name</label>
-                            <input className='input border border-[#000] rounded-md w-full' placeholder='Enter Full Name' type="text" />
+                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Age</label>
@@ -65,11 +66,11 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Date Of Birth</label>
-                            <input className='input border border-[#000] rounded-md w-full' placeholder='Enter Date Of Birth' type="date" />
+                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.date_of_birth || "Enter your name"} type="date" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Gender</label>
-                            <select defaultValue={'Gender'} className="select w-full border border-[#000]">
+                            <select defaultValue={user_bio?.gender || "Gender"} className="select w-full border border-[#000]">
                                 <option value="Male">Male</option>
                                 <option value={"Female"} >Female</option>
                                 <option value={"Others"} >Others</option>
@@ -80,6 +81,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Contact Number</label>
                             <PhoneInput
+                                
                                 className={""}
                                 country={'us'}
                                 containerClass='w-32'
@@ -88,7 +90,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Email</label>
-                            <input className='input border border-[#000] rounded-md w-full' placeholder='Enter Email' type="email" />
+                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.email || "Enter your name"} type="email" />
                         </div>
                     </div>
                     <div className='border-b pb-1 my-5'>
