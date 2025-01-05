@@ -41,9 +41,6 @@ const DoctorsSection = () => {
 
     return (
         <div className='lg:mx-10 mx-5'>
-            <div className=''>
-
-            </div>
             <div className='grid grid-cols-4 gap-5'>
                 {
                     doctors.map(doctor => (
