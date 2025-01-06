@@ -20,9 +20,9 @@ const DoctorsDashboard = () => {
 
     return (
         <div className='bg-[#f6fbf8]'>
-            <div className='px-10'>
+            <div className='lg:px-10 px-3'>
                 <div className='flex justify-between items-center py-5 font-rubik'>
-                    <button className='btn bg-[#307bc4] w-32 text-white rounded-2xl'>Add New</button>
+                    <button className='btn bg-[#307bc4] lg:w-32 text-white rounded-2xl'>Add New</button>
                     <div className='relative flex items-center'>
                         <input className='input border border-[#000]' type="text" />
                         <FaSearch className='absolute right-2 text-2xl cursor-pointer' />
