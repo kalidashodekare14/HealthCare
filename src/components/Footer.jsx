@@ -11,8 +11,10 @@ import { usePathname } from 'next/navigation'
 
 const Footer = () => {
     const pathname = usePathname()
+    const isDashboardRoute = pathname.startsWith('/dashboard')
+
     return (
-        <div className={`${pathname === '/dashboard' && "hidden"}`}>
+        <div className={`${isDashboardRoute ? "hidden" : ""} ${pathname === '/dashboard' && "hidden"}`}>
             <footer className="footer font-rubik bg-[#307bc4] text-base-content p-10 lg:px-32">
                 <aside className='space-y-3'>
                     <Image className='w-40' src={logo} width={500} height={300} alt='logo' />

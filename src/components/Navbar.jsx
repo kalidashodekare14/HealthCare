@@ -19,6 +19,8 @@ const Navbar = () => {
   const pathname = usePathname()
   const session = useSession()
   const [user_bio] = UserData()
+  const isDashboardRoute = pathname.startsWith('/dashboard')
+  console.log(isDashboardRoute)
 
   const handleToggle = () => {
     setToggle(!toggle)
@@ -70,7 +72,7 @@ const Navbar = () => {
 
 
   return (
-    <div className={`${pathname === '/dashboard' && "hidden"} ${isSticky ? "sticky top-0 z-50 bg-[#ffffffb9] shadow-xl backdrop-blur-lg transition-all duration-300 opacity-100" : "bg-white"}`}>
+    <div className={`${isDashboardRoute ? "hidden" : ""} ${isSticky ? "sticky top-0 z-50 bg-[#ffffffb9] shadow-xl backdrop-blur-lg transition-all duration-300 opacity-100" : "bg-white"}`}>
       <nav className={` z-50 w-full lg:px-32 px-3 flex justify-between py-3 font-roboto font-[200]`}>
         <div className='flex items-center gap-20'>
           <h1 className='text-3xl'>

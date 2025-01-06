@@ -55,19 +55,6 @@ const DashboardNavigation = () => {
             </Link>
           ))
         }
-
-        {/* <Link className='p-3' href={""}>
-          <p>Doctors</p>
-        </Link>
-        <Link className='p-3' href={""}>
-          <p>Patients</p>
-        </Link>
-        <Link className='p-3' href={""}>
-          <p>Appoinments</p>
-        </Link>
-        <Link className='p-3' href={""}>
-          <p>Reviews</p>
-        </Link> */}
       </div>
     </div>
   )
