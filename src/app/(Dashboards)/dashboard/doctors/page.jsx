@@ -1,9 +1,12 @@
+import DoctorsDashboard from '@/components/Dashboards/DoctorsDashboard/DoctorsDashboard'
 import React from 'react'
 
-const DoctorsDashoboar = () => {
+const doctorsDashboard = () => {
   return (
-    <div>page</div>
+    <div>
+      <DoctorsDashboard />
+    </div>
   )
 }
 
-export default DoctorsDashoboar
+export default doctorsDashboard
