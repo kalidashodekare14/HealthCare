@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import logo from '../../public/logo2.png'
 import Image from 'next/image'
@@ -6,10 +7,12 @@ import { FaLocationDot } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import { IoIosSend, IoIosTime } from 'react-icons/io'
 import { FaFacebookF, FaInstagramSquare, FaLinkedinIn, FaTwitter } from 'react-icons/fa'
+import { usePathname } from 'next/navigation'
 
 const Footer = () => {
+    const pathname = usePathname()
     return (
-        <div className=''>
+        <div className={`${pathname === '/dashboard' && "hidden"}`}>
             <footer className="footer font-rubik bg-[#307bc4] text-base-content p-10 lg:px-32">
                 <aside className='space-y-3'>
                     <Image className='w-40' src={logo} width={500} height={300} alt='logo' />
