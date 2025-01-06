@@ -5,7 +5,7 @@ import logo from '../../../public/logo.png'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
-const DashboardNavigation = () => {
+const DashboardNavigation = ({ isToggle }) => {
 
   const pathname = usePathname()
 
@@ -38,23 +38,25 @@ const DashboardNavigation = () => {
   ]
 
   return (
-    <div className='w-60 border h-screen'>
-      <div className='flex flex-col gap-5 text-[18px] pr-3 font-rubik'>
-        <div className='py-5 px-3'>
-          <Image
-            src={logo}
-            width={500}
-            height={300}
-            alt='logo'
-          />
+    <div className='relative'>
+      <div className={`${isToggle ? "translate-y-20 translate-x-0 duration-300": "-translate-x-full translate-y-20 duration-300"} z-50 absolute lg:static lg:translate-y-0 lg:translate-x-0  left-0  bg-white w-60 border h-screen`}>
+        <div className='flex flex-col gap-5 text-[18px] pr-3 font-rubik'>
+          <div className='hidden lg:flex py-5 px-3'>
+            <Image
+              src={logo}
+              width={500}
+              height={300}
+              alt='logo'
+            />
+          </div>
+          {
+            dashboardLinks.map(navi => (
+              <Link key={navi.id} href={navi.path} className={`${pathname == navi.path ? "bg-[#307bc4] text-white rounded-br-full rounded-tr-xl p-3" : "p-3"}`} >
+                <p>{navi.name}</p>
+              </Link>
+            ))
+          }
         </div>
-        {
-          dashboardLinks.map(navi => (
-            <Link key={navi.id} href={navi.path} className={`${pathname == navi.path ? "bg-[#307bc4] text-white rounded-br-full rounded-tr-xl p-3" : "p-3"}`} >
-              <p>{navi.name}</p>
-            </Link>
-          ))
-        }
       </div>
     </div>
   )

@@ -2,17 +2,26 @@
 import UserData from '@/hooks/UserData'
 import Image from 'next/image'
 import React from 'react'
-import { FaBarsStaggered } from 'react-icons/fa6'
+import { FaArrowRight, FaBarsStaggered } from 'react-icons/fa6'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { LuMessageSquare } from 'react-icons/lu'
+import userLogo from '../../../../public/image/nav_img.png'
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ isToggle, handleToggle }) => {
 
     const [user_bio, refetch, userLoading] = UserData()
 
     return (
-        <div className='py-5 px-10 flex justify-between items-center'>
-            <FaBarsStaggered className='text-2xl' />
+        <div className='py-5 lg:px-10 px-3 flex justify-between items-center'>
+            <div className='duration-500 transition-transform'>
+                {
+                    isToggle ? (
+                        <FaArrowRight onClick={handleToggle} className='text-2xl cursor-pointer transform rotate-180' />
+                    ) : (
+                        <FaBarsStaggered onClick={handleToggle} className='text-2xl cursor-pointer transform rotate-180' />
+                    )
+                }
+            </div>
             <div className='flex items-center gap-5'>
                 <div className='relative w-14 h-12 cursor-pointer'>
                     <div className='relative flex justify-center items-center w-12 h-12 rounded-full border'>
@@ -32,17 +41,40 @@ const DashboardHeader = () => {
                 </div>
                 <div>
                     <div className='flex items-center '>
-                        <div className='z-20 w-[50px] h-[50px] rounded-full bg-white'>
-                            <Image
-                                className='w-full h-full rounded-full bg-white'
-                                src={user_bio?.image}
-                                width={500}
-                                height={300}
-                                alt={user_bio?.name}
-                            />
-                        </div>
-                        <div className='z-10 -ml-10 flex justify-end items-center w-44 px-2 h-12 font-rubik bg-[#307ac457] text-[#307bc4] rounded-full'>
-                            <p>Hello, <span>{user_bio?.name}</span></p>
+                        <div className='z-10  flex justify-end items-center  gap-3 pr-3 h-12 font-rubik bg-none lg:bg-gradient-to-r from-[#307ac43a] to-[#307ac42c] text-[#307bc4] rounded-full'>
+                            <div className='z-20 cursor-pointer w-[50px] h-[50px] rounded-full bg-white'>
+                                {
+                                    user_bio?.image ? (
+                                        <Image
+                                            className='w-full h-full rounded-full'
+                                            src={user_bio?.image}
+                                            width={500}
+                                            height={300}
+                                            alt={user_bio?.name}
+                                        />
+                                    ) : (
+                                        <Image
+                                            className='w-full h-full rounded-full'
+                                            src={userLogo}
+                                            width={500}
+                                            height={300}
+                                            alt='Image'
+                                        />
+                                    )
+                                }
+
+                            </div>
+                            <p className='lg:flex hidden'>
+                                <span>Hello,</span>
+                                {
+                                    user_bio?.name ? (
+                                        <span className='font-bold'>{user_bio?.name}</span>
+                                    ) : (
+                                        <span className='font-bold'>Man</span>
+                                    )
+                                }
+
+                            </p>
                         </div>
                     </div>
 
