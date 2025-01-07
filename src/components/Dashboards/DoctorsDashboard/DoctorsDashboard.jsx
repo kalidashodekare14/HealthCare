@@ -5,10 +5,11 @@ import Image from 'next/image'
 import React from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
+import { RotatingLines } from 'react-loader-spinner'
 
 const DoctorsDashboard = () => {
 
-    const { data: doctorsData = [] } = useQuery({
+    const { data: doctorsData = [], isLoading: doctorsLoading } = useQuery({
         queryKey: ["doctorsData"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/doctors/api`)
@@ -17,6 +18,22 @@ const DoctorsDashboard = () => {
     })
 
     console.log(doctorsData)
+
+    if (doctorsLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
     return (
         <div className='bg-[#f6fbf8]'>
@@ -28,7 +45,7 @@ const DoctorsDashboard = () => {
                         <FaSearch className='absolute right-2 text-2xl cursor-pointer' />
                     </div>
                 </div>
-                <div className="overflow-x-auto bg-white">
+                <div className="overflow-x-auto lg:overflow-hidden bg-white">
                     <table className="table font-rubik">
                         {/* head */}
                         <thead>
