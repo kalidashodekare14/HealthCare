@@ -20,7 +20,7 @@ const Navbar = () => {
   const session = useSession()
   const [user_bio] = UserData()
   const isDashboardRoute = pathname.startsWith('/dashboard')
-  console.log(isDashboardRoute)
+  console.log(session)
 
   const handleToggle = () => {
     setToggle(!toggle)
