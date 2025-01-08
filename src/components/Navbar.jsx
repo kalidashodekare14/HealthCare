@@ -20,7 +20,7 @@ const Navbar = () => {
   const session = useSession()
   const [user_bio] = UserData()
   const isDashboardRoute = pathname.startsWith('/dashboard')
-  console.log(session)
+  const sessionRole = session?.data?.user?.role
 
   const handleToggle = () => {
     setToggle(!toggle)
@@ -125,11 +125,22 @@ const Navbar = () => {
                     tabIndex={0}
                     className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow">
                     <li>
-                      <Link href={'/profile'}>
-                        <button className="justify-between">
-                          Profile
-                        </button>
-                      </Link>
+                      {
+                        sessionRole === 'admin' ? (
+                          <Link href={'/dashboard'}>
+                            <button className="justify-between">
+                              Dashboard
+                            </button>
+                          </Link>
+                        ) : (
+                          <Link href={'/profile'}>
+                            <button className="justify-between">
+                              Profile
+                            </button>
+                          </Link>
+                        )
+                      }
+
                     </li>
                     <li><a>Settings</a></li>
                     <li>
