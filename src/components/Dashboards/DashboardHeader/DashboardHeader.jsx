@@ -6,6 +6,7 @@ import { FaArrowRight, FaBarsStaggered } from 'react-icons/fa6'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { LuMessageSquare } from 'react-icons/lu'
 import userLogo from '../../../../public/image/nav_img.png'
+import Link from 'next/link'
 
 const DashboardHeader = ({ isToggle, handleToggle }) => {
 
@@ -42,28 +43,30 @@ const DashboardHeader = ({ isToggle, handleToggle }) => {
                 <div>
                     <div className='flex items-center '>
                         <div className='z-10  flex justify-end items-center  gap-3 pr-3 h-12 font-rubik bg-none lg:bg-gradient-to-r from-[#307ac43a] to-[#307ac42c] text-[#307bc4] rounded-full'>
-                            <div className='z-20 cursor-pointer w-[50px] h-[50px] rounded-full bg-white'>
-                                {
-                                    user_bio?.image ? (
-                                        <Image
-                                            className='w-full h-full rounded-full'
-                                            src={user_bio?.image}
-                                            width={500}
-                                            height={300}
-                                            alt={user_bio?.name}
-                                        />
-                                    ) : (
-                                        <Image
-                                            className='w-full h-full rounded-full'
-                                            src={userLogo}
-                                            width={500}
-                                            height={300}
-                                            alt='Image'
-                                        />
-                                    )
-                                }
+                            <Link href={"/dashboard/profile"}>
+                                <div className='z-20 cursor-pointer w-[50px] h-[50px] rounded-full bg-white'>
+                                    {
+                                        user_bio?.image ? (
+                                            <Image
+                                                className='w-full h-full rounded-full'
+                                                src={user_bio?.image}
+                                                width={500}
+                                                height={300}
+                                                alt={user_bio?.name}
+                                            />
+                                        ) : (
+                                            <Image
+                                                className='w-full h-full rounded-full'
+                                                src={userLogo}
+                                                width={500}
+                                                height={300}
+                                                alt='Image'
+                                            />
+                                        )
+                                    }
 
-                            </div>
+                                </div>
+                            </Link>
                             <p className='lg:flex hidden'>
                                 <span>Hello,</span>
                                 {
