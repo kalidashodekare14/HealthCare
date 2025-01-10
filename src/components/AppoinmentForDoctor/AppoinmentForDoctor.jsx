@@ -3,18 +3,23 @@ import React, { useState } from 'react'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import './AppoinmentForDoctor.css'
-import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import UserData from '@/hooks/UserData'
+import { Controller, useForm } from 'react-hook-form'
+import { Calendar } from 'primereact/calendar';
+import 'primereact/resources/themes/tailwind-light/theme.css';
+import Swal from 'sweetalert2'
 
 const AppoinmentForDoctor = ({ doctorId }) => {
 
-    const [value, setValue] = useState(new Date())
     const session = useSession()
     const [user_bio, refetch, userLoading] = UserData()
+    const [date, setDate] = useState(null);
+    const [appoinmentDate, setAppoinmentDate] = useState(null)
+    console.log(session)
 
     const { data: doctorData = [] } = useQuery({
         queryKey: ["doctorData"],
@@ -32,23 +37,55 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         }
     })
 
-    console.log(apponmentData)
+    console.log(date)
 
-    const availableDays = doctorData?.availability?.days
-    const isTileDisabled = ({ date, view }) => {
-        if (view === 'month') {
-            const dayName = date.toLocaleString("en-US", { weekday: "long" })
-            return availableDays && !availableDays.includes(dayName)
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        watch,
+        formState: { errors },
+    } = useForm()
+
+    const onSubmit = async (data) => {
+        console.log(data)
+        const appoinmentData = {
+            fullName: data.full_name,
+            age: data.age,
+            date_Of_birth: data.date_of_birth,
+            gender: data.gender,
+            contact_number: data.phone_number,
+            email: data.email,
+            doctor_name: data.doctor_name,
+            department: data.department,
+            appoinment_date: appoinmentDate,
+            user_info: session?.data?.user
         }
-        return false;
+
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`, appoinmentData)
+        if (res.data.acknowledged === true) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your appoinment has been submited",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        console.log(res)
+
+
+        console.log('appoinment', appoinmentData)
     }
 
-    console.log(availableDays)
+
 
     return (
         <div className='flex justify-center items-center bg-[#e8edf0]'>
             <div className='lg:w-[48rem] bg-white p-5 my-10'>
-                <form className='font-rubik '>
+                <form onSubmit={handleSubmit(onSubmit)} className='font-rubik '>
                     <div className='my-10'>
                         <h1 className='text-2xl text-center'>Appoinment Form</h1>
                     </div>
@@ -58,19 +95,19 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='grid grid-cols-2 gap-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Full Name</label>
-                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
+                            <input {...register("full_name")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Age</label>
-                            <input className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="number" />
+                            <input {...register("age")} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="number" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Date Of Birth</label>
-                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.date_of_birth || "Enter your name"} type="date" />
+                            <input {...register("date_of_birth")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.date_of_birth || "Enter your name"} type="date" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Gender</label>
-                            <select defaultValue={user_bio?.gender || "Gender"} className="select w-full border border-[#000]">
+                            <select {...register("gender")} defaultValue={user_bio?.gender || "Gender"} className="select w-full border border-[#000]">
                                 <option value="Male">Male</option>
                                 <option value={"Female"} >Female</option>
                                 <option value={"Others"} >Others</option>
@@ -80,17 +117,24 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='flex gap-3 mt-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Contact Number</label>
-                            <PhoneInput
-                                
-                                className={""}
-                                country={'us'}
-                                containerClass='w-32'
-                                inputClass='p-6'
+                            <Controller
+                                control={control}
+                                name='phone_number'
+                                rules={{ required: true }}
+                                render={({ field: { ref, ...field } }) => (
+                                    <PhoneInput
+                                        {...field}
+                                        country={'us'}
+                                        containerClass='w-32'
+                                        inputClass='p-6'
+                                    />
+                                )}
                             />
+
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Email</label>
-                            <input className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.email || "Enter your name"} type="email" />
+                            <input {...register("email")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.email || "Enter your name"} type="email" />
                         </div>
                     </div>
                     <div className='border-b pb-1 my-5'>
@@ -101,7 +145,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Doctor Name</label>
                             {
                                 apponmentData?.doctorsName ? (
-                                    <select defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                    <select {...register("doctor_name")} defaultValue={'Gender'} className="select w-full border border-[#000]">
                                         {
                                             apponmentData?.doctorsName.map((doctorName, index) => (
                                                 <option key={index} value={doctorName}>{doctorName}</option>
@@ -118,7 +162,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Department</label>
                             {
                                 apponmentData?.deparmentNames ? (
-                                    <select defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                    <select {...register("department")} defaultValue={'Gender'} className="select w-full border border-[#000]">
                                         {
                                             apponmentData?.deparmentNames.map((deparment, index) => (
                                                 <option key={index} value={deparment}>{deparment}</option>
@@ -130,11 +174,12 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                 )
                             }
                         </div>
-                        <div className='flex flex-col gap-2 w-full'>
-                            <label htmlFor="">Appointment Date</label>
-                            <Calendar className={"font-rubik"} tileDisabled={isTileDisabled} value={value} />
+                    </div>
+                    <div className='flex flex-col gap-2 w-full mt-5'>
+                        <label htmlFor="">Appointment Date</label>
+                        <div className="card flex justify-content-center border">
+                            <Calendar className='font-rubik' value={appoinmentDate} onChange={(e) => setAppoinmentDate(e.value)} inline showWeek />
                         </div>
-
                     </div>
                     <div className='flex justify-center items-center my-5'>
                         <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Appoinment Submit</button>

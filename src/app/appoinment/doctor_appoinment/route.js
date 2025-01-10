@@ -15,3 +15,16 @@ export const GET = async (request) => {
         console.log(error)
     }
 }
+
+
+export const POST = async (request) => {
+    const appoinmentDatas = await request.json()
+    try {
+        const db = await connectDB()
+        const doctorsCollection = db.collection('appoinments')
+        const result = await doctorsCollection.insertOne(appoinmentDatas)
+        return Response.json(result)
+    } catch (error) {
+        console.log(error)
+    }
+}
