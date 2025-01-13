@@ -1,8 +1,11 @@
+import AppoinmentDashboard from '@/components/Dashboards/AppoinmentDashboard/AppoinmentDashboard'
 import React from 'react'
 
 const AppoinmentsDashboard = () => {
   return (
-    <div>Appoinment</div>
+    <div>
+      <AppoinmentDashboard />
+    </div>
   )
 }
 

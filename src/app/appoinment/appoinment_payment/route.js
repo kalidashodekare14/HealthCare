@@ -8,7 +8,7 @@ export const POST = async (request) => {
     try {
         const db = await connectDB()
         const appoinmentCollection = db.collection('appoinments')
-        const tnxId = new ObjectId().toString()
+        const tnxId = new ObjectId().toString().slice(0, 6)
         const initateData = {
             store_id: "progr67836033519d2",
             store_passwd: "progr67836033519d2@ssl",
