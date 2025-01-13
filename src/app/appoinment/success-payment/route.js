@@ -15,7 +15,9 @@ export const POST = async (request) => {
         }
         const update = {
             $set: {
-                status: "Success"
+                status: "Success",
+                amount: successPaymentInfo.amount,
+                transaction_date: successPaymentInfo.tran_date
             }
         }
         const result = await appoinmentCollection.updateOne(query, update)

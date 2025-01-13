@@ -22,7 +22,12 @@ export const POST = async (request) => {
     try {
         const db = await connectDB()
         const doctorsCollection = db.collection('appoinments')
-        const result = await doctorsCollection.insertOne(appoinmentDatas)
+        const appoinmentInfo = {
+            ...appoinmentDatas,
+            status: "Pending",
+            createdAt: new Date()
+        }
+        const result = await doctorsCollection.insertOne(appoinmentInfo)
         return Response.json(result)
     } catch (error) {
         console.log(error)
