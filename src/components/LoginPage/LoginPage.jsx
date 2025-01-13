@@ -12,6 +12,7 @@ const LoginPage = () => {
     const router = useRouter()
     const [errorHandle, setErrorHandle] = useState(false)
     const [isShowPassword, setIsShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handlePasswordShow = () => {
         setIsShowPassword(!isShowPassword)
@@ -28,6 +29,7 @@ const LoginPage = () => {
         const { email, password } = data
 
         try {
+            setIsLoading(true)
             const res = await signIn('credentials', {
                 email,
                 password,
@@ -42,6 +44,8 @@ const LoginPage = () => {
             console.log('check login', res)
         } catch (error) {
             console.log(error)
+        } finally {
+            setIsLoading(false)
         }
 
     }
@@ -79,7 +83,11 @@ const LoginPage = () => {
                         {errors.email && <span className='text-red-600'>Password must be required</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
-                        <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>Sign In</button>
+                        <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>
+                            {
+                                isLoading ? "Processing..." : " Sign In"
+                            }
+                        </button>
                     </div>
                     {errorHandle && <span className='text-red-600 font-rubik'>Your email or password doesn't match.</span>}
                     <h1 className='space-x-2 font-rubik'>

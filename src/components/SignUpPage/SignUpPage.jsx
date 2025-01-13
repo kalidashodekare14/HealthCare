@@ -15,6 +15,7 @@ const SignUpPage = () => {
 
     const [value, setValue] = useState()
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
 
     const {
         register,
@@ -35,19 +36,27 @@ const SignUpPage = () => {
             password: data.password,
         }
         // console.log("check", newUser)
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/signup/api`, newUser)
-        console.log(res)
-        if (res.status === 200) {
-            reset()
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            router.push('/signin')
+        try {
+            setIsLoading(true)
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/signup/api`, newUser)
+            console.log(res)
+            if (res.status === 200) {
+                reset()
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                router.push('/signin')
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
         }
+
     }
 
 
@@ -99,7 +108,11 @@ const SignUpPage = () => {
                         {errors.password && <span className='text-red-600'>Password must be required</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
-                        <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>Sign Up</button>
+                        <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>
+                            {
+                                isLoading ? "Processing..." : "Sign Up"
+                            }
+                        </button>
                     </div>
                     <h1 className='space-x-2'>
                         <span>Already have an account?</span>
