@@ -82,7 +82,7 @@ const LoginPage = () => {
                         <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>Sign In</button>
                     </div>
                     {errorHandle && <span className='text-red-600 font-rubik'>Your email or password doesn't match.</span>}
-                    <h1 className='space-x-2'>
+                    <h1 className='space-x-2 font-rubik'>
                         <span>Create your account!</span>
                         <Link href={"/signup"}>
                             <span className='text-[#307bc4]'>
