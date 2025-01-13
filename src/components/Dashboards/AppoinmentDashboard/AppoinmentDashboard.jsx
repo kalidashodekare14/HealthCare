@@ -48,15 +48,30 @@ const AppoinmentDashboard = () => {
                                     <tr key={appoinmentData._id}>
                                         <td>
                                             <div className='flex items-center gap-2'>
-                                                <Image
-                                                    className='w-10'
-                                                    src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
-                                                    width={500}
-                                                    height={300}
-                                                    alt={`${appoinmentData?.fullName}`}
-                                                />
+                                                <div className='w-14 h-14 rounded-full'>
+                                                    {
+                                                        appoinmentData?.user_info?.image ? (
+                                                            <Image
+                                                                className='w-full h-full rounded-full'
+                                                                src={`${appoinmentData?.user_info?.image}`}
+                                                                width={500}
+                                                                height={300}
+                                                                alt={`${appoinmentData?.user_info?.name}`}
+                                                            />
+                                                        ) : (
+                                                            <Image
+                                                                className='w-full h-full rounded-full'
+                                                                src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
+                                                                width={500}
+                                                                height={300}
+                                                                alt={`${appoinmentData?.user_info?.name}`}
+                                                            />
+                                                        )
+                                                    }
+                                                </div>
+
                                                 <div className='flex flex-col'>
-                                                    <p>{appoinmentData?.fullName || "N/A"}</p>
+                                                    <p>{appoinmentData?.patient_name || "N/A"}</p>
                                                     <p>{appoinmentData?.transaction_id || "N/A"}</p>
                                                 </div>
                                             </div>
@@ -69,16 +84,30 @@ const AppoinmentDashboard = () => {
                                         <td>04.00</td>
                                         <td>
                                             <div className='flex items-center gap-2'>
-                                                <Image
-                                                    className='w-10'
-                                                    src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
-                                                    width={500}
-                                                    height={300}
-                                                    alt={`${appoinmentData?.fullName}`}
-                                                />
+                                                <div className='w-14 h-14 rounded-full'>
+                                                    {
+                                                        appoinmentData?.doctorInfo?.doctor_image ? (
+                                                            <Image
+                                                                className='w-full h-full rounded-full'
+                                                                src={`${appoinmentData?.doctorInfo?.doctor_image}`}
+                                                                width={500}
+                                                                height={300}
+                                                                alt={`${appoinmentData?.fullName}`}
+                                                            />
+                                                        ) : (
+                                                            <Image
+                                                                className='w-full h-full rounded-full'
+                                                                src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
+                                                                width={500}
+                                                                height={300}
+                                                                alt={`${appoinmentData?.fullName}`}
+                                                            />
+                                                        )
+                                                    }
+                                                </div>
                                                 <div className='flex flex-col'>
-                                                    <p>{appoinmentData?.doctor_name}</p>
-                                                    <p>{appoinmentData?.department}</p>
+                                                    <p>{appoinmentData?.doctorInfo?.doctor_name}</p>
+                                                    <p>{appoinmentData?.doctorInfo?.department}</p>
                                                 </div>
                                             </div>
                                         </td>

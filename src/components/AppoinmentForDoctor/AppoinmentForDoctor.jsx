@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import './AppoinmentForDoctor.css'
@@ -18,11 +18,29 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
     const session = useSession()
     const [user_bio, refetch, userLoading] = UserData()
-    const [date, setDate] = useState(null);
     const [appoinmentDate, setAppoinmentDate] = useState(null)
     const [isPayment, setIsPayment] = useState(false)
     const [isNotPayment, setIsNotPayment] = useState(false)
     const router = useRouter()
+    const [isDoctorName, setIsDoctorName] = useState("")
+    const [isdoctorData, setIsDoctorData] = useState(null)
+
+    console.log('check doctor name', isDoctorName)
+
+    useEffect(() => {
+        const doctorFind = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor-query?name=${isDoctorName}`)
+                console.log(res.data)
+                setIsDoctorData(res.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        if (isDoctorName) {
+            doctorFind()
+        }
+    }, [isDoctorName])
 
     const { data: doctorData = [] } = useQuery({
         queryKey: ["doctorData"],
@@ -42,6 +60,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
 
 
+
     const {
         register,
         handleSubmit,
@@ -53,14 +72,17 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const onSubmit = async (data) => {
         console.log(data)
         const appoinmentData = {
-            fullName: data.full_name,
+            patient_name: data.full_name,
             address: data.address,
             date_Of_birth: data.date_of_birth,
             gender: data.gender,
             contact_number: data.phone_number,
             email: data.email,
-            doctor_name: data.doctor_name,
-            department: data.department,
+            doctorInfo: {
+                doctor_image: isdoctorData?.profilePicture,
+                doctor_name: data.doctor_name,
+                department: isdoctorData?.department,
+            },
             appoinment_date: appoinmentDate,
             user_info: session?.data?.user
         }
@@ -166,7 +188,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Doctor Name</label>
                             {
                                 apponmentData?.doctorsName ? (
-                                    <select {...register("doctor_name")} defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                    <select onClick={(e) => setIsDoctorName(e.target.value)} {...register("doctor_name")} defaultValue={'Gender'} className="select w-full border border-[#000]">
                                         {
                                             apponmentData?.doctorsName.map((doctorName, index) => (
                                                 <option key={index} value={doctorName}>{doctorName}</option>
@@ -181,19 +203,20 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Department</label>
-                            {
-                                apponmentData?.deparmentNames ? (
-                                    <select {...register("department")} defaultValue={'Gender'} className="select w-full border border-[#000]">
-                                        {
-                                            apponmentData?.deparmentNames.map((deparment, index) => (
-                                                <option key={index} value={deparment}>{deparment}</option>
-                                            ))
-                                        }
-                                    </select>
-                                ) : (
-                                    <p>N/A</p>
-                                )
-                            }
+                            <div className='border border-black p-3 rounded-xl'>
+                                {
+                                    isdoctorData?.department ? (
+                                        <p>
+                                            {
+                                                isdoctorData?.department
+                                            }
+                                        </p>
+                                    ) : (
+                                        <p>Please Select Doctor Name</p>
+                                    )
+                                }
+
+                            </div>
                         </div>
                     </div>
                     <div className='flex flex-col gap-2 w-full mt-5'>
