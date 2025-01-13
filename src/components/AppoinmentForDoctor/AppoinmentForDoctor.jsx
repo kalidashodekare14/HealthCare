@@ -12,6 +12,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Calendar } from 'primereact/calendar';
 import 'primereact/resources/themes/tailwind-light/theme.css';
 import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation'
 
 const AppoinmentForDoctor = ({ doctorId }) => {
 
@@ -19,7 +20,9 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [user_bio, refetch, userLoading] = UserData()
     const [date, setDate] = useState(null);
     const [appoinmentDate, setAppoinmentDate] = useState(null)
-    console.log(session)
+    const [isPayment, setIsPayment] = useState(false)
+    const [isNotPayment, setIsNotPayment] = useState(false)
+    const router = useRouter()
 
     const { data: doctorData = [] } = useQuery({
         queryKey: ["doctorData"],
@@ -37,7 +40,6 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         }
     })
 
-    console.log(date)
 
 
     const {
@@ -52,7 +54,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         console.log(data)
         const appoinmentData = {
             fullName: data.full_name,
-            age: data.age,
+            address: data.address,
             date_Of_birth: data.date_of_birth,
             gender: data.gender,
             contact_number: data.phone_number,
@@ -62,24 +64,43 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             appoinment_date: appoinmentDate,
             user_info: session?.data?.user
         }
-
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`, appoinmentData)
-        if (res.data.acknowledged === true) {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your appoinment has been submited",
-                showConfirmButton: false,
-                timer: 1500
-            });
+        if (isPayment) {
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/appoinment_payment`, appoinmentData)
+                .then(res => {
+                    const redirecUrl = res.data.paymentUrl
+                    if (redirecUrl) {
+                        router.replace(redirecUrl)
+                    }
+                    console.log(res)
+                })
         }
-
-        console.log(res)
-
-
-        console.log('appoinment', appoinmentData)
+        if (isNotPayment) {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`, appoinmentData)
+            if (res.data.acknowledged === true) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your appoinment has been submited",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
     }
 
+    const handlePaymentCheck = () => {
+        setIsPayment(!isPayment)
+        if (!isPayment) {
+            setIsNotPayment(false)
+        }
+    }
+
+    const handleNotPaymentCheck = () => {
+        setIsNotPayment(!isNotPayment)
+        if (!isNotPayment) {
+            setIsPayment(false)
+        }
+    }
 
 
     return (
@@ -98,8 +119,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <input {...register("full_name")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
-                            <label htmlFor="">Age</label>
-                            <input {...register("age")} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="number" />
+                            <label htmlFor="">Address</label>
+                            <input {...register("address")} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="text" />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Date Of Birth</label>
@@ -181,8 +202,30 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <Calendar className='font-rubik' value={appoinmentDate} onChange={(e) => setAppoinmentDate(e.value)} inline showWeek />
                         </div>
                     </div>
+                    <div className='my-10'>
+                        {/* <p>If you want to make a payment, click on "Payment Checkout". If you don't want to, click on "Default Submit".</p> */}
+                        <div className='flex items-center gap-5'>
+                            <div className='flex items-center gap-2'>
+                                <input onChange={handlePaymentCheck} checked={isPayment} type="checkbox" className="checkbox" />
+                                <span>Will you payment?</span>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                                <input onChange={handleNotPaymentCheck} checked={isNotPayment} type="checkbox" className="checkbox" />
+                                <span>Can't payment?</span>
+                            </div>
+                        </div>
+                    </div>
                     <div className='flex justify-center items-center my-5'>
-                        <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Appoinment Submit</button>
+                        {
+                            isPayment && (
+                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Payment Here</button>
+                            )
+                        }
+                        {
+                            isNotPayment && (
+                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Appoinment Submit</button>
+                            )
+                        }
                     </div>
                 </form>
             </div>
