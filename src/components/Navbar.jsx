@@ -95,7 +95,7 @@ const Navbar = () => {
               <div>
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                    <div className="w-32 h-full border flex justify-center items-center rounded-full">
+                    <div className="w-32  border flex justify-center items-center rounded-full">
                       {
                         user_bio?.image ? (
                           <div>
@@ -123,18 +123,18 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100 rounded-box  mt-3 w-52 p-2 shadow">
+                    className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100  mt-3 w-52 p-2 shadow  ">
                     <li>
                       {
                         sessionRole === 'admin' ? (
                           <Link href={'/dashboard'}>
-                            <button className="justify-between">
+                            <button className="justify-between text-[15px]">
                               Dashboard
                             </button>
                           </Link>
                         ) : (
                           <Link href={'/profile'}>
-                            <button className="justify-between">
+                            <button className="justify-between text-[15px]">
                               Profile
                             </button>
                           </Link>
@@ -142,9 +142,11 @@ const Navbar = () => {
                       }
 
                     </li>
-                    <li><a>Settings</a></li>
                     <li>
-                      <button onClick={() => signOut()}>Logout</button>
+                      <button className='text-[15px]'>Settings</button>
+                    </li>
+                    <li>
+                      <button className='text-[15px]' onClick={() => signOut()}>Logout</button>
                     </li>
 
                   </ul>
