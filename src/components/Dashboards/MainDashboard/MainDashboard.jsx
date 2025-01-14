@@ -108,7 +108,43 @@ const MainDashboard = () => {
         }
     })
 
-    console.log(dataCollection)
+    // console.log(dataCollection)
+
+
+
+    const { data: monthlyData = [] } = useQuery({
+        queryKey: ["monthlyData"],
+        queryFn: async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/month-data`)
+            return res.data
+        }
+    })
+
+    console.log(monthlyData)
+    const getMonthName = (monthNumber) => {
+        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JULY", "AUGU", "SEP", "OCT", "NOV", "DEC"]
+        return monthNames[monthNumber - 1]
+    }
+
+    const allMonth = [
+        ...new Set([
+            ...monthlyData.totalPatients?.map(item => item._id.month) || []
+        ])
+    ]
+
+    console.log(allMonth)
+
+    const formateData = allMonth?.map((month, index) => {
+        const monthName = getMonthName(month)
+        const matchedPatient = monthlyData.totalPatients?.find(item => item._id.month === month)
+        return {
+            name: monthName,
+            patient: matchedPatient ? matchedPatient.totalPatient : 0
+        }
+    })
+
+    console.log(formateData)
+
 
     if (loadingData) {
         return <div className='h-[600px] flex justify-center items-center'>
@@ -223,7 +259,7 @@ const MainDashboard = () => {
                             <AreaChart
                                 width={500}
                                 height={400}
-                                data={data2}
+                                data={formateData}
                                 margin={{
                                     top: 10,
                                     right: 30,
@@ -235,9 +271,9 @@ const MainDashboard = () => {
                                 <XAxis dataKey="name" />
                                 <YAxis />
                                 <Tooltip />
-                                <Area type="monotone" dataKey="uv" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                                <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-                                <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" />
+                                <Area type="monotone" dataKey="patient" stackId="1" stroke="#8884d8" fill="#8884d8" />
+                                {/* <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" /> */}
+                                {/* <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" /> */}
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
