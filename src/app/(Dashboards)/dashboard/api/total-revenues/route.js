@@ -3,15 +3,13 @@ import { connectDB } from "@/lib/connectDB"
 export const GET = async (request) => {
     try {
         const db = await connectDB()
-        const usersColleciton = db.collection("users")
-        // const patientsColleciton = db.collection("patients")
-        const doctorsColleciton = db.collection("doctors")
+        const appoinmentCollection = db.collection("appoinments")
         // total patient monthly data
-        const monthlyPatient = await usersColleciton.aggregate([
+        const revenues = await appoinmentCollection.aggregate([
             {
                 $group: {
                     _id: { month: { $month: '$createdAt' } },
-                    totalPatient: { $sum: 1 }
+                    totalPatient: { $sum: "$amount" }
                 }
             },
             { $sort: { _id: 1 } }
@@ -19,7 +17,7 @@ export const GET = async (request) => {
 
         // data return
         return Response.json({
-            totalPatients: monthlyPatient
+            totalRevenue: revenues
         })
     } catch (error) {
         console.log(error)

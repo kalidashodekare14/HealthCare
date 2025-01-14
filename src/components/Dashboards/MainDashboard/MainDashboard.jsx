@@ -108,14 +108,11 @@ const MainDashboard = () => {
         }
     })
 
-    // console.log(dataCollection)
-
-
 
     const { data: monthlyData = [] } = useQuery({
         queryKey: ["monthlyData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/month-data`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/api/month-patient-doctor`)
             return res.data
         }
     })
@@ -126,20 +123,27 @@ const MainDashboard = () => {
         return monthNames[monthNumber - 1]
     }
 
-    const allMonth = [
-        ...new Set([
-            ...monthlyData.totalPatients?.map(item => item._id.month) || []
-        ])
-    ]
+    // const allMonth = [
+    //     ...new Set([
+    //         ...monthlyData.totalPatients?.map(item => item._id.month) || []
+    //     ])
+    // ]
+
+    const allMonth = Array.from({ length: 12 }, (_, index) => index + 1)
 
     console.log(allMonth)
 
     const formateData = allMonth?.map((month, index) => {
         const monthName = getMonthName(month)
         const matchedPatient = monthlyData.totalPatients?.find(item => item._id.month === month)
+        const matchedDoctor = monthlyData.totalDoctors?.find(item => item._id.month === month)
+        const matchedAppoinment = monthlyData.totalAppoinments?.find(item => item._id.month === month)
+
         return {
             name: monthName,
-            patient: matchedPatient ? matchedPatient.totalPatient : 0
+            patients: matchedPatient ? matchedPatient.totalPatient : 0,
+            doctors: matchedDoctor ? matchedDoctor.totalDoctor : 0,
+            appoinments: matchedAppoinment ? matchedAppoinment.totalAppoinment : 0
         }
     })
 
@@ -271,9 +275,9 @@ const MainDashboard = () => {
                                 <XAxis dataKey="name" />
                                 <YAxis />
                                 <Tooltip />
-                                <Area type="monotone" dataKey="patient" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                                {/* <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" /> */}
-                                {/* <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" /> */}
+                                <Area type="monotone" dataKey="patients" stackId="1" stroke="#f7908e" fill="#f68d8b" />
+                                <Area type="monotone" dataKey="doctors" stackId="1" stroke="#82ca9d" fill="#63d182" />
+                                <Area type="monotone" dataKey="appoinments" stackId="1" stroke="#ffc658" fill="#ffc658" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
