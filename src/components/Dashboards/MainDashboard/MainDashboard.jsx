@@ -117,21 +117,37 @@ const MainDashboard = () => {
         }
     })
 
-    console.log(monthlyData)
+    const { data: monthlyRevenue } = useQuery({
+        queryKey: ["monthlyRevenue"],
+        queryFn: async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/api/total-revenues`)
+            return res.data
+        }
+    })
+
+    console.log('monthly revenue', monthlyRevenue)
+
     const getMonthName = (monthNumber) => {
         const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JULY", "AUGU", "SEP", "OCT", "NOV", "DEC"]
         return monthNames[monthNumber - 1]
     }
 
-    // const allMonth = [
-    //     ...new Set([
-    //         ...monthlyData.totalPatients?.map(item => item._id.month) || []
-    //     ])
-    // ]
 
     const allMonth = Array.from({ length: 12 }, (_, index) => index + 1)
+    
 
     console.log(allMonth)
+
+    const formateData2 = allMonth?.map((month, index) => {
+        const monthName = getMonthName(month)
+        const matchedRevenue = monthlyRevenue?.totalRevenues?.find(item => item._id.month === month)
+        return {
+            name: monthName,
+            Revenue: matchedRevenue ? matchedRevenue.totalRevenue : 0,
+        }
+    })
+
+    
 
     const formateData = allMonth?.map((month, index) => {
         const monthName = getMonthName(month)
@@ -235,7 +251,7 @@ const MainDashboard = () => {
                             <BarChart
                                 width={500}
                                 height={300}
-                                data={data}
+                                data={formateData2}
                                 margin={{
                                     top: 20,
                                     right: 30,
@@ -248,8 +264,7 @@ const MainDashboard = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+                                <Bar dataKey="Revenue" stackId="a" fill="#8884d8" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -277,7 +292,7 @@ const MainDashboard = () => {
                                 <Tooltip />
                                 <Area type="monotone" dataKey="patients" stackId="1" stroke="#f7908e" fill="#f68d8b" />
                                 <Area type="monotone" dataKey="doctors" stackId="1" stroke="#82ca9d" fill="#63d182" />
-                                <Area type="monotone" dataKey="appoinments" stackId="1" stroke="#ffc658" fill="#ffc658" />
+                                <Area type="monotone" dataKey="appoinments" stackId="1" stroke="#ffc658" fill="#58aed2" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>

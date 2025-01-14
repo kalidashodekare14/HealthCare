@@ -7,9 +7,14 @@ export const GET = async (request) => {
         // total patient monthly data
         const revenues = await appoinmentCollection.aggregate([
             {
+                $addFields: {
+                    amountAsNumber: { $toDouble: "$amount" }
+                }
+            },
+            {
                 $group: {
                     _id: { month: { $month: '$createdAt' } },
-                    totalPatient: { $sum: "$amount" }
+                    totalRevenue: { $sum: "$amountAsNumber" }
                 }
             },
             { $sort: { _id: 1 } }
@@ -17,7 +22,7 @@ export const GET = async (request) => {
 
         // data return
         return Response.json({
-            totalRevenue: revenues
+            totalRevenues: revenues
         })
     } catch (error) {
         console.log(error)
