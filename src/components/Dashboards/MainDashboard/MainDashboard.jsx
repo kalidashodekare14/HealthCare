@@ -17,6 +17,8 @@ const MainDashboard = () => {
         }
     })
 
+    console.log(dataCollection)
+
 
     const { data: monthlyData = [] } = useQuery({
         queryKey: ["monthlyData"],
@@ -134,7 +136,13 @@ const MainDashboard = () => {
                 <div className='flex  justify-between items-center font-rubik  bg-gradient-to-r from-[#7bbfdb] to-[#4aa7ce] rounded-2xl text-white p-5'>
                     <div className='space-y-1'>
                         <p>Appoinment</p>
-                        <p className='text-3xl'>748k</p>
+                        {
+                            dataCollection?.totalAppoinments ? (
+                                <p className='text-3xl'>{dataCollection?.totalAppoinments[0]?.totalAppoinments}</p>
+                            ) : (
+                                <p className='text-3xl'>0</p>
+                            )
+                        }
                     </div>
                     <div className='w-12 h-12 text-3xl rounded-full flex justify-center items-center border'>
                         <FaWpforms />
@@ -143,7 +151,13 @@ const MainDashboard = () => {
                 <div className='flex  justify-between items-center font-rubik bg-gradient-to-r from-[#c37bdc] to-[#b052d0] rounded-2xl text-white p-5'>
                     <div className='space-y-1'>
                         <p>Hospital Earning</p>
-                        <p className='text-3xl'>3048k</p>
+                        {
+                            dataCollection?.totalRevenues ? (
+                                <p className='text-3xl'>{dataCollection?.totalRevenues[0]?.totalRevenues}</p>
+                            ) : (
+                                <p className='text-3xl'>0</p>
+                            )
+                        }
                     </div>
                     <div className='w-12 h-12 text-3xl rounded-full flex justify-center items-center border'>
                         <FaDollarSign />
@@ -154,7 +168,7 @@ const MainDashboard = () => {
 
                 <div className='w-full  bg-white p-5 font-rubik'>
                     <div className='text-[18px] my-5'>
-                        <h1>Patient Statistic</h1>
+                        <h1>Statistic</h1>
                     </div>
                     <div className='h-[400px]'>
                         <ResponsiveContainer width="100%" height="100%">

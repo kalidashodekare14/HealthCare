@@ -5,6 +5,7 @@ export const GET = async (request) => {
         const db = await connectDB()
         const usersCollection = db.collection('users')
         const doctorsCollection = db.collection('doctors')
+        const appoinmentCollection = db.collection('appoinments')
         const totalPatients = await usersCollection.aggregate([
             {
                 $group: {
@@ -23,7 +24,36 @@ export const GET = async (request) => {
             },
             { $sort: { _id: 1 } }
         ]).toArray()
-        return Response.json({ totalPatients: totalPatients, totalDoctors: totalDoctors },)
+        const totalAppoinments = await appoinmentCollection.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalAppoinments: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]).toArray()
+        const totalRevenues = await appoinmentCollection.aggregate([
+            {
+                $addFields: {
+                    amountAsNumber: { $toDouble: "$amount" }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalRevenues: { $sum: "$amountAsNumber" }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]).toArray()
+
+        return Response.json({
+            totalPatients: totalPatients,
+            totalDoctors: totalDoctors,
+            totalAppoinments: totalAppoinments,
+            totalRevenues: totalRevenues
+        },)
     } catch (error) {
         console.log(error)
     }
