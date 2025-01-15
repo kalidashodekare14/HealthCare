@@ -28,6 +28,8 @@ const MainDashboard = () => {
         }
     })
 
+
+    
     const { data: monthlyRevenue } = useQuery({
         queryKey: ["monthlyRevenue"],
         queryFn: async () => {
