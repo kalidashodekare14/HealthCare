@@ -44,14 +44,14 @@ const PatientsDashboard = () => {
                         <FaSearch className='absolute right-2 text-2xl cursor-pointer' />
                     </div>
                 </div>
-                <div className="overflow-x-auto lg:overflow-hidden bg-white">
+                <div className="overflow-x-auto  bg-white">
                     <table className="table font-rubik">
                         {/* head */}
                         <thead>
                             <tr className='text-[15px]'>
                                 <th></th>
                                 <th>ID</th>
-                                <th>Doctor Name</th>
+                                <th>Patient Name</th>
                                 <th>Health Condition</th>
                                 <th>Phone</th>
                                 <th>Email</th>
@@ -87,16 +87,16 @@ const PatientsDashboard = () => {
                                         <td>{patient?.patiend_id || "N/A"}</td>
                                         <td>{patient?.name || "N/A"}</td>
                                         <td>{patient?.health_condition || "N/A"}</td>
-                                        <td>{patient?.contact?.phone_number || "N/A"}</td>
-                                        <td>{patient?.contact?.email || "N/A"}</td>
+                                        <td>{patient?.phone_number || "N/A"}</td>
+                                        <td>{patient?.email || "N/A"}</td>
                                         <td>
                                             <div className="dropdown dropdown-end">
                                                 <div tabIndex={0} role="button" className=" m-1">
                                                     <CiMenuKebab className='text-2xl' />
                                                 </div>
                                                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                                                    <li><a>Item 1</a></li>
-                                                    <li><a>Item 2</a></li>
+                                                    <li><p>Edit</p></li>
+                                                    <li><p>Delete</p></li>
                                                 </ul>
                                             </div>
                                         </td>
