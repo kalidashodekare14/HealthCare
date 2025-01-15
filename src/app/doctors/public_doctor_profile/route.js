@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/connectDB"
 import { ObjectId } from "mongodb"
+import { NextResponse } from "next/server"
 // import { ObjectId } from "mongodb"
 
 export const GET = async (request) => {
@@ -11,8 +12,8 @@ export const GET = async (request) => {
         const userCollection = db.collection('doctors')
         const query = { _id: new ObjectId(id) }
         const result = await userCollection.findOne(query)
-        return Response.json(result)
+        return NextResponse.json(result)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }

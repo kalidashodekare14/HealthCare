@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/connectDB"
+import { NextResponse } from "next/server"
 
 export const GET = async (request) => {
     try {
@@ -28,8 +29,8 @@ export const POST = async (request) => {
             createdAt: new Date()
         }
         const result = await doctorsCollection.insertOne(appoinmentInfo)
-        return Response.json(result)
+        return NextResponse.json(result)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }

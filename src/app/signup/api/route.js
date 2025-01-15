@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/connectDB"
 import bcrypt from "bcrypt";
 import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
     const newUser = await request.json()
@@ -14,8 +15,8 @@ export const POST = async (request) => {
         const hashPassword = bcrypt.hashSync(newUser.password, 14);
         const patientId = new ObjectId().toString().slice(0, 6)
         const res = await userCollection.insertOne({ ...newUser, password: hashPassword, patiend_id: patientId, createdAt: new Date() })
-        return Response.json({ message: "New User Registration Success" }, { status: 200 })
+        return NextResponse.json({ message: "New User Registration Success" }, { status: 200 })
     } catch (error) {
-        console.log({ message: "something is rong", error }, { status: 500 })
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }

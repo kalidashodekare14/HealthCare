@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/connectDB"
+import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
     const formateData = await request.text()
@@ -22,9 +23,9 @@ export const POST = async (request) => {
         }
         const result = await appoinmentCollection.updateOne(query, update)
         console.log(result)
-        return Response.redirect(`${process.env.NEXT_PUBLIC_SERVER}/payment-success`)
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SERVER}/payment-success`)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 
 }

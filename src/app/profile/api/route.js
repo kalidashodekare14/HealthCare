@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/connectDB";
+import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
     const url = new URL(request.url)
@@ -7,11 +8,11 @@ export const GET = async (request) => {
 
     try {
         const db = await connectDB()
-        const userCollection =  db.collection('users')
+        const userCollection = db.collection('users')
         const check = await userCollection.findOne({ email: email })
-        return Response.json(check)
+        return NextResponse.json(check)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 
 }

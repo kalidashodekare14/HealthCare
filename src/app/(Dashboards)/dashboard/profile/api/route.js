@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/connectDB"
+import { NextResponse } from "next/server"
 
 export const GET = async (request) => {
     try {
@@ -6,8 +7,8 @@ export const GET = async (request) => {
         const userCollection = db.collection('users')
         const query = { role: 'admin' }
         const result = await userCollection.findOne(query)
-        return Response.json(result)
+        return NextResponse.json(result)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }

@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/connectDB"
 import axios from "axios"
 import { ObjectId } from "mongodb"
+import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
     const appoinmentInfo = await request.json()
@@ -56,12 +57,12 @@ export const POST = async (request) => {
 
         const save = await appoinmentCollection.insertOne(saveInfo)
         if (save) {
-            return Response.json({
+            return NextResponse.json({
                 paymentUrl: response.data.GatewayPageURL
             })
         }
 
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }

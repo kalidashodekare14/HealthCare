@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/connectDB"
+import { NextResponse } from "next/server"
 
 export const PATCH = async (request) => {
     const updateImae = await request.json()
@@ -18,8 +19,8 @@ export const PATCH = async (request) => {
             }
         }
         const result = await userCollection.updateOne(filer, updateDoc, option)
-        return Response.json(result)
+        return NextResponse.json(result)
     } catch (error) {
-        console.log(error)
+        return NextResponse.json({ message: "No Data Found", error })
     }
 }
