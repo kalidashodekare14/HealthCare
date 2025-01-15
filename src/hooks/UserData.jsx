@@ -9,7 +9,7 @@ const UserData = () => {
     const { data: user_bio = [], refetch, isLoading: userLoading } = useQuery({
         queryKey: ["user_bio", sessionEmail],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_BASE_URL}/profile/api?email=${sessionEmail}`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api?email=${sessionEmail}`)
             console.log(res.data)
             return res.data
         }

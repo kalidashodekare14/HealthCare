@@ -12,7 +12,7 @@ const DoctorsDashboard = () => {
     const { data: doctorsData = [], isLoading: doctorsLoading } = useQuery({
         queryKey: ["doctorsData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_BASE_URL}/dashboard/doctors/api`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/doctors/api`)
             return res.data
         }
     })

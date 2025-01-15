@@ -38,7 +38,7 @@ const SignUpPage = () => {
         // console.log("check", newUser)
         try {
             setIsLoading(true)
-            const res = await axios.post(`${process.env.NEXT_BASE_URL}/signup/api`, newUser)
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/signup/api`, newUser)
             console.log(res)
             if (res.status === 200) {
                 reset()

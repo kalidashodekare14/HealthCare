@@ -12,7 +12,7 @@ const MainDashboard = () => {
     const { data: dataCollection = [], iaLoading: loadingData } = useQuery({
         queryKey: ["dataCollection"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_BASE_URL}/dashboard/api`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api`)
             return res.data
         }
     })
@@ -23,7 +23,7 @@ const MainDashboard = () => {
     const { data: monthlyData = [] } = useQuery({
         queryKey: ["monthlyData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_BASE_URL}/dashboard/api/month-patient-doctor`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api/month-patient-doctor`)
             return res.data
         }
     })
@@ -33,7 +33,7 @@ const MainDashboard = () => {
     const { data: monthlyRevenue } = useQuery({
         queryKey: ["monthlyRevenue"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_BASE_URL}/dashboard/api/total-revenues`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api/total-revenues`)
             return res.data
         }
     })
