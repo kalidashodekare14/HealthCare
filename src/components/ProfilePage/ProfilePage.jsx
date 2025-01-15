@@ -13,7 +13,7 @@ import { RotatingLines } from 'react-loader-spinner'
 import Select from 'react-select';
 
 
-const image_hosting_key = process.env.NEXT_API_KEY
+const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
 console.log(image_hosting_key)
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
 
