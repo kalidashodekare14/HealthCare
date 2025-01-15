@@ -12,7 +12,7 @@ const AppoinmentDashboard = () => {
     const { data: appoinmentData = [] } = useQuery({
         queryKey: ["appoinmentData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/dashboard/appoinments/api`)
+            const res = await axios.get(`${process.env.NEXT_SERVER_URL}/dashboard/appoinments/api`)
             return res.data
         }
     })

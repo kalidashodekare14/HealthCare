@@ -28,7 +28,7 @@ const AppoinmentForm = () => {
   const { data: apponmentData = [] } = useQuery({
     queryKey: ["apponmentData"],
     queryFn: async () => {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`)
+      const res = await axios.get(`${process.env.NEXT_SERVER_URL}/appoinment/doctor_appoinment`)
       return res.data
     }
   })
@@ -58,7 +58,7 @@ const AppoinmentForm = () => {
       user_info: session?.data?.user
     }
     if (isPayment) {
-      axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/appoinment_payment`, appoinmentData)
+      axios.post(`${process.env.NEXT_SERVER_URL}/appoinment/appoinment_payment`, appoinmentData)
         .then(res => {
           const redirecUrl = res.data.paymentUrl
           if (redirecUrl) {
@@ -68,7 +68,7 @@ const AppoinmentForm = () => {
         })
     }
     if (isNotPayment) {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`, appoinmentData)
+      const res = await axios.post(`${process.env.NEXT_SERVER_URL}/appoinment/doctor_appoinment`, appoinmentData)
       if (res.data.acknowledged === true) {
         Swal.fire({
           position: "top-end",

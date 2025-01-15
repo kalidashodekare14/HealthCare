@@ -14,7 +14,7 @@ const DoctorsSection = () => {
     const { data: doctors = [], refetch, isLoading: doctorDataLoading } = useQuery({
         queryKey: ["doctors"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/doctors/api`)
+            const res = await axios.get(`${process.env.NEXT_SERVER_URL}/doctors/api`)
             return res.data
         }
     })

@@ -30,7 +30,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     useEffect(() => {
         const doctorFind = async () => {
             try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor-query?name=${isDoctorName}`)
+                const res = await axios.get(`${process.env.NEXT_SERVER_URL}/appoinment/doctor-query?name=${isDoctorName}`)
                 console.log(res.data)
                 setIsDoctorData(res.data)
             } catch (error) {
@@ -45,7 +45,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const { data: doctorData = [] } = useQuery({
         queryKey: ["doctorData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_get?id=${doctorId}`)
+            const res = await axios.get(`${process.env.NEXT_SERVER_URL}/appoinment/doctor_get?id=${doctorId}`)
             return res.data
         }
     })
@@ -53,7 +53,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const { data: apponmentData = [] } = useQuery({
         queryKey: ["apponmentData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`)
+            const res = await axios.get(`${process.env.NEXT_SERVER_URL}/appoinment/doctor_appoinment`)
             return res.data
         }
     })
@@ -87,7 +87,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             user_info: session?.data?.user
         }
         if (isPayment) {
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/appoinment_payment`, appoinmentData)
+            axios.post(`${process.env.NEXT_SERVER_URL}/appoinment/appoinment_payment`, appoinmentData)
                 .then(res => {
                     const redirecUrl = res.data.paymentUrl
                     if (redirecUrl) {
@@ -97,7 +97,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                 })
         }
         if (isNotPayment) {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/appoinment/doctor_appoinment`, appoinmentData)
+            const res = await axios.post(`${process.env.NEXT_SERVER_URL}/appoinment/doctor_appoinment`, appoinmentData)
             if (res.data.acknowledged === true) {
                 Swal.fire({
                     position: "top-end",

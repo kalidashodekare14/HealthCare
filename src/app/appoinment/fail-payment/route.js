@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SERVER}/payment-fail`)
+    return NextResponse.redirect(`${process.env.NEXT_SERVER_URL}/payment-fail`)
 }

@@ -13,7 +13,7 @@ const PublicDoctorProfile = ({ profileId }) => {
     const { data: publicProfile = [], refetch, isLoading: doctorDataLoading } = useQuery({
         queryKey: ["publicProfile", profileId],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/doctors/public_doctor_profile?id=${profileId}`)
+            const res = await axios.get(`${process.env.NEXT_SERVER_URL}/doctors/public_doctor_profile?id=${profileId}`)
             return res.data
         }
     })
