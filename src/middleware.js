@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 
 export const middleware = async (req) => {
     const token = cookies(req).get('__Secure-next-auth.session-token')
-    const secret = process.env.NEXT_PUBLIC_AUTH_SECRET
+    const secret = process.env.NEXT_AUTH_SECRET
     const tokenSecret = await getToken({ req, secret })
 
     console.log('path name check', req.nextUrl.pathname)

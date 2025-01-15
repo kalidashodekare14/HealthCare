@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from "bcrypt";
 
 export const authOptions = {
-    secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
+    secret: process.env.NEXT_AUTH_SECRET,
     session: {
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60
