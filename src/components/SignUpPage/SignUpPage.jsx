@@ -10,12 +10,40 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
+import { FaEyeSlash, FaRegEye } from 'react-icons/fa6'
 
 const SignUpPage = () => {
 
     const [value, setValue] = useState()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [isShowPassword, setIsShowPassword] = useState(false)
+    const [isDoctor, setIsDoctor] = useState(false)
+    const [isPatient, setIsPatient] = useState(false)
+    const [isRole, setIsRole] = useState("")
+
+    const handleDoctor = () => {
+        setIsDoctor(!isDoctor)
+        if (!isDoctor) {
+            setIsPatient(false)
+            setIsRole("doctor")
+        }
+    }
+    const handlePatient = () => {
+        setIsPatient(!isPatient)
+        if (!isPatient) {
+            setIsDoctor(false)
+            setIsRole("patient")
+        }
+    }
+
+    console.log("check role",isRole)
+
+
+    const handlePasswordShow = () => {
+        setIsShowPassword(!isShowPassword)
+    }
+
 
     const {
         register,
@@ -34,8 +62,9 @@ const SignUpPage = () => {
             date_of_birth: data.date_of_birth,
             gender: data.gender,
             password: data.password,
+            role: isRole,
+            status: isRole === "doctor" ? "pending" : "approved"
         }
-        // console.log("check", newUser)
         try {
             setIsLoading(true)
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/signup/api`, newUser)
@@ -104,8 +133,34 @@ const SignUpPage = () => {
                     {errors.date_of_birth && <span className='text-red-600'>Date of birth must be required</span>}
                     <div className='flex flex-col gap-2 font-rubik'>
                         <label htmlFor="">Password</label>
-                        <input {...register("password", { required: true })} className='input input-bordered' type="password" placeholder='Password' />
+                        <div className='relative w-full'>
+                            <input {...register("password", { required: true })} className='input input-bordered w-full' type={isShowPassword ? "text" : "password"} placeholder='Password' />
+                            <div onClick={handlePasswordShow} className='absolute top-[30%] right-3 cursor-pointer'>
+                                {
+                                    isShowPassword ? (
+                                        <FaEyeSlash className='text-xl' />
+                                    ) : (
+                                        <FaRegEye className='text-xl' />
+                                    )
+                                }
+                            </div>
+                        </div>
                         {errors.password && <span className='text-red-600'>Password must be required</span>}
+                    </div>
+                    <div className='font-rubik text-[17px] my-5'>
+                        <h1>Who are you?</h1>
+                        <div className='flex items-center gap-5 mt-2'>
+                            <div className='flex items-center gap-2'>
+                                <input onChange={handlePatient} type="checkbox" checked={isPatient} className="checkbox w-5 h-5" />
+                                <p>Paitent</p>
+                            </div>
+                            <div>
+                                <div className='flex items-center gap-2'>
+                                    <input onChange={handleDoctor} type="checkbox" checked={isDoctor} className="checkbox w-5 h-5" />
+                                    <p>Doctor</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
                         <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>

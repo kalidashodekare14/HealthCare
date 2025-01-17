@@ -109,7 +109,7 @@ const MainDashboard = () => {
                         <p>Total Patient</p>
                         {
                             dataCollection?.totalDoctors ? (
-                                <p className='text-3xl'>{dataCollection?.totalPatients[0]?.totalPatient}</p>
+                                <p className='text-3xl'>{dataCollection?.totalPatients[0]?.totalPatient || 0}</p>
 
                             ) : (
                                 <p className='text-3xl'>0</p>
@@ -125,7 +125,7 @@ const MainDashboard = () => {
                         <p>Doctors</p>
                         {
                             dataCollection?.totalDoctors ? (
-                                <p className='text-3xl'>{dataCollection?.totalDoctors[0]?.totalDoctors}</p>
+                                <p className='text-3xl'>{dataCollection?.totalDoctors[0]?.totalDoctors || 0}</p>
                             ) : (
                                 <p className='text-3xl'>0</p>
                             )
@@ -140,7 +140,7 @@ const MainDashboard = () => {
                         <p>Appoinment</p>
                         {
                             dataCollection?.totalAppoinments ? (
-                                <p className='text-3xl'>{dataCollection?.totalAppoinments[0]?.totalAppoinments}</p>
+                                <p className='text-3xl'>{dataCollection?.totalAppoinments[0]?.totalAppoinments || 0}</p>
                             ) : (
                                 <p className='text-3xl'>0</p>
                             )
@@ -155,7 +155,7 @@ const MainDashboard = () => {
                         <p>Hospital Earning</p>
                         {
                             dataCollection?.totalRevenues ? (
-                                <p className='text-3xl'>{dataCollection?.totalRevenues[0]?.totalRevenues}</p>
+                                <p className='text-3xl'>{dataCollection?.totalRevenues[0]?.totalRevenues || 0}</p>
                             ) : (
                                 <p className='text-3xl'>0</p>
                             )

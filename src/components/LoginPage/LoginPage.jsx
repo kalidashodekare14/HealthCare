@@ -75,8 +75,6 @@ const LoginPage = () => {
                                         <FaRegEye className='text-xl' />
                                     )
                                 }
-
-
                             </div>
                         </div>
 
