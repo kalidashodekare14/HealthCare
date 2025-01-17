@@ -21,6 +21,7 @@ const SignUpPage = () => {
     const [isDoctor, setIsDoctor] = useState(false)
     const [isPatient, setIsPatient] = useState(false)
     const [isRole, setIsRole] = useState("")
+    const [roleError, setRoleError] = useState(false)
 
     const handleDoctor = () => {
         setIsDoctor(!isDoctor)
@@ -87,6 +88,10 @@ const SignUpPage = () => {
         }
 
     }
+
+    // if(isRole.length === 0){
+    //     setRoleError(true)
+    // }
 
 
     return (

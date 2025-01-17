@@ -22,6 +22,7 @@ const ProfilePage = () => {
     const [isActive, setIsActive] = useState("persoanl_infomation")
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [medicalInfoActive, setMedicalInfoActive] = useState(false)
+    const [nextTreatmentActive, setNextTreatmentActive] = useState(false)
     const [fullNameActive, setFullNameActive] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null)
@@ -47,6 +48,8 @@ const ProfilePage = () => {
     ]
     const [user_bio, refetch, userLoading] = UserData()
 
+    console.log(user_bio)
+
     // select default value implement
     const profileData = user_bio?.chronic_diseases_history || []
     const defalutOption = optionHistory.filter(option => profileData.some(userHistory => userHistory.value === option.value))
@@ -60,6 +63,9 @@ const ProfilePage = () => {
     }
     const handleFullNameEdit = () => {
         setFullNameActive(!fullNameActive)
+    }
+    const handleNextTreatment = () => {
+        setNextTreatmentActive(!nextTreatmentActive)
     }
 
     const {
@@ -96,17 +102,43 @@ const ProfilePage = () => {
 
     const onMedicalInfoSubmit = async (data) => {
         console.log(data)
+
+        // doctor information
+        const doctorInfo = {
+            professional_information: {
+                license_number: data.license_number,
+                specialization: data.specialization,
+                experience: data.experience,
+                workplace: data.workplace
+            }
+        }
+
+        if (user_bio.role === 'doctor') {
+            const doctorRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/doctor-professional-info?email=${sessionEmail}`, doctorInfo)
+            console.log(doctorRes.data)
+            if (doctorRes.data.matchedCount > 0) {
+                setMedicalInfoActive(false)
+                refetch()
+            }
+        }
+
+        // patient inforamtion
         const medicalInfo = {
             blood_group: data.blood_group,
             health_condition: data.health_condition,
             chronic_diseases_history: selectedOption
         }
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
-        console.log(res.data)
-        if (res.data.matchedCount > 0) {
-            setMedicalInfoActive(false)
-            refetch()
+
+        if (user_bio.role === 'patient') {
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
+            console.log(res.data)
+            if (res.data.matchedCount > 0) {
+                setMedicalInfoActive(false)
+                refetch()
+            }
         }
+
+
     }
 
     const {
@@ -263,14 +295,35 @@ const ProfilePage = () => {
                             <h1>Personal Information</h1>
                         </div>
                         <div onClick={() => setIsActive("medical_information")} className={`cursor-pointer ${isActive === "medical_information" && "border-b-2  border-[#307bc4]"}`}>
-                            <h1>Medical Information</h1>
+                            {
+                                user_bio.role === "doctor" ? (
+                                    <h1>Professional Information</h1>
+                                ) : (
+                                    <h1>Medical Information</h1>
+                                )
+                            }
+
+
                         </div>
                         <div onClick={() => setIsActive("next_treatment")} className={`cursor-pointer ${isActive === "next_treatment" && "border-b-2  border-[#307bc4]"}`}>
-                            <h1>Next Treatment</h1>
+                            {
+                                user_bio.role === "doctor" ? (
+                                    <h1>Service Details</h1>
+                                ) : (
+                                    <h1 > Next Treatment</h1>
+                                )
+                            }
                         </div>
-                        <div onClick={() => setIsActive("medical_record")} className={`cursor-pointer ${isActive === "medical_record" && "border-b-2  border-[#307bc4]"}`}>
-                            <h1>Medical Record</h1>
-                        </div>
+                        {
+                            user_bio.role === "doctor" ? (
+                                ""
+                            ) : (
+                                <div onClick={() => setIsActive("medical_record")} className={`cursor-pointer ${isActive === "medical_record" && "border-b-2  border-[#307bc4]"}`}>
+                                    <h1>Medical Record</h1>
+                                </div>
+                            )
+                        }
+
                     </div>
                     <div className='my-10'>
                         {
@@ -369,6 +422,7 @@ const ProfilePage = () => {
                         }
                         {
                             isActive === "medical_information" && (
+                                // TODO DOCTOR INFORMATION
                                 <form onSubmit={handleMedicalInfoSubmit(onMedicalInfoSubmit)} className='border p-5'>
                                     <div className='flex justify-end items-end'>
                                         {
@@ -387,94 +441,241 @@ const ProfilePage = () => {
                                             )
                                         }
                                     </div>
+                                    {
+                                        user_bio?.role === 'doctor' ? (
+                                            <div className='grid grid-col-1 md:grid-cols-2 lg:grid-cols-2 gap-2'>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Medical License Number:</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("license_number")} defaultValue={user_bio?.professional_information?.license_number} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.license_number || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Specialization</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <select {...register2("specialization")} defaultValue={user_bio?.professional_information?.specialization || 'Good'} className="select w-full border border-[#000]">
+                                                                <option value="Cardiology">Cardiology</option>
+                                                                <option value={"Orthopedics"} >Orthopedics</option>
+                                                                <option value={"Dermatology"} >Dermatology</option>
+                                                                <option value={"Neurology"} >Neurology</option>
+                                                                <option value={"General Practitioner"} >General Practitioner</option>
+                                                                <option value={"Oncology"} >Oncology</option>
+                                                                <option value={"Pulmonology"} >Pulmonology</option>
+                                                                <option value={"Gastroenterology"} >Gastroenterology</option>
+                                                                <option value={"Plastic Surgery"} >Plastic Surgery</option>
+                                                                <option value={"General Surgery"} >General Surgery</option>
+                                                            </select>
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.specialization || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Years of Experience:</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("experience")} defaultValue={user_bio?.professional_information?.experience} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.experience || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Workplace:</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("workplace")} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.workplace || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className='grid grid-cols-1 lg:grid-cols-3 gap-5'>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Patient ID:</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input disabled {...register2("patient_id")} defaultValue={user_bio?.patiend_id} className='disabled input border border-[#000] w-full' type="email" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.patiend_id || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Blood Group:</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("blood_group")} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.blood_group || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor=""> Health Condition </label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <select {...register2("health_condition")} defaultValue={user_bio?.health_condition || 'Good'} className="select w-full border border-[#000]">
+                                                                <option value="Good">Good</option>
+                                                                <option value={"Moderate"} >Moderate</option>
+                                                                <option value={"Critical"} >Critical</option>
+                                                                <option value={"Recovering"} >Recovering</option>
+                                                            </select>
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.health_condition || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Chronic Diseases History</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <div>
+                                                                <Select
+                                                                    isMulti
+                                                                    defaultValue={defalutOption}
+                                                                    options={optionHistory}
+                                                                    onChange={(seleced) => setSelectedOption(seleced)}
+                                                                    className="basic-multi-select"
+                                                                    classNamePrefix="select"
+                                                                />
+                                                            </div>
 
-                                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-5'>
-                                        <div className='flex flex-col font-rubik w-full gap-1'>
-                                            <label htmlFor="">Patient ID:</label>
-                                            {
-                                                medicalInfoActive ? (
-                                                    <input disabled {...register2("patient_id")} defaultValue={user_bio?.patiend_id} className='disabled input border border-[#000] w-full' type="email" />
-                                                ) : (
-                                                    <div className='border p-3 rounded-lg'>
-                                                        <p>{user_bio?.patiend_id || 'N/A'}</p>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                        <div className='flex flex-col font-rubik w-full gap-1'>
-                                            <label htmlFor="">Blood Group:</label>
-                                            {
-                                                medicalInfoActive ? (
-                                                    <input {...register2("blood_group")} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
-                                                ) : (
-                                                    <div className='border p-3 rounded-lg'>
-                                                        <p>{user_bio?.blood_group || 'N/A'}</p>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                        <div className='flex flex-col font-rubik w-full gap-1'>
-                                            <label htmlFor=""> Health Condition </label>
-                                            {
-                                                medicalInfoActive ? (
-                                                    <select {...register2("health_condition")} defaultValue={user_bio?.health_condition || 'Good'} className="select w-full border border-[#000]">
-                                                        <option value="Good">Good</option>
-                                                        <option value={"Moderate"} >Moderate</option>
-                                                        <option value={"Critical"} >Critical</option>
-                                                        <option value={"Recovering"} >Recovering</option>
-                                                    </select>
-                                                ) : (
-                                                    <div className='border p-3 rounded-lg'>
-                                                        <p>{user_bio?.health_condition || 'N/A'}</p>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                        <div className='flex flex-col font-rubik w-full gap-1'>
-                                            <label htmlFor="">Chronic Diseases History</label>
-                                            {
-                                                medicalInfoActive ? (
-                                                    <div>
-                                                        <Select
-                                                            isMulti
-                                                            defaultValue={defalutOption}
-                                                            options={optionHistory}
-                                                            onChange={(seleced) => setSelectedOption(seleced)}
-                                                            className="basic-multi-select"
-                                                            classNamePrefix="select"
-                                                        />
-                                                    </div>
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                {
+                                                                    user_bio?.chronic_diseases_history ? (
+                                                                        <div>
+                                                                            {
+                                                                                user_bio?.chronic_diseases_history.map(dh => (
+                                                                                    <p key={dh.label}>{dh.value}</p>
+                                                                                ))
+                                                                            }
+                                                                        </div>
+                                                                    ) : (
+                                                                        <p>N/A</p>
+                                                                    )
+                                                                }
 
-                                                ) : (
-                                                    <div className='border p-3 rounded-lg'>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
+                                </form>
+                            )
+                        }
+
+                        {
+                            isActive === "next_treatment" && (
+                                <form onSubmit={handleMedicalInfoSubmit(onMedicalInfoSubmit)} className='border p-5'>
+                                    <div className='flex justify-end items-end'>
+                                        {
+                                            nextTreatmentActive ? (
+                                                <div className='flex items-center gap-3'>
+                                                    <button onClick={handleNextTreatment}>
+                                                        <MdCancel className='text-2xl cursor-pointer' />
+                                                    </button>
+                                                    <button type='submit'>
+                                                        <FaSave className='text-2xl cursor-pointer' />
+                                                    </button>
+                                                </div>
+
+                                            ) : (
+                                                <FaEdit onClick={handleNextTreatment} className='text-2xl cursor-pointer' />
+                                            )
+                                        }
+                                    </div>
+                                    <div>
+                                        {
+                                            user_bio?.role === 'doctor' ? (
+                                                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3'>
+                                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                                        <label htmlFor="">Consultation Fee:</label>
                                                         {
-                                                            user_bio?.chronic_diseases_history ? (
-                                                                <div>
-                                                                    {
-                                                                        user_bio?.chronic_diseases_history.map(dh => (
-                                                                            <p key={dh.label}>{dh.value}</p>
-                                                                        ))
-                                                                    }
-                                                                </div>
+                                                            nextTreatmentActive ? (
+                                                                <input  {...register2("consultation_fee")} defaultValue={user_bio?.consultation_fee} className='disabled input border border-[#000] w-full' type="email" />
                                                             ) : (
-                                                                <p>N/A</p>
+                                                                <div className='border p-3 rounded-lg'>
+                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                </div>
                                                             )
                                                         }
-
                                                     </div>
-                                                )
-                                            }
-                                        </div>
+                                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                                        <label htmlFor="">Service Type</label>
+                                                        {
+                                                            nextTreatmentActive ? (
+                                                                <select {...register2("service_type")} defaultValue={user_bio?.service_type || 'Good'} className="select w-full border border-[#000]">
+                                                                    <option value="Online Consultation">Online Consultation</option>
+                                                                    <option value={"In-Person"} >In-Person</option>
+                                                                    <option value={"Both"} >Both</option>
+                                                                </select>
+                                                            ) : (
+                                                                <div className='border p-3 rounded-lg'>
+                                                                    <p>{user_bio?.service_type || 'N/A'}</p>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                    <div className='flex flex-col font-rubik w-full gap-1'>
+                                                        <label htmlFor="">Available Time Slots:</label>
+                                                        {
+                                                            nextTreatmentActive ? (
+                                                                <div className='flex items-center gap-2 max-w-56'>
+                                                                    <input  {...register2("start_time")} defaultValue={user_bio?.start_time || "Start Time"} className='disabled input border border-[#000] w-full' type="email" />
+                                                                    <input  {...register2("end_time")} defaultValue={user_bio?.end_time || "End Time"} className='disabled input border border-[#000] w-full' type="email" />
+                                                                </div>
+                                                            ) : (
+                                                                <div className='border p-3 rounded-lg'>
+                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div>
+
+                                                </div>
+                                            )
+                                        }
+
                                     </div>
                                 </form>
                             )
                         }
 
+
                     </div>
                 </div>
 
             </div >
-        </div>
+        </div >
     )
 }
 
