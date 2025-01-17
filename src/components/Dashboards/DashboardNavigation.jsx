@@ -17,21 +17,26 @@ const DashboardNavigation = ({ isToggle }) => {
     },
     {
       id: "2",
+      name: "Doctor Request",
+      path: "/dashboard/doctors-request"
+    },
+    {
+      id: "3",
       name: "Doctors",
       path: "/dashboard/doctors"
     },
     {
-      id: "3",
+      id: "4",
       name: "Patients",
       path: "/dashboard/patients"
     },
     {
-      id: "4",
+      id: "5",
       name: "Appoinments",
       path: "/dashboard/appoinments"
     },
     {
-      id: "5",
+      id: "6",
       name: "Reviews",
       path: "/dashboard/reviews"
     },

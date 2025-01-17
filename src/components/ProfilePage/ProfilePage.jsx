@@ -325,7 +325,7 @@ const ProfilePage = () => {
                             </div>
 
                         </form>
-                        <p>Admin</p>
+                        <p>{user_bio?.role}</p>
                     </div>
                 </div >
                 <div className='lg:mx-[2rem] mx-2 my-20'>
@@ -657,7 +657,7 @@ const ProfilePage = () => {
                                                         <label htmlFor="">Consultation Fee:</label>
                                                         {
                                                             nextTreatmentActive ? (
-                                                                <input  {...register4("consultation_fee")} defaultValue={user_bio?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
+                                                                <input  {...register4("consultation_fee")} defaultValue={user_bio?.service_details?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
                                                                     <p>{user_bio?.service_details?.consultation_fee || 'N/A'} TK</p>
