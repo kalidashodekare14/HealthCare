@@ -15,6 +15,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
+import DatePanel from 'react-multi-date-picker/plugins/date_panel'
 
 const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
 console.log(image_hosting_key)
@@ -49,13 +50,11 @@ const ProfilePage = () => {
         },
 
     ]
-    const [value, setValue] = useState(new Date());
+    const [dates, setDates] = useState([new Date()]);
     const [timeSlots, setTimeSlots] = useState([{ start: "", end: "" }])
     const [user_bio, refetch, userLoading] = UserData()
 
-    const handleAddslot = () => {
-        setTimeSlots([...timeSlots, { start: "", end: "" }])
-    }
+    console.log('date', dates)
 
     const handleTimeChange = (index, filed, value) => {
         const newSlots = [...timeSlots];
@@ -184,6 +183,20 @@ const ProfilePage = () => {
 
     const onNextTreatmentSubmit = async (data) => {
         console.log(data)
+        const serviceDetailsInfo = {
+            service_details: {
+                consultation_fee: data.consultation_fee,
+                service_type: data.service_type,
+                available_date: dates,
+                time_and_slots: timeSlots
+            }
+        }
+        const servicesRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/service-detials?email=${sessionEmail}`, serviceDetailsInfo)
+        console.log(servicesRes)
+        if (servicesRes.data.matchedCount > 0) {
+            setNextTreatmentActive(false)
+            refetch()
+        }
     }
 
 
@@ -647,7 +660,7 @@ const ProfilePage = () => {
                                                                 <input  {...register4("consultation_fee")} defaultValue={user_bio?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
-                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                    <p>{user_bio?.service_details?.consultation_fee || 'N/A'} TK</p>
                                                                 </div>
                                                             )
                                                         }
@@ -663,7 +676,7 @@ const ProfilePage = () => {
                                                                 </select>
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
-                                                                    <p>{user_bio?.service_type || 'N/A'}</p>
+                                                                    <p>{user_bio?.service_details?.service_type || 'N/A'}</p>
                                                                 </div>
                                                             )
                                                         }
@@ -675,16 +688,26 @@ const ProfilePage = () => {
                                                                 <div className='flex items-center gap-2 max-w-56'>
                                                                     <DatePicker
                                                                         multiple
-                                                                        format='YYYY/MM/DD'
-                                                                        value={value}
-                                                                        onChange={setValue}
+                                                                        format="MMMM DD YYYY"
+                                                                        value={dates}
+                                                                        onChange={setDates}
+                                                                        sort
+                                                                        plugins={[
+                                                                            <DatePanel />
+                                                                        ]}
                                                                         inputClass='p-3 border border-black w-80'
                                                                         containerClassName='w-full'
                                                                     />
                                                                 </div>
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
-                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                    <p className='space-x-2'>
+                                                                        {
+                                                                            user_bio?.service_details?.available_date?.map((date, index) => (
+                                                                                <span className='' key={index}>{new Date(date).toLocaleDateString()}</span>
+                                                                            ))
+                                                                        }
+                                                                    </p>
                                                                 </div>
                                                             )
                                                         }
@@ -717,8 +740,10 @@ const ProfilePage = () => {
 
                                                                 </div>
                                                             ) : (
-                                                                <div className='border p-3 rounded-lg'>
-                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                <div className='border p-3 rounded-lg flex items-center gap-2'>
+                                                                    <p>{user_bio?.service_details?.time_and_slots[0].start}</p>
+                                                                    <span>-</span>
+                                                                    <p>{user_bio?.service_details?.time_and_slots[0].end}</p>
                                                                 </div>
                                                             )
                                                         }
