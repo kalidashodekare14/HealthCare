@@ -11,7 +11,10 @@ import { FaUser } from 'react-icons/fa6'
 import { MdCancel, MdOutlineCancel } from 'react-icons/md'
 import { RotatingLines } from 'react-loader-spinner'
 import Select from 'react-select';
-
+import DatePicker from "react-multi-date-picker";
+import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
 
 const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
 console.log(image_hosting_key)
@@ -46,9 +49,22 @@ const ProfilePage = () => {
         },
 
     ]
+    const [value, setValue] = useState(new Date());
+    const [timeSlots, setTimeSlots] = useState([{ start: "", end: "" }])
     const [user_bio, refetch, userLoading] = UserData()
 
-    console.log(user_bio)
+    const handleAddslot = () => {
+        setTimeSlots([...timeSlots, { start: "", end: "" }])
+    }
+
+    const handleTimeChange = (index, filed, value) => {
+        const newSlots = [...timeSlots];
+        newSlots[index][filed] = value;
+        setTimeSlots(newSlots);
+    }
+
+    console.log("time", timeSlots)
+
 
     // select default value implement
     const profileData = user_bio?.chronic_diseases_history || []
@@ -158,6 +174,16 @@ const ProfilePage = () => {
             setFullNameActive(false)
             refetch()
         }
+    }
+
+    const {
+        register: register4,
+        handleSubmit: handleNextTreatmentSubmit,
+        formState: { errors: errors4 },
+    } = useForm()
+
+    const onNextTreatmentSubmit = async (data) => {
+        console.log(data)
     }
 
 
@@ -592,7 +618,7 @@ const ProfilePage = () => {
 
                         {
                             isActive === "next_treatment" && (
-                                <form onSubmit={handleMedicalInfoSubmit(onMedicalInfoSubmit)} className='border p-5'>
+                                <form onSubmit={handleNextTreatmentSubmit(onNextTreatmentSubmit)} className='border p-5'>
                                     <div className='flex justify-end items-end'>
                                         {
                                             nextTreatmentActive ? (
@@ -618,7 +644,7 @@ const ProfilePage = () => {
                                                         <label htmlFor="">Consultation Fee:</label>
                                                         {
                                                             nextTreatmentActive ? (
-                                                                <input  {...register2("consultation_fee")} defaultValue={user_bio?.consultation_fee} className='disabled input border border-[#000] w-full' type="email" />
+                                                                <input  {...register4("consultation_fee")} defaultValue={user_bio?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
                                                                     <p>{user_bio?.consultation_fee || 'N/A'}</p>
@@ -630,7 +656,7 @@ const ProfilePage = () => {
                                                         <label htmlFor="">Service Type</label>
                                                         {
                                                             nextTreatmentActive ? (
-                                                                <select {...register2("service_type")} defaultValue={user_bio?.service_type || 'Good'} className="select w-full border border-[#000]">
+                                                                <select {...register4("service_type")} defaultValue={user_bio?.service_type || 'Good'} className="select w-full border border-[#000]">
                                                                     <option value="Online Consultation">Online Consultation</option>
                                                                     <option value={"In-Person"} >In-Person</option>
                                                                     <option value={"Both"} >Both</option>
@@ -643,12 +669,52 @@ const ProfilePage = () => {
                                                         }
                                                     </div>
                                                     <div className='flex flex-col font-rubik w-full gap-1'>
+                                                        <label htmlFor="">Available Date:</label>
+                                                        {
+                                                            nextTreatmentActive ? (
+                                                                <div className='flex items-center gap-2 max-w-56'>
+                                                                    <DatePicker
+                                                                        multiple
+                                                                        format='YYYY/MM/DD'
+                                                                        value={value}
+                                                                        onChange={setValue}
+                                                                        inputClass='p-3 border border-black w-80'
+                                                                        containerClassName='w-full'
+                                                                    />
+                                                                </div>
+                                                            ) : (
+                                                                <div className='border p-3 rounded-lg'>
+                                                                    <p>{user_bio?.consultation_fee || 'N/A'}</p>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                    <div className='flex flex-col font-rubik w-full gap-1'>
                                                         <label htmlFor="">Available Time Slots:</label>
                                                         {
                                                             nextTreatmentActive ? (
                                                                 <div className='flex items-center gap-2 max-w-56'>
-                                                                    <input  {...register2("start_time")} defaultValue={user_bio?.start_time || "Start Time"} className='disabled input border border-[#000] w-full' type="email" />
-                                                                    <input  {...register2("end_time")} defaultValue={user_bio?.end_time || "End Time"} className='disabled input border border-[#000] w-full' type="email" />
+                                                                    {
+                                                                        timeSlots.map((slot, index) => (
+                                                                            <div key={index} className='flex items-center'>
+                                                                                <div>
+                                                                                    <TimePicker
+                                                                                        onChange={(value) => handleTimeChange(index, 'start', value)}
+                                                                                        value={slot.start}
+                                                                                        className="p-5"
+                                                                                    />
+                                                                                </div>
+                                                                                <div>
+                                                                                    <TimePicker
+                                                                                        onChange={(value) => handleTimeChange(index, 'end', value)}
+                                                                                        value={slot.end}
+                                                                                        className="p-5"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                        ))
+                                                                    }
+
                                                                 </div>
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
