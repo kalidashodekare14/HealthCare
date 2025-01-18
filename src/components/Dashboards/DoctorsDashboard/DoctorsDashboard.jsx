@@ -2,14 +2,16 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
 import { RotatingLines } from 'react-loader-spinner'
 
 const DoctorsDashboard = () => {
 
-    const { data: doctorsData = [], isLoading: doctorsLoading } = useQuery({
+    const [rejectLoading, setRejectLoading] = useState(false)
+
+    const { data: doctorsData = [], refetch, isLoading: doctorsLoading } = useQuery({
         queryKey: ["doctorsData"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/doctors/api`)
@@ -35,6 +37,27 @@ const DoctorsDashboard = () => {
         </div>
     }
 
+
+    const handleReject = async (id) => {
+        try {
+            setRejectLoading(true)
+            const rejectRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/doctors/api/status-reject?id=${id}`)
+            console.log(rejectRes.data)
+            if (rejectRes.data.modifiedCount > 0) {
+                Swal.fire({
+                    title: "Status reject successfuly",
+                    icon: "success",
+                    draggable: true
+                });
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setRejectLoading(false)
+        }
+    }
+
     return (
         <div className='bg-[#f6fbf8]'>
             <div className='lg:px-10 px-3'>
@@ -56,7 +79,25 @@ const DoctorsDashboard = () => {
                                 <th>Available Date</th>
                                 <th>Time and slots</th>
                                 <th>Contact Us</th>
-                                {/* <th>Email</th> */}
+                                <th>
+                                    <div>
+                                        {
+                                            rejectLoading && (
+                                                <RotatingLines
+                                                    visible={true}
+                                                    height="40"
+                                                    width="40"
+                                                    color="grey"
+                                                    strokeWidth="5"
+                                                    animationDuration="0.75"
+                                                    ariaLabel="rotating-lines-loading"
+                                                    wrapperStyle={{}}
+                                                    wrapperClass=""
+                                                />
+                                            )
+                                        }
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -135,8 +176,12 @@ const DoctorsDashboard = () => {
                                                     <CiMenuKebab className='text-2xl' />
                                                 </div>
                                                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                                                    <li><a>Item 1</a></li>
-                                                    <li><a>Item 2</a></li>
+                                                    <li>
+                                                        <p>Details</p>
+                                                    </li>
+                                                    <li onClick={() => handleReject(doctor?._id)} className='bg-red-500 text-white rounded-2xl'>
+                                                        <p>Reject</p>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
