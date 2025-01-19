@@ -38,7 +38,7 @@ const SignUpPage = () => {
         }
     }
 
-    console.log("check role",isRole)
+    console.log("check role", isRole)
 
 
     const handlePasswordShow = () => {
@@ -64,7 +64,8 @@ const SignUpPage = () => {
             gender: data.gender,
             password: data.password,
             role: isRole,
-            status: isRole === "doctor" ? "pending" : "approved"
+            status: isRole === "doctor" ? "pending" : "approved",
+            rating: 0
         }
         try {
             setIsLoading(true)

@@ -9,8 +9,8 @@ export const GET = async (request) => {
     const id = searchParams.get('id')
     try {
         const db = await connectDB()
-        const userCollection = db.collection('doctors')
-        const query = { _id: new ObjectId(id) }
+        const userCollection = db.collection('users')
+        const query = { _id: new ObjectId(id), role: 'doctor', status: 'approved' }
         const result = await userCollection.findOne(query)
         return NextResponse.json(result)
     } catch (error) {

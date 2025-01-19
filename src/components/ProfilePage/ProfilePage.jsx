@@ -124,7 +124,9 @@ const ProfilePage = () => {
                 license_number: data.license_number,
                 specialization: data.specialization,
                 experience: data.experience,
-                workplace: data.workplace
+                workplace: data.workplace,
+                qualification: data.qualification,
+                hospital_clinic: data.hospital_clinic
             }
         }
 
@@ -461,7 +463,7 @@ const ProfilePage = () => {
                         }
                         {
                             isActive === "medical_information" && (
-                                // TODO DOCTOR INFORMATION
+
                                 <form onSubmit={handleMedicalInfoSubmit(onMedicalInfoSubmit)} className='border p-5'>
                                     <div className='flex justify-end items-end'>
                                         {
@@ -534,10 +536,34 @@ const ProfilePage = () => {
                                                     <label htmlFor="">Workplace:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("workplace")} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("workplace")} defaultValue={user_bio?.professional_information?.workplace} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
-                                                                <p>{user_bio?.workplace || 'N/A'}</p>
+                                                                <p>{user_bio?.professional_information?.workplace || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Qualification</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("qualification")} defaultValue={user_bio?.professional_information?.qualification} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.qualification || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Hospital And Clinic</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <input {...register2("hospital_clinic")} defaultValue={user_bio?.professional_information?.hospital_clinic} className='input border border-[#000] w-full' type="text" />
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.hospital_clinic || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }

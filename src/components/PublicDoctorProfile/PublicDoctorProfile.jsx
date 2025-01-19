@@ -45,11 +45,11 @@ const PublicDoctorProfile = ({ profileId }) => {
             <div>
                 <div className="mx-10 flex items-center gap-3 -mt-16">
                     {
-                        publicProfile.profilePicture ? (
+                        publicProfile?.image ? (
                             <div className='w-32 lg:w-52 h-32 lg:h-52 border-2 border-[#307bc4] rounded-full'>
                                 <Image
                                     className='w-full h-full rounded-full'
-                                    src={publicProfile.profilePicture}
+                                    src={publicProfile?.image}
                                     width={500}
                                     height={300}
                                     alt="Tailwind CSS Navbar component"
@@ -79,8 +79,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                         }
 
                         {
-                            publicProfile?.qualification ? (
-                                <p>{publicProfile?.qualification}</p>
+                            publicProfile?.professional_information?.qualification ? (
+                                <p>{publicProfile?.professional_information?.qualification}</p>
                             ) : (
                                 <p>No Qualification</p>
                             )
@@ -98,8 +98,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 <p>Experience</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.experience ? (
-                                            <p>{publicProfile?.experience}</p>
+                                        publicProfile?.professional_information?.experience ? (
+                                            <p>{publicProfile?.professional_information?.experience}Year</p>
                                         ) : (
                                             <p>No Experience</p>
                                         )
@@ -111,8 +111,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 <p>Clinic</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.address?.clinic ? (
-                                            <p>{publicProfile?.address?.clinic}</p>
+                                        publicProfile?.professional_information?.hospital_clinic ? (
+                                            <p>{publicProfile?.professional_information?.hospital_clinic}</p>
                                         ) : (
                                             <p>No Clinic</p>
                                         )
@@ -124,8 +124,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 <p>Location</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.address?.location ? (
-                                            <p>{publicProfile?.address?.location}</p>
+                                        publicProfile?.professional_information?.workplace ? (
+                                            <p>{publicProfile?.professional_information?.workplace}</p>
                                         ) : (
                                             <p>No Location</p>
                                         )
@@ -134,29 +134,32 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 </div>
                             </div>
                             <div className='font-rubik'>
-                                <p>Availabile</p>
+                                <p>Availabile Date</p>
                                 <div className='border p-3'>
-                                    {
-                                        publicProfile?.availability?.days ? (
-                                            <div className='flex gap-2'>
-                                                {
-                                                    publicProfile?.availability?.days.map((day, index) => (
-                                                        <p key={index}>{day}</p>
-                                                    ))
-                                                }
-                                            </div>
-                                        ) : (
-                                            <p>No Available</p>
-                                        )
-                                    }
+                                    <div className='grid grid-cols-3 gap-2'>
+                                        {
+                                            publicProfile?.service_details?.available_date ? (
+                                                publicProfile?.service_details?.available_date?.map((date, index) => (
+                                                    <p className='' key={index}>{new Date(date).toLocaleDateString()}</p>
+                                                ))
+                                            ) : (
+                                                <p>No Available</p>
+                                            )
+                                        }
+
+                                    </div>
                                 </div>
                             </div>
                             <div className='font-rubik'>
                                 <p>Time</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.availability?.time ? (
-                                            <p>{publicProfile?.availability?.time}</p>
+                                        publicProfile?.service_details ? (
+                                            <div className='flex items-center gap-2'>
+                                                <p>{publicProfile?.service_details?.time_and_slots[0].start}</p>
+                                                <span>-</span>
+                                                <p>{publicProfile?.service_details?.time_and_slots[0].end}</p>
+                                            </div>
                                         ) : (
                                             <p>No Time</p>
                                         )
@@ -172,7 +175,7 @@ const PublicDoctorProfile = ({ profileId }) => {
                                             <div>
                                                 <Rating
                                                     style={{ maxWidth: 120 }}
-                                                    value={publicProfile?.rating}
+                                                    value={publicProfile?.rating || 0}
                                                     readOnly
                                                 />
                                             </div>
@@ -187,8 +190,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 <p>Phone Number</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.contact?.phone ? (
-                                            <p>{publicProfile?.contact?.phone}</p>
+                                        publicProfile?.phone_number ? (
+                                            <p>{publicProfile?.phone_number}</p>
                                         ) : (
                                             <p>No Phone Number</p>
                                         )
@@ -200,8 +203,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                                 <p>Email</p>
                                 <div className='border p-3'>
                                     {
-                                        publicProfile?.contact?.email ? (
-                                            <p>{publicProfile?.contact?.email}</p>
+                                        publicProfile?.email ? (
+                                            <p>{publicProfile?.email}</p>
                                         ) : (
                                             <p>No Email</p>
                                         )
@@ -216,14 +219,8 @@ const PublicDoctorProfile = ({ profileId }) => {
                             <h1 className='text-center text-2xl p-2 py-2 border-b'>Specialities</h1>
                             <div className='p-5'>
                                 {
-                                    publicProfile?.specialization ? (
-                                        <ul className='list-decimal ml-5'>
-                                            {
-                                                publicProfile?.specialization.map((s, index) => (
-                                                    <li key={index}>{s}</li>
-                                                ))
-                                            }
-                                        </ul>
+                                    publicProfile?.professional_information?.specialization ? (
+                                        <p>{publicProfile?.professional_information?.specialization}</p>
                                     ) : (
                                         <p>No Specialization</p>
                                     )
@@ -253,7 +250,7 @@ const PublicDoctorProfile = ({ profileId }) => {
                 </div>
 
             </div>
-        </div>
+        </div >
     )
 }
 export default PublicDoctorProfile

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
-import { FaRegHospital } from 'react-icons/fa6';
+import { FaDollarSign, FaRegHospital } from 'react-icons/fa6';
 import { GrCertificate } from 'react-icons/gr';
 import { RotatingLines } from 'react-loader-spinner';
 
@@ -46,28 +46,43 @@ const DoctorsSection = () => {
                     doctors.map(doctor => (
                         <div className='border space-y-2 p-3 font-rubik' key={doctor._id}>
                             <div className='flex justify-center items-center border-b pb-2'>
-                                <Image className='w-40 h-40 rounded-full' src={doctor.profilePicture} width={500} height={300} alt='doctor image' />
+                                <Image className='w-40 h-40 rounded-full' src={doctor.image} width={500} height={300} alt='doctor image' />
                             </div>
                             <div className='space-y-2 border-b pb-2'>
-                                <h1 className='text-xl font-bold'>{doctor.name}</h1>
+                                <h1 className='text-xl font-bold'>{doctor.name || "N/A"}</h1>
                                 <div className='flex items-center gap-2'>
                                     <GrCertificate className='text-[15px] text-[#307bc4]' />
-                                    <p className='text-[15px]'>{doctor.qualification}</p>
+                                    <p className='text-[15px]'>{doctor?.professional_information?.qualification || "N/A"}</p>
                                 </div>
                                 <div className='flex items-center gap-2'>
                                     <FaRegHospital className='text-[15px] text-[#307bc4]' />
-                                    <p className='text-[15px]'>{doctor?.address.clinic}</p>
+                                    <p className='text-[15px]'>{doctor?.professional_information?.hospital_clinic || "N/A"}</p>
+                                </div>
+                                <div className='flex items-center gap-2'>
+                                    <FaDollarSign className='text-[15px] text-[#307bc4]' />
+                                    <div className='flex items-center gap-2 text-[15px]'>
+                                        <p>
+                                            {doctor?.service_details?.service_type || "N/A"}
+                                        </p>
+                                        <p>
+                                            ${doctor?.service_details?.consultation_fee || "N/A"}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <div className='flex flex-col justify-center items-center border-b pb-2'>
-                                <div className='flex items-center gap-3'>
+                                <div className='grid grid-cols-3 gap-3'>
                                     {
-                                        doctor?.availability?.days.map(day => (
-                                            <p key={day}>{day}</p>
+                                        doctor?.service_details?.available_date?.map((date, index) => (
+                                            <p className='' key={index}>{new Date(date).toLocaleDateString()}</p>
                                         ))
                                     }
                                 </div>
-                                <p className='text-[15px]'>{doctor?.availability?.time}</p>
+                                <div className='flex items-center gap-2'>
+                                    <p>{doctor?.service_details?.time_and_slots[0].start}</p>
+                                    <span>-</span>
+                                    <p>{doctor?.service_details?.time_and_slots[0].end}</p>
+                                </div>
                             </div>
                             <div className='flex justify-center items-center gap-2'>
                                 <Link href={`/doctors/${doctor?._id}`}>
