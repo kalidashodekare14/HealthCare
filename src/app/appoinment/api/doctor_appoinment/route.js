@@ -4,13 +4,12 @@ import { NextResponse } from "next/server"
 export const GET = async (request) => {
     try {
         const db = await connectDB()
-        const doctorsCollection = db.collection('doctors')
-        const doctors = await doctorsCollection.find({}, { projection: { name: 1, _id: 0 } }).toArray()
-        const deparmentsName = await doctorsCollection.find({}, { projection: { department: 1, _id: 0 } }).toArray()
+        const usersCollection = db.collection('users')
+        const query = { role: 'doctor', status: 'approved' }
+        const doctors = await usersCollection.find(query, { projection: { name: 1, _id: 0 } }).toArray()
         const doctosName = doctors.map(doctor => doctor.name)
-        const deparmentName = deparmentsName.map(dn => dn.department)
 
-        return Response.json({ doctorsName: doctosName, deparmentNames: deparmentName })
+        return Response.json({ doctorsName: doctosName })
 
     } catch (error) {
         console.log(error)

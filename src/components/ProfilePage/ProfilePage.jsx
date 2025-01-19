@@ -786,8 +786,6 @@ const ProfilePage = () => {
                                 </form>
                             )
                         }
-
-
                     </div>
                 </div>
 

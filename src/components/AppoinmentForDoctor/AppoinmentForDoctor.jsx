@@ -9,8 +9,8 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import UserData from '@/hooks/UserData'
 import { Controller, useForm } from 'react-hook-form'
-import { Calendar } from 'primereact/calendar';
-import 'primereact/resources/themes/tailwind-light/theme.css';
+import DatePicker from "react-multi-date-picker"
+import DatePanel from "react-multi-date-picker/plugins/date_panel"
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
 
@@ -22,44 +22,57 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [isPayment, setIsPayment] = useState(false)
     const [isNotPayment, setIsNotPayment] = useState(false)
     const router = useRouter()
-    const [isDoctorName, setIsDoctorName] = useState("")
+    const [doctorName, setDoctorName] = useState("")
     const [isdoctorData, setIsDoctorData] = useState(null)
+    const [dates, setDates] = useState([])
+    const [timeSlots, setTimeSlots] = useState([])
+    const [timeSlotsActive, setTimeSlotsActive] = useState(null)
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
 
-    console.log('check doctor name', isDoctorName)
+
+    const handleTimeSlots = (slot, index) => {
+        setTimeSlotsActive(index)
+        setSelectedTimeSlot(slot)
+    }
 
     useEffect(() => {
         const doctorFind = async () => {
             try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor-query?name=${isDoctorName}`)
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor-query?name=${isdoctorData}`)
                 console.log(res.data)
                 setIsDoctorData(res.data)
             } catch (error) {
                 console.log(error)
             }
         }
-        if (isDoctorName) {
+        if (doctorName) {
             doctorFind()
         }
-    }, [isDoctorName])
+    }, [doctorName])
 
-    const { data: doctorData = [] } = useQuery({
-        queryKey: ["doctorData"],
-        queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor_get?id=${doctorId}`)
-            return res.data
+
+    useEffect(() => {
+        const doctorAvaiableDate = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor_get?name=${doctorName}`)
+                setDates(res.data?.service_details?.available_date)
+            } catch (error) {
+                console.log(error)
+            }
         }
-    })
+        if (doctorName) {
+            doctorAvaiableDate()
+        }
+    }, [doctorName])
+
 
     const { data: apponmentData = [] } = useQuery({
         queryKey: ["apponmentData"],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor_appoinment`)
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor_appoinment`)
             return res.data
         }
     })
-
-
-
 
     const {
         register,
@@ -70,7 +83,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        console.log(data)
+        // console.log(data)
         const appoinmentData = {
             patient_name: data.full_name,
             address: data.address,
@@ -122,6 +135,43 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         if (!isNotPayment) {
             setIsPayment(false)
         }
+    }
+
+    useEffect(() => {
+        const fetchTimeSlots = async () => {
+            try {
+                const resTime = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor-time-slots?name=${doctorName}`)
+                if (resTime) {
+                    const slots = generateTimeSlot(
+                        resTime?.data?.startTime,
+                        resTime?.data?.endTime,
+                        30
+                    )
+                    setTimeSlots(slots)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        if (doctorName) {
+            fetchTimeSlots()
+        }
+
+    }, [doctorName])
+
+    const generateTimeSlot = (startTime, endTime, slotDuration) => {
+        const today = new Date()
+        const date = today.toISOString().split('T')[0];
+
+        let current = new Date(`${date}T${startTime}:00`)
+        let end = new Date(`${date}T${endTime}:00`)
+
+        const slots = []
+        while (current < end) {
+            slots.push(current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            current.setMinutes(current.getMinutes() + slotDuration)
+        }
+        return slots
     }
 
 
@@ -188,7 +238,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Doctor Name</label>
                             {
                                 apponmentData?.doctorsName ? (
-                                    <select onClick={(e) => setIsDoctorName(e.target.value)} {...register("doctor_name")} defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                    <select onClick={(e) => setDoctorName(e.target.value)} {...register("doctor_name")} defaultValue={'Gender'} className="select w-full border border-[#000]">
+                                        <option>Please Select</option>
                                         {
                                             apponmentData?.doctorsName.map((doctorName, index) => (
                                                 <option key={index} value={doctorName}>{doctorName}</option>
@@ -196,7 +247,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                         }
                                     </select>
                                 ) : (
-                                    <p>N/A</p>
+                                    <p className='p-3 rounded-2xl border border-[#000]'>N/A</p>
                                 )
                             }
 
@@ -221,9 +272,48 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     </div>
                     <div className='flex flex-col gap-2 w-full mt-5'>
                         <label htmlFor="">Appointment Date</label>
-                        <div className="card flex justify-content-center border">
-                            <Calendar className='font-rubik' value={appoinmentDate} onChange={(e) => setAppoinmentDate(e.value)} inline showWeek />
-                        </div>
+                        <DatePicker
+                            value={dates}
+                            onChange={setDates}
+                            format="MMMM DD YYYY"
+                            sort
+                            plugins={[
+                                <DatePanel />
+                            ]}
+                            inputClass='p-3 border border-black w-full'
+                            containerClassName='w-full'
+                            mapDays={({ date }) => {
+                                const jsDate = new Date(date)
+                                const isSelectedDate = dates.some((selectedDate) => new Date(selectedDate).toDateString() === jsDate.toDateString());
+                                return {
+                                    disabled: !isSelectedDate,
+                                    style: isSelectedDate ? {
+                                        backgroundColor: "#0B8BE6",
+                                        color: '#ffff'
+                                    } : {
+                                        backgroundColor: "#f5f5f5",
+                                        color: '#ccc'
+                                    }
+
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className='my-5'>
+                        <label htmlFor="">Time Slots</label>
+                        {
+                            timeSlots ? (
+                                <div className='grid grid-cols-3 gap-5 mt-2'>
+                                    {
+                                        timeSlots.map((slot, index) => (
+                                            <button onClick={() => handleTimeSlots(slot, index)} key={index} className={`${timeSlotsActive === index && "bg-[#317cc4] text-white"} cursor-pointer border p-2`}>{slot}</button>
+                                        ))
+                                    }
+                                </div>
+                            ) : (
+                                <p>Not Time Slots</p>
+                            )
+                        }
                     </div>
                     <div className='my-10'>
                         {/* <p>If you want to make a payment, click on "Payment Checkout". If you don't want to, click on "Default Submit".</p> */}
