@@ -11,6 +11,7 @@ export const POST = async (request) => {
         if (successPaymentInfo.status !== 'VALID') {
             throw new Error("Unauthorized payment, Invalid Payment")
         }
+        
         const query = {
             transaction_id: successPaymentInfo.tran_id
         }

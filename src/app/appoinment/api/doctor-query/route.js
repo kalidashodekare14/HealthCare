@@ -7,8 +7,8 @@ export const GET = async (request) => {
     const doctorName = searchParams.get('name')
     try {
         const db = await connectDB()
-        const doctorsCollection = db.collection('doctors')
-        const query = { name: doctorName }
+        const doctorsCollection = db.collection('users')
+        const query = { name: doctorName, role: 'doctor', status: 'approved' }
         const result = await doctorsCollection.findOne(query)
         return NextResponse.json(result)
     } catch (error) {

@@ -5,6 +5,7 @@ import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
     const appoinmentInfo = await request.json()
+    console.log('check data', appoinmentInfo)
 
     try {
         const db = await connectDB()
@@ -16,10 +17,10 @@ export const POST = async (request) => {
             total_amount: "500",
             currency: "BDT",
             tran_id: tnxId,
-            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/success-payment`,
+            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/success-payment`,
             fail_url: `${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/payment-fail`,
             cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/payment-cancel`,
-            cus_name: appoinmentInfo?.fullName || "None",
+            cus_name: appoinmentInfo?.patient_name || "None",
             cus_email: appoinmentInfo?.email || "None",
             cus_add1: appoinmentInfo?.address || "None",
             cus_add2: "Dhaka",

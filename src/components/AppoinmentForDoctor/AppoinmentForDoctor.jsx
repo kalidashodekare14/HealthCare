@@ -23,7 +23,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [isNotPayment, setIsNotPayment] = useState(false)
     const router = useRouter()
     const [doctorName, setDoctorName] = useState("")
-    const [isdoctorData, setIsDoctorData] = useState(null)
+    const [doctorFindData, setdoctorFindData] = useState(null)
     const [dates, setDates] = useState([])
     const [timeSlots, setTimeSlots] = useState([])
     const [timeSlotsActive, setTimeSlotsActive] = useState(null)
@@ -35,12 +35,14 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         setSelectedTimeSlot(slot)
     }
 
+
+
     useEffect(() => {
         const doctorFind = async () => {
             try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor-query?name=${isdoctorData}`)
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor-query?name=${doctorName}`)
                 console.log(res.data)
-                setIsDoctorData(res.data)
+                setdoctorFindData(res.data)
             } catch (error) {
                 console.log(error)
             }
@@ -92,12 +94,14 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             contact_number: data.phone_number,
             email: data.email,
             doctorInfo: {
-                doctor_image: isdoctorData?.profilePicture,
-                doctor_name: data.doctor_name,
-                department: isdoctorData?.department,
+                doctor_image: doctorFindData?.image,
+                doctor_name: doctorName,
+                department: "serjari",
             },
             appoinment_date: appoinmentDate,
-            user_info: session?.data?.user
+            user_info: session?.data?.user,
+            available_time: dates,
+            time_slots: selectedTimeSlot
         }
         if (isPayment) {
             axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/appoinment_payment`, appoinmentData)
@@ -256,10 +260,10 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Department</label>
                             <div className='border border-black p-3 rounded-xl'>
                                 {
-                                    isdoctorData?.department ? (
+                                    doctorFindData?.department ? (
                                         <p>
                                             {
-                                                isdoctorData?.department
+                                                doctorFindData?.department
                                             }
                                         </p>
                                     ) : (
