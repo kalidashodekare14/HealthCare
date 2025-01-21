@@ -26,7 +26,7 @@ export const POST = async (request) => {
         }
         const result = await appoinmentCollection.updateOne(query, update)
         console.log(result)
-        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment-payment-success`)
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment-payment-success`, 303)
     } catch (error) {
         return NextResponse.json({ message: "No Data Found", error })
     }
