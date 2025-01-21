@@ -101,10 +101,11 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             appoinment_date: appoinmentDate,
             user_info: session?.data?.user,
             available_time: dates,
-            time_slots: selectedTimeSlot
+            time_slots: selectedTimeSlot,
+            doctor_fee: doctorFindData?.service_details?.consultation_fee
         }
         if (isPayment) {
-            axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/appoinment_payment`, appoinmentData)
+            axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/appoinment_payment`, appoinmentData)
                 .then(res => {
                     const redirecUrl = res.data.paymentUrl
                     if (redirecUrl) {
