@@ -719,7 +719,7 @@ const ProfilePage = () => {
                                                                         onChange={setDates}
                                                                         sort
                                                                         plugins={[
-                                                                            <DatePanel />
+                                                                            <DatePanel key={dates?.length} />
                                                                         ]}
                                                                         inputClass='p-3 border border-black w-80'
                                                                         containerClassName='w-full'

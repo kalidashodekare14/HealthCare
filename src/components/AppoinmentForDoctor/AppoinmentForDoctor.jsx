@@ -283,13 +283,13 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             format="MMMM DD YYYY"
                             sort
                             plugins={[
-                                <DatePanel />
+                                <DatePanel key={dates?.length} />
                             ]}
                             inputClass='p-3 border border-black w-full'
                             containerClassName='w-full'
                             mapDays={({ date }) => {
                                 const jsDate = new Date(date)
-                                const isSelectedDate = dates.some((selectedDate) => new Date(selectedDate).toDateString() === jsDate.toDateString());
+                                const isSelectedDate = dates?.some((selectedDate) => new Date(selectedDate).toDateString() === jsDate.toDateString());
                                 return {
                                     disabled: !isSelectedDate,
                                     style: isSelectedDate ? {
