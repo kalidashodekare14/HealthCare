@@ -53,6 +53,10 @@ const ProfilePage = () => {
     const [dates, setDates] = useState([new Date()]);
     const [timeSlots, setTimeSlots] = useState([{ start: "", end: "" }])
     const [user_bio, refetch, userLoading] = UserData()
+    const [firstLoading, setFirstLoading] = useState(false)
+    const [secondLoading, setSecondLoading] = useState(false)
+    const [thirdLoading, setThirdLoading] = useState(false)
+    const [fourLoading, setFourLoading] = useState(false)
 
     console.log('date', dates)
 
@@ -83,6 +87,7 @@ const ProfilePage = () => {
         setNextTreatmentActive(!nextTreatmentActive)
     }
 
+    // form 1
     const {
         register: register1,
         handleSubmit: handlePersonalInfoSubmit,
@@ -90,25 +95,34 @@ const ProfilePage = () => {
     } = useForm()
 
     const onPersonalInfoSubmit = async (data) => {
-        console.log(data)
-        const personalInfo = {
-            email: data.email,
-            phone_number: data.phone_number,
-            date_of_birth: data.date_of_birth,
-            gender: data.gender,
-            current_address: data.current_address
+        try {
+            setFirstLoading(true)
+            console.log(data)
+            const personalInfo = {
+                email: data.email,
+                phone_number: data.phone_number,
+                date_of_birth: data.date_of_birth,
+                gender: data.gender,
+                current_address: data.current_address
+            }
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
+            console.log(res)
+            if (res.data.matchedCount > 0) {
+                setPersonalInfoActive(false)
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setFirstLoading(false)
         }
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
-        console.log(res)
-        if (res.data.matchedCount > 0) {
-            setPersonalInfoActive(false)
-            refetch()
-        }
+
 
 
 
     }
 
+    // form 2
     const {
         register: register2,
         handleSubmit: handleMedicalInfoSubmit,
@@ -116,48 +130,54 @@ const ProfilePage = () => {
     } = useForm()
 
     const onMedicalInfoSubmit = async (data) => {
-        console.log(data)
-
-        // doctor information
-        const doctorInfo = {
-            professional_information: {
-                license_number: data.license_number,
-                specialization: data.specialization,
-                experience: data.experience,
-                workplace: data.workplace,
-                qualification: data.qualification,
-                hospital_clinic: data.hospital_clinic
+        try {
+            setSecondLoading(true)
+            console.log(data)
+            // doctor information
+            const doctorInfo = {
+                professional_information: {
+                    license_number: data.license_number,
+                    specialization: data.specialization,
+                    experience: data.experience,
+                    workplace: data.workplace,
+                    qualification: data.qualification,
+                    hospital_clinic: data.hospital_clinic
+                }
             }
-        }
 
-        if (user_bio.role === 'doctor') {
-            const doctorRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/doctor-professional-info?email=${sessionEmail}`, doctorInfo)
-            console.log(doctorRes.data)
-            if (doctorRes.data.matchedCount > 0) {
-                setMedicalInfoActive(false)
-                refetch()
+            if (user_bio?.role === 'doctor') {
+                const doctorRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/doctor-professional-info?email=${sessionEmail}`, doctorInfo)
+                console.log(doctorRes.data)
+                if (doctorRes.data.matchedCount > 0) {
+                    setMedicalInfoActive(false)
+                    refetch()
+                }
             }
-        }
 
-        // patient inforamtion
-        const medicalInfo = {
-            blood_group: data.blood_group,
-            health_condition: data.health_condition,
-            chronic_diseases_history: selectedOption
-        }
-
-        if (user_bio.role === 'patient') {
-            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
-            console.log(res.data)
-            if (res.data.matchedCount > 0) {
-                setMedicalInfoActive(false)
-                refetch()
+            // patient inforamtion
+            const medicalInfo = {
+                blood_group: data.blood_group,
+                health_condition: data.health_condition,
+                chronic_diseases_history: selectedOption
             }
+
+            if (user_bio.role === 'patient') {
+                const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
+                console.log(res.data)
+                if (res.data.matchedCount > 0) {
+                    setMedicalInfoActive(false)
+                    refetch()
+                }
+            }
+
+        } catch (error) {
+            consle.log(error)
+        } finally {
+            setSecondLoading(false)
         }
-
-
     }
 
+    // form 3
     const {
         register: register3,
         handleSubmit: handleFullNameSubmit,
@@ -165,18 +185,26 @@ const ProfilePage = () => {
     } = useForm()
 
     const onFullNameSubmit = async (data) => {
-        console.log(data)
-        const fullNameData = {
-            name: data.name
-        }
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/fullname?email=${sessionEmail}`, fullNameData)
-        console.log(res)
-        if (res.data.matchedCount > 0) {
-            setFullNameActive(false)
-            refetch()
+        try {
+            setThirdLoading(true)
+            console.log(data)
+            const fullNameData = {
+                name: data.name
+            }
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/fullname?email=${sessionEmail}`, fullNameData)
+            console.log(res)
+            if (res.data.matchedCount > 0) {
+                setFullNameActive(false)
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setThirdLoading(false)
         }
     }
 
+    // form 4
     const {
         register: register4,
         handleSubmit: handleNextTreatmentSubmit,
@@ -184,20 +212,27 @@ const ProfilePage = () => {
     } = useForm()
 
     const onNextTreatmentSubmit = async (data) => {
-        console.log(data)
-        const serviceDetailsInfo = {
-            service_details: {
-                consultation_fee: data.consultation_fee,
-                service_type: data.service_type,
-                available_date: dates,
-                time_and_slots: timeSlots
+        try {
+            setFourLoading(true)
+            console.log(data)
+            const serviceDetailsInfo = {
+                service_details: {
+                    consultation_fee: data.consultation_fee,
+                    service_type: data.service_type,
+                    available_date: dates,
+                    time_and_slots: timeSlots
+                }
             }
-        }
-        const servicesRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/service-detials?email=${sessionEmail}`, serviceDetailsInfo)
-        console.log(servicesRes)
-        if (servicesRes.data.matchedCount > 0) {
-            setNextTreatmentActive(false)
-            refetch()
+            const servicesRes = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/service-detials?email=${sessionEmail}`, serviceDetailsInfo)
+            console.log(servicesRes)
+            if (servicesRes.data.matchedCount > 0) {
+                setNextTreatmentActive(false)
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setFourLoading(false)
         }
     }
 
@@ -314,9 +349,26 @@ const ProfilePage = () => {
                                     fullNameActive ? (
                                         <div className='flex items-center gap-3'>
                                             <MdOutlineCancel onClick={handleFullNameEdit} className='text-2xl cursor-pointer' />
-                                            <button type='submit'>
-                                                <FaRegSave className='text-xl cursor-pointer' />
-                                            </button>
+                                            {
+                                                thirdLoading ? (
+                                                    <RotatingLines
+                                                        visible={true}
+                                                        height="30"
+                                                        width="30"
+                                                        color="grey"
+                                                        strokeWidth="5"
+                                                        animationDuration="0.75"
+                                                        ariaLabel="rotating-lines-loading"
+                                                        wrapperStyle={{}}
+                                                        wrapperClass=""
+                                                    />
+                                                ) : (
+                                                    <button type='submit'>
+                                                        <FaRegSave className='text-xl cursor-pointer' />
+                                                    </button>
+                                                )
+                                            }
+
                                         </div>
                                     ) : (
                                         <button>
@@ -377,9 +429,25 @@ const ProfilePage = () => {
                                                     <button onClick={handlePersonalIntoEdit}>
                                                         <MdCancel className='text-2xl cursor-pointer' />
                                                     </button>
-                                                    <button type='submit'>
-                                                        <FaSave className='text-2xl cursor-pointer' />
-                                                    </button>
+                                                    {
+                                                        firstLoading ? (
+                                                            <RotatingLines
+                                                                visible={true}
+                                                                height="30"
+                                                                width="30"
+                                                                color="grey"
+                                                                strokeWidth="5"
+                                                                animationDuration="0.75"
+                                                                ariaLabel="rotating-lines-loading"
+                                                                wrapperStyle={{}}
+                                                                wrapperClass=""
+                                                            />
+                                                        ) : (
+                                                            <button type='submit'>
+                                                                <FaSave className='text-2xl cursor-pointer' />
+                                                            </button>
+                                                        )
+                                                    }
                                                 </div>
 
                                             ) : (
@@ -393,7 +461,7 @@ const ProfilePage = () => {
                                                 <label htmlFor="">Email:</label>
                                                 {
                                                     personalInfoActive ? (
-                                                        <input defaultValue={user_bio?.email} {...register1("email")} className='input border border-[#000] w-full' type="email" />
+                                                        <input disabled defaultValue={user_bio?.email} {...register1("email")} className=' input border border-[#000] w-full' type="email" />
                                                     ) : (
                                                         <div className='border p-3 rounded-lg'>
                                                             <p>{user_bio?.email || 'N/A'}</p>
@@ -405,13 +473,14 @@ const ProfilePage = () => {
                                                 <label htmlFor="">Phone Number:</label>
                                                 {
                                                     personalInfoActive ? (
-                                                        <input {...register1("phone_number")} defaultValue={user_bio?.phone_number} className='input border border-[#000] w-full' type="text" />
+                                                        <input {...register1("phone_number", { required: true })} defaultValue={user_bio?.phone_number} className='input border border-[#000] w-full' type="text" />
                                                     ) : (
                                                         <div className='border p-3 rounded-lg'>
                                                             <p>{user_bio?.phone_number || 'N/A'}</p>
                                                         </div>
                                                     )
                                                 }
+                                                {errors1.phone_number && <span className='text-red-500'>Please Provide Number</span>}
                                             </div>
                                         </div>
                                         <div className='grid grid-cols-1 lg:grid-cols-3 gap-5 my-5'>
@@ -419,32 +488,34 @@ const ProfilePage = () => {
                                                 <label htmlFor="">Current Address</label>
                                                 {
                                                     personalInfoActive ? (
-                                                        <input {...register1("current_address")} defaultValue={user_bio?.current_address} className='input border border-[#000] w-full' type="text" />
+                                                        <input {...register1("current_address", { required: true })} defaultValue={user_bio?.current_address} className='input border border-[#000] w-full' type="text" />
                                                     ) : (
                                                         <div className='border p-3 rounded-lg'>
                                                             <p>{user_bio?.current_address || 'N/A'}</p>
                                                         </div>
                                                     )
                                                 }
+                                                {errors1.current_address && <span className='text-red-500'>Please provide address</span>}
                                             </div>
                                             <div className='flex flex-col font-rubik w-full gap-1'>
                                                 <label htmlFor="">Date Of Birth</label>
                                                 {
                                                     personalInfoActive ? (
 
-                                                        <input {...register1("date_of_birth")} defaultValue={user_bio?.date_of_birth} className='input border border-[#000] w-full' type="date" placeholder='Email' />
+                                                        <input {...register1("date_of_birth", { required: true })} defaultValue={user_bio?.date_of_birth} className='input border border-[#000] w-full' type="date" placeholder='Email' />
                                                     ) : (
                                                         <div className='border p-3 rounded-lg'>
                                                             <p>{user_bio?.date_of_birth || 'N/A'}</p>
                                                         </div>
                                                     )
                                                 }
+                                                {errors1.phone_number && <span className='text-red-500'>Please Provide date of birth</span>}
                                             </div>
                                             <div className='flex flex-col font-rubik w-full gap-1'>
                                                 <label htmlFor="">Gender</label>
                                                 {
                                                     personalInfoActive ? (
-                                                        <select {...register1("gender")} defaultValue={user_bio?.gender || 'Gender'} className="select w-full border border-[#000]">
+                                                        <select {...register1("gender", { required: true })} defaultValue={user_bio?.gender || 'Gender'} className="select w-full border border-[#000]">
                                                             <option value={"Male"} >Male</option>
                                                             <option value={"Female"} >Female</option>
                                                             <option value={"Others"} >Others</option>
@@ -455,6 +526,7 @@ const ProfilePage = () => {
                                                         </div>
                                                     )
                                                 }
+                                                {errors1.phone_number && <span className='text-red-500'>Please Provide Gender</span>}
                                             </div>
                                         </div>
                                     </div>
@@ -472,9 +544,26 @@ const ProfilePage = () => {
                                                     <button onClick={handleMedicalInfoEdit}>
                                                         <MdCancel className='text-2xl cursor-pointer' />
                                                     </button>
-                                                    <button type='submit'>
-                                                        <FaSave className='text-2xl cursor-pointer' />
-                                                    </button>
+                                                    {
+                                                        secondLoading ? (
+                                                            <RotatingLines
+                                                                visible={true}
+                                                                height="30"
+                                                                width="30"
+                                                                color="grey"
+                                                                strokeWidth="5"
+                                                                animationDuration="0.75"
+                                                                ariaLabel="rotating-lines-loading"
+                                                                wrapperStyle={{}}
+                                                                wrapperClass=""
+                                                            />
+                                                        ) : (
+                                                            <button type='submit'>
+                                                                <FaSave className='text-2xl cursor-pointer' />
+                                                            </button>
+                                                        )
+                                                    }
+
                                                 </div>
 
                                             ) : (
@@ -489,19 +578,20 @@ const ProfilePage = () => {
                                                     <label htmlFor="">Medical License Number:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("license_number")} defaultValue={user_bio?.professional_information?.license_number} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("license_number", { required: true })} defaultValue={user_bio?.professional_information?.license_number} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
                                                                 <p>{user_bio?.professional_information?.license_number || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.license_number && <span className='text-red-500'>Please provide license number</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Specialization</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <select {...register2("specialization")} defaultValue={user_bio?.professional_information?.specialization || 'Good'} className="select w-full border border-[#000]">
+                                                            <select {...register2("specialization", { required: true })} defaultValue={user_bio?.professional_information?.specialization || 'Good'} className="select w-full border border-[#000]">
                                                                 <option value="Cardiology">Cardiology</option>
                                                                 <option value={"Orthopedics"} >Orthopedics</option>
                                                                 <option value={"Dermatology"} >Dermatology</option>
@@ -519,42 +609,46 @@ const ProfilePage = () => {
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.specialization && <span className='text-red-500'>Please provide specialization</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Years of Experience:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("experience")} defaultValue={user_bio?.professional_information?.experience} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("experience", { required: true })} defaultValue={user_bio?.professional_information?.experience} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
                                                                 <p>{user_bio?.professional_information?.experience || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.experience && <span className='text-red-500'>Please provide experience</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Workplace:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("workplace")} defaultValue={user_bio?.professional_information?.workplace} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("workplace", { required: true })} defaultValue={user_bio?.professional_information?.workplace} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
                                                                 <p>{user_bio?.professional_information?.workplace || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.experience && <span className='text-red-500'>Please provide workplace</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Qualification</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("qualification")} defaultValue={user_bio?.professional_information?.qualification} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("qualification", { required: true })} defaultValue={user_bio?.professional_information?.qualification} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
                                                                 <p>{user_bio?.professional_information?.qualification || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.experience && <span className='text-red-500'>Please provide qualification</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Hospital And Clinic</label>
@@ -567,6 +661,7 @@ const ProfilePage = () => {
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.hospital_clinic && <span className='text-red-500'>Please provide hospital and clinic</span>}
                                                 </div>
                                             </div>
                                         ) : (
@@ -587,19 +682,21 @@ const ProfilePage = () => {
                                                     <label htmlFor="">Blood Group:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("blood_group")} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("blood_group", { required: true })} defaultValue={user_bio?.blood_group} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
                                                                 <p>{user_bio?.blood_group || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.blood_group && <span className='text-red-500'>Please provide blood group</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor=""> Health Condition </label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <select {...register2("health_condition")} defaultValue={user_bio?.health_condition || 'Good'} className="select w-full border border-[#000]">
+                                                            <select {...register2("health_condition", { required: true })} defaultValue={user_bio?.health_condition || 'Good'} className="select w-full border border-[#000]">
+                                                                <option value=""></option>
                                                                 <option value="Good">Good</option>
                                                                 <option value={"Moderate"} >Moderate</option>
                                                                 <option value={"Critical"} >Critical</option>
@@ -611,6 +708,7 @@ const ProfilePage = () => {
                                                             </div>
                                                         )
                                                     }
+                                                    {errors2.health_condition && <span className='text-red-500'>Please provide health condition</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Chronic Diseases History</label>
@@ -665,9 +763,26 @@ const ProfilePage = () => {
                                                     <button onClick={handleNextTreatment}>
                                                         <MdCancel className='text-2xl cursor-pointer' />
                                                     </button>
-                                                    <button type='submit'>
-                                                        <FaSave className='text-2xl cursor-pointer' />
-                                                    </button>
+                                                    {
+                                                        fourLoading ? (
+                                                            <RotatingLines
+                                                                visible={true}
+                                                                height="30"
+                                                                width="30"
+                                                                color="grey"
+                                                                strokeWidth="5"
+                                                                animationDuration="0.75"
+                                                                ariaLabel="rotating-lines-loading"
+                                                                wrapperStyle={{}}
+                                                                wrapperClass=""
+                                                            />
+                                                        ) : (
+                                                            <button type='submit'>
+                                                                <FaSave className='text-2xl cursor-pointer' />
+                                                            </button>
+                                                        )
+                                                    }
+
                                                 </div>
 
                                             ) : (
@@ -683,19 +798,21 @@ const ProfilePage = () => {
                                                         <label htmlFor="">Consultation Fee:</label>
                                                         {
                                                             nextTreatmentActive ? (
-                                                                <input  {...register4("consultation_fee")} defaultValue={user_bio?.service_details?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
+                                                                <input  {...register4("consultation_fee", { required: true })} defaultValue={user_bio?.service_details?.consultation_fee} className='disabled input border border-[#000] w-full' type="number" />
                                                             ) : (
                                                                 <div className='border p-3 rounded-lg'>
                                                                     <p>{user_bio?.service_details?.consultation_fee || 'N/A'} TK</p>
                                                                 </div>
                                                             )
                                                         }
+                                                        {errors3.consultation_fee && <span className='text-red-500'>Please provide consulation fee</span>}
                                                     </div>
                                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                                         <label htmlFor="">Service Type</label>
                                                         {
                                                             nextTreatmentActive ? (
-                                                                <select {...register4("service_type")} defaultValue={user_bio?.service_type || 'Good'} className="select w-full border border-[#000]">
+                                                                <select {...register4("service_type", { required: true })} defaultValue={user_bio?.service_type || 'Good'} className="select w-full border border-[#000]">
+                                                                    <option value=""></option>
                                                                     <option value="Online Consultation">Online Consultation</option>
                                                                     <option value={"In-Person"} >In-Person</option>
                                                                     <option value={"Both"} >Both</option>
@@ -706,6 +823,7 @@ const ProfilePage = () => {
                                                                 </div>
                                                             )
                                                         }
+                                                        {errors3.experience && <span className='text-red-500'>Please provide service type</span>}
                                                     </div>
                                                     <div className='flex flex-col font-rubik w-full gap-1'>
                                                         <label htmlFor="">Available Date:</label>
