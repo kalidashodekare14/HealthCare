@@ -43,6 +43,7 @@ const AppoinmentDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
+                            
                             {
                                 appoinmentData.map(appoinmentData => (
                                     <tr key={appoinmentData._id}>

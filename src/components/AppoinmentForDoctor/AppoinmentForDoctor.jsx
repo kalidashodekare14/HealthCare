@@ -28,6 +28,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [timeSlots, setTimeSlots] = useState([])
     const [timeSlotsActive, setTimeSlotsActive] = useState(null)
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
+    const [isError, setIsError] = useState("")
+    const [dateError, setDateError] = useState("")
 
 
     const handleTimeSlots = (slot, index) => {
@@ -85,7 +87,19 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        // console.log(data)
+
+        if (doctorName.length < 1) {
+            setIsError("Please select doctor name")
+            return
+        } else {
+            setIsError("")
+        }
+
+        console.log(dates)
+        // if (dates.length > 1) {
+        //     // setDateError('Select any one date')
+        //     return
+        // }
         const appoinmentData = {
             patient_name: data.full_name,
             address: data.address,
@@ -193,11 +207,13 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='grid grid-cols-2 gap-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Full Name</label>
-                            <input {...register("full_name")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
+                            <input {...register("full_name", { required: true })} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.name || "Enter your name"} type="text" />
+                            {errors.full_name && <span className='text-red-500'>Full name must be required</span>}
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Address</label>
-                            <input {...register("address")} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="text" />
+                            <input {...register("address", { required: true })} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="text" />
+                            {errors.address && <span className='text-red-500'>Address must be required</span>}
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Date Of Birth</label>
@@ -205,11 +221,13 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Gender</label>
-                            <select {...register("gender")} defaultValue={user_bio?.gender || "Gender"} className="select w-full border border-[#000]">
+                            <select {...register("gender", { required: true })} defaultValue={user_bio?.gender || "Gender"} className="select w-full border border-[#000]">
+                                <option value=""></option>
                                 <option value="Male">Male</option>
                                 <option value={"Female"} >Female</option>
                                 <option value={"Others"} >Others</option>
                             </select>
+                            {errors.gender && <span className='text-red-500'>Gender must be required</span>}
                         </div>
                     </div>
                     <div className='flex gap-3 mt-5'>
@@ -232,7 +250,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Email</label>
-                            <input {...register("email")} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.email || "Enter your name"} type="email" />
+                            <input {...register("email", { required: true })} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.email || "Enter your name"} type="email" />
+                            {errors.email && <span className='text-red-500'>Email must be required</span>}
                         </div>
                     </div>
                     <div className='border-b pb-1 my-5'>
@@ -255,7 +274,9 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                     <p className='p-3 rounded-2xl border border-[#000]'>N/A</p>
                                 )
                             }
-
+                            {
+                                isError && <span className='text-red-500'>{isError}</span>
+                            }
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Department</label>
@@ -303,6 +324,9 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                 }
                             }}
                         />
+                        {
+                            dateError && <span className='text-red-500'>{dateError}</span>
+                        }
                     </div>
                     <div className='my-5'>
                         <label htmlFor="">Time Slots</label>

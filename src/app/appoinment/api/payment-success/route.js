@@ -19,7 +19,7 @@ export const POST = async (request) => {
         }
         const update = {
             $set: {
-                status: "success",
+                status: "Success",
                 amount: successPaymentInfo.amount,
                 transaction_date: successPaymentInfo.tran_date
             }
