@@ -30,6 +30,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
     const [isError, setIsError] = useState("")
     const [dateError, setDateError] = useState("")
+    const [doctorFee, setDoctorFee] = useState(null)
+
 
 
     const handleTimeSlots = (slot, index) => {
@@ -60,6 +62,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             try {
                 const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor_get?name=${doctorName}`)
                 setDates(res.data?.service_details?.available_date)
+                setDoctorFee(res.data?.service_details?.consultation_fee)
             } catch (error) {
                 console.log(error)
             }
@@ -257,7 +260,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='border-b pb-1 my-5'>
                         <h1 className='text-[18px]'>Appointment Details</h1>
                     </div>
-                    <div className='grid grid-cols-2 gap-5'>
+                    <div className='grid grid-cols-3 gap-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Doctor Name</label>
                             {
@@ -282,10 +285,42 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             <label htmlFor="">Department</label>
                             <div className='border border-black p-3 rounded-xl'>
                                 {
-                                    doctorFindData?.department ? (
+                                    doctorFindData?.professional_information?.department ? (
                                         <p>
                                             {
-                                                doctorFindData?.department
+                                                doctorFindData?.professional_information?.department
+                                            }
+                                        </p>
+                                    ) : (
+                                        <p>Please Select Doctor Name</p>
+                                    )
+                                }
+
+                            </div>
+                        </div>
+                        <div className='flex flex-col gap-2 w-full'>
+                            <label htmlFor="">Doctor Fee</label>
+                            <div className='border border-black p-3 rounded-xl'>
+                                {
+                                    doctorFee ? (
+                                        <div className='flex items-center gap-1'>
+                                            <p>{doctorFee}</p>
+                                            <p>TK</p>
+                                        </div>
+                                    ) : (
+                                        <p>Please Select Doctor Name</p>
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <div className='flex flex-col gap-2 w-full'>
+                            <label htmlFor="">Specialization</label>
+                            <div className='border border-black p-3 rounded-xl'>
+                                {
+                                    doctorFindData?.professional_information?.specialization ? (
+                                        <p>
+                                            {
+                                                doctorFindData?.professional_information?.specialization
                                             }
                                         </p>
                                     ) : (

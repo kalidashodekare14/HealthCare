@@ -139,9 +139,10 @@ const ProfilePage = () => {
                     license_number: data.license_number,
                     specialization: data.specialization,
                     experience: data.experience,
-                    workplace: data.workplace,
+                    location: data.location,
                     qualification: data.qualification,
-                    hospital_clinic: data.hospital_clinic
+                    hospital_clinic: data.hospital_clinic,
+                    department: data.department
                 }
             }
 
@@ -612,6 +613,31 @@ const ProfilePage = () => {
                                                     {errors2.specialization && <span className='text-red-500'>Please provide specialization</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
+                                                    <label htmlFor="">Department</label>
+                                                    {
+                                                        medicalInfoActive ? (
+                                                            <select {...register2("department", { required: true })} defaultValue={user_bio?.professional_information?.specialization || 'Good'} className="select w-full border border-[#000]">
+                                                                <option value="Medicine">Medicine</option>
+                                                                <option value={"Surgery"} >Surgery</option>
+                                                                <option value={"Cardiology"} >Cardiology</option>
+                                                                <option value={"Neurology"} >Neurology</option>
+                                                                <option value={"Orthopedics"} >Orthopedics</option>
+                                                                <option value={"Gynecology & Obstetrics"} >Gynecology & Obstetrics</option>
+                                                                <option value={"Ophthalmology"} >Ophthalmology</option>
+                                                                <option value={"Dermatologyy"} >Dermatology</option>
+                                                                <option value={"Oncology"} >Oncology</option>
+                                                                <option value={"Psychiatry"} >Psychiatry</option>
+                                                                <option value={"Radiology"} >Radiology</option>
+                                                            </select>
+                                                        ) : (
+                                                            <div className='border p-3 rounded-lg'>
+                                                                <p>{user_bio?.professional_information?.department || 'N/A'}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    {errors2.specialization && <span className='text-red-500'>Please provide specialization</span>}
+                                                </div>
+                                                <div className='flex flex-col font-rubik w-full gap-1'>
                                                     <label htmlFor="">Years of Experience:</label>
                                                     {
                                                         medicalInfoActive ? (
@@ -625,13 +651,13 @@ const ProfilePage = () => {
                                                     {errors2.experience && <span className='text-red-500'>Please provide experience</span>}
                                                 </div>
                                                 <div className='flex flex-col font-rubik w-full gap-1'>
-                                                    <label htmlFor="">Workplace:</label>
+                                                    <label htmlFor="">Location:</label>
                                                     {
                                                         medicalInfoActive ? (
-                                                            <input {...register2("workplace", { required: true })} defaultValue={user_bio?.professional_information?.workplace} className='input border border-[#000] w-full' type="text" />
+                                                            <input {...register2("location", { required: true })} defaultValue={user_bio?.professional_information?.location} className='input border border-[#000] w-full' type="text" />
                                                         ) : (
                                                             <div className='border p-3 rounded-lg'>
-                                                                <p>{user_bio?.professional_information?.workplace || 'N/A'}</p>
+                                                                <p>{user_bio?.professional_information?.location || 'N/A'}</p>
                                                             </div>
                                                         )
                                                     }
