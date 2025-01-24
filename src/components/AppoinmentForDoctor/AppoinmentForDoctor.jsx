@@ -31,7 +31,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [isError, setIsError] = useState("")
     const [dateError, setDateError] = useState("")
     const [doctorFee, setDoctorFee] = useState(null)
-
+    const [isProcessing, setIsProcessing] = useState(false)
+   
 
 
     const handleTimeSlots = (slot, index) => {
@@ -97,12 +98,6 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         } else {
             setIsError("")
         }
-
-        console.log(dates)
-        // if (dates.length > 1) {
-        //     // setDateError('Select any one date')
-        //     return
-        // }
         const appoinmentData = {
             patient_name: data.full_name,
             address: data.address,
@@ -121,27 +116,48 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             time_slots: selectedTimeSlot,
             doctor_fee: doctorFindData?.service_details?.consultation_fee
         }
+
+
+
         if (isPayment) {
-            axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/appoinment_payment`, appoinmentData)
-                .then(res => {
-                    const redirecUrl = res.data.paymentUrl
-                    if (redirecUrl) {
-                        router.replace(redirecUrl)
-                    }
-                    console.log(res)
-                })
-        }
-        if (isNotPayment) {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor_appoinment`, appoinmentData)
-            if (res.data.acknowledged === true) {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your appoinment has been submited",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+            try {
+                console.log('checking proccess', isProcessing)
+                setIsProcessing(true)
+                axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/appoinment_payment`, appoinmentData)
+                    .then(res => {
+                        const redirecUrl = res.data.paymentUrl
+                        if (redirecUrl) {
+                            router.replace(redirecUrl)
+                        }
+                        console.log(res)
+                    })
+            } catch (error) {
+
+            } finally {
+                setIsProcessing(false)
             }
+
+        }
+
+        if (isNotPayment) {
+            try {
+                setIsProcessing(true)
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor_appoinment`, appoinmentData)
+                if (res.data.acknowledged === true) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your appoinment has been submited",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setIsProcessing(false)
+            }
+
         }
     }
 
@@ -215,7 +231,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Address</label>
-                            <input {...register("address", { required: true })} className='input border border-[#000] rounded-md w-full' placeholder='Enter Age' type="text" />
+                            <input {...register("address", { required: true })} className='input border border-[#000] rounded-md w-full' defaultValue={user_bio?.current_address} placeholder='Enter Age' type="text" />
                             {errors.address && <span className='text-red-500'>Address must be required</span>}
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
@@ -395,12 +411,20 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='flex justify-center items-center my-5'>
                         {
                             isPayment && (
-                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Payment Here</button>
+                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>
+                                    {
+                                        isProcessing ? "Processing..." : "Payment Here"
+                                    }
+                                </button>
                             )
                         }
                         {
                             isNotPayment && (
-                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>Appoinment Submit</button>
+                                <button type='submit' className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] border-1 hover:border-[#307bc4] text-white'>
+                                    {
+                                        isProcessing ? "Processing..." : "Payment Here"
+                                    }
+                                </button>
                             )
                         }
                     </div>
