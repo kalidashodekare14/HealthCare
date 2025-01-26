@@ -110,11 +110,11 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             setDateError("")
         }
 
-        if(selectedTimeSlot === null){
+        if (selectedTimeSlot === null) {
             setSlotError("Please select a slot.")
             console.log('checking null')
             return
-        }else{
+        } else {
             setSlotError("")
         }
 
@@ -128,7 +128,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             doctorInfo: {
                 doctor_image: doctorFindData?.image,
                 doctor_name: doctorName,
-                department: "serjari",
+                department: doctorFindData?.professional_information?.department,
             },
             appoinment_date: appoinmentDate,
             user_info: session?.data?.user,

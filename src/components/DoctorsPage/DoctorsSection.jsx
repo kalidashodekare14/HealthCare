@@ -46,7 +46,14 @@ const DoctorsSection = () => {
                     doctors.map(doctor => (
                         <div className='border space-y-2 p-3 font-rubik' key={doctor._id}>
                             <div className='flex justify-center items-center border-b pb-2'>
-                                <Image className='w-40 h-40 rounded-full' src={doctor.image} width={500} height={300} alt='doctor image' />
+                                {
+                                    doctor?.image ? (
+                                        <Image className='w-40 h-40 rounded-full' src={doctor.image} width={500} height={300} alt='doctor image' />
+                                    ) : (
+                                        <Image className='w-40 h-40 rounded-full' src="https://i.ibb.co.com/WcTWxsN/nav-img.png" width={500} height={300} alt='doctor image' />
+                                    )
+                                }
+
                             </div>
                             <div className='space-y-2 border-b pb-2'>
                                 <h1 className='text-xl font-bold'>{doctor.name || "N/A"}</h1>
