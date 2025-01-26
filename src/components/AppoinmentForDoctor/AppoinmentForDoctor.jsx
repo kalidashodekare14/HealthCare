@@ -32,7 +32,8 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [dateError, setDateError] = useState("")
     const [doctorFee, setDoctorFee] = useState(null)
     const [isProcessing, setIsProcessing] = useState(false)
-   
+
+    console.log('check proccess', isProcessing)
 
 
     const handleTimeSlots = (slot, index) => {
@@ -119,20 +120,19 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
 
 
+
         if (isPayment) {
             try {
-                console.log('checking proccess', isProcessing)
+                console.log('is loading show')
                 setIsProcessing(true)
-                axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/appoinment_payment`, appoinmentData)
-                    .then(res => {
-                        const redirecUrl = res.data.paymentUrl
-                        if (redirecUrl) {
-                            router.replace(redirecUrl)
-                        }
-                        console.log(res)
-                    })
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/appoinment_payment`, appoinmentData)
+                const redirecUrl = res.data.paymentUrl
+                if (redirecUrl) {
+                    router.replace(redirecUrl)
+                }
+                console.log(res)
             } catch (error) {
-
+                console.log(error)
             } finally {
                 setIsProcessing(false)
             }
@@ -142,7 +142,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         if (isNotPayment) {
             try {
                 setIsProcessing(true)
-                const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/doctor_appoinment`, appoinmentData)
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/doctor_appoinment`, appoinmentData)
                 if (res.data.acknowledged === true) {
                     Swal.fire({
                         position: "top-end",
@@ -386,7 +386,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                 <div className='grid grid-cols-3 gap-5 mt-2'>
                                     {
                                         timeSlots.map((slot, index) => (
-                                            <button onClick={() => handleTimeSlots(slot, index)} key={index} className={`${timeSlotsActive === index && "bg-[#317cc4] text-white"} cursor-pointer border p-2`}>{slot}</button>
+                                            <span onClick={() => handleTimeSlots(slot, index)} key={index} className={`${timeSlotsActive === index && "bg-[#317cc4] text-white"} cursor-pointer border p-2 text-center`}>{slot}</span>
                                         ))
                                     }
                                 </div>
