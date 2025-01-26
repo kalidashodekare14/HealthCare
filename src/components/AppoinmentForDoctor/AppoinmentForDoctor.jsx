@@ -36,8 +36,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [doctorFee, setDoctorFee] = useState(null)
     const [isProcessing, setIsProcessing] = useState(false)
     const [phoneValue, setPhoneValue] = useState(null)
-
-    console.log('check proccess', isProcessing)
+    const [slotError, setSlotError] = useState("")
 
 
     const handleTimeSlots = (slot, index) => {
@@ -103,6 +102,22 @@ const AppoinmentForDoctor = ({ doctorId }) => {
         } else {
             setIsError("")
         }
+
+        if (dates.length > 1) {
+            setDateError("Please select one of the dates")
+            return
+        } else {
+            setDateError("")
+        }
+
+        if(selectedTimeSlot === null){
+            setSlotError("Please select a slot.")
+            console.log('checking null')
+            return
+        }else{
+            setSlotError("")
+        }
+
         const appoinmentData = {
             patient_name: data.full_name,
             address: data.address,
@@ -387,6 +402,9 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             ) : (
                                 <p>Not Time Slots</p>
                             )
+                        }
+                        {
+                            slotError && <span className='text-red-500'>{slotError}</span>
                         }
                     </div>
                     <div className='my-10'>
