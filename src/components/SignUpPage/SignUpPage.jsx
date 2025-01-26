@@ -14,7 +14,7 @@ import { FaEyeSlash, FaRegEye } from 'react-icons/fa6'
 
 const SignUpPage = () => {
 
-    const [value, setValue] = useState()
+    const [value, setValue] = useState(null)
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [isShowPassword, setIsShowPassword] = useState(false)

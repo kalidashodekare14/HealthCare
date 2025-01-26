@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
+// import PhoneInput from 'react-phone-input-2'
+// import 'react-phone-input-2/lib/style.css'
 import './AppoinmentForDoctor.css'
 import 'react-calendar/dist/Calendar.css';
 import { useQuery } from '@tanstack/react-query'
@@ -13,6 +13,9 @@ import DatePicker from "react-multi-date-picker"
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+import './AppoinmentForDoctor.css'
 
 const AppoinmentForDoctor = ({ doctorId }) => {
 
@@ -32,6 +35,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     const [dateError, setDateError] = useState("")
     const [doctorFee, setDoctorFee] = useState(null)
     const [isProcessing, setIsProcessing] = useState(false)
+    const [phoneValue, setPhoneValue] = useState(null)
 
     console.log('check proccess', isProcessing)
 
@@ -104,7 +108,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             address: data.address,
             date_Of_birth: data.date_of_birth,
             gender: data.gender,
-            contact_number: data.phone_number,
+            contact_number: data.contact_number,
             email: data.email,
             doctorInfo: {
                 doctor_image: doctorFindData?.image,
@@ -117,9 +121,6 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             time_slots: selectedTimeSlot,
             doctor_fee: doctorFindData?.service_details?.consultation_fee
         }
-
-
-
 
         if (isPayment) {
             try {
@@ -252,20 +253,12 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                     <div className='flex gap-3 mt-5'>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Contact Number</label>
-                            <Controller
-                                control={control}
-                                name='phone_number'
-                                rules={{ required: true }}
-                                render={({ field: { ref, ...field } }) => (
-                                    <PhoneInput
-                                        {...field}
-                                        country={'us'}
-                                        containerClass='w-32'
-                                        inputClass='p-6'
-                                    />
-                                )}
-                            />
-
+                            <PhoneInput
+                                className='border border-[#000] p-3 outline-0 rounded-md'
+                                placeholder="Phone Number"
+                                value={phoneValue}
+                                {...register("contact_number")}
+                                onChange={setPhoneValue} />
                         </div>
                         <div className='flex flex-col gap-2 w-full'>
                             <label htmlFor="">Email</label>
@@ -308,7 +301,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                             }
                                         </p>
                                     ) : (
-                                        <p>Please Select Doctor Name</p>
+                                        <p className='text-[#7a6e6e]'>Select doctor's name</p>
                                     )
                                 }
 
@@ -324,7 +317,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                             <p>TK</p>
                                         </div>
                                     ) : (
-                                        <p>Please Select Doctor Name</p>
+                                        <p className='text-[#7a6e6e]'>Select doctor's name</p>
                                     )
                                 }
                             </div>
@@ -340,7 +333,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                                             }
                                         </p>
                                     ) : (
-                                        <p>Please Select Doctor Name</p>
+                                        <p className='text-[#7a6e6e]'>Select doctor's name</p>
                                     )
                                 }
 
@@ -357,6 +350,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                             plugins={[
                                 <DatePanel key={dates?.length} />
                             ]}
+                            defaultValue={'Please select doctor name'}
                             inputClass='p-3 border border-black w-full'
                             containerClassName='w-full'
                             mapDays={({ date }) => {
