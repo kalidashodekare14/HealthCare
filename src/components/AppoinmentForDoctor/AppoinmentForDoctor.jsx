@@ -213,6 +213,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
     }, [doctorName])
 
+    
     const generateTimeSlot = (startTime, endTime, slotDuration) => {
         const today = new Date()
         const date = today.toISOString().split('T')[0];

@@ -6,6 +6,7 @@ import React from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
 import { RotatingLines } from 'react-loader-spinner'
+import Swal from 'sweetalert2'
 
 const PatientsDashboard = () => {
 
@@ -32,6 +33,28 @@ const PatientsDashboard = () => {
                 wrapperClass=""
             />
         </div>
+    }
+
+    const handleRemovePatient = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/patients/api/delete?id=${id}`)
+                console.log(res.data)
+                // Swal.fire({
+                //     title: "Deleted!",
+                //     text: "Your file has been deleted.",
+                //     icon: "success"
+                // });
+            }
+        });
     }
 
     return (
@@ -96,7 +119,7 @@ const PatientsDashboard = () => {
                                                 </div>
                                                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                                                     <li><p>Edit</p></li>
-                                                    <li><p>Delete</p></li>
+                                                    <li onClick={() => handleRemovePatient(patient?._id)}><p className='bg-red-500 text-white'>Delete</p></li>
                                                 </ul>
                                             </div>
                                         </td>

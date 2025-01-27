@@ -79,10 +79,12 @@ const AppoinmentDashboard = () => {
                                         </td>
                                         <td>
                                             {
-                                                new Date(appoinmentData.appoinment_date).toLocaleDateString() || "N/A"
+                                                new Date(appoinmentData.available_time[0]).toLocaleDateString() || "N/A"
                                             }
                                         </td>
-                                        <td>04.00</td>
+                                        <td>
+                                        <p>{appoinmentData?.time_slots || "N/A"}</p>
+                                        </td>
                                         <td>
                                             <div className='flex items-center gap-2'>
                                                 <div className='w-14 h-14 rounded-full'>
