@@ -36,12 +36,40 @@ const PatientsDashboard = () => {
         </div>
     }
 
-    const handleEditPatient = (id) =>{
+    const handleEditPatient = (id) => {
 
     }
 
-    const handleBlogPatient = (id) =>{
+    const handleBlogPatient = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Want to block this patient?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, block it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    setIsPatientLoading(true)
+                    const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/patients/api/patient-block?id=${id}`)
+                    if (res.data.modifiedCount > 0) {
+                        Swal.fire({
+                            title: "Blocked!",
+                            text: "Your patient has been blocked.",
+                            icon: "success"
+                        });
+                        refetch()
+                    }
 
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    setIsPatientLoading(false)
+                }
+            }
+        });
     }
 
     const handleRemovePatient = async (id) => {
@@ -58,7 +86,6 @@ const PatientsDashboard = () => {
                 try {
                     setIsPatientLoading(true)
                     const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/patients/api/patient-delete?id=${id}`)
-                    console.log(res.data)
                     if (res.data.deletedCount > 0) {
                         Swal.fire({
                             title: "Deleted!",
@@ -166,8 +193,8 @@ const PatientsDashboard = () => {
                                                         <CiMenuKebab className='text-2xl' />
                                                     </div>
                                                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-3">
-                                                        <li onClick={()=>handleEditPatient(patient?._id)}><p className='bg-green-400 text-white'>Edit</p></li>
-                                                        <li onClick={() => handleBlogPatient(patient?._id)}><p className='bg-yellow-500 text-white'>Blog</p></li>
+                                                        <li onClick={() => handleEditPatient(patient?._id)}><p className='bg-green-400 text-white'>Edit</p></li>
+                                                        <li onClick={() => handleBlogPatient(patient?._id)}><p className='bg-yellow-500 text-white'>Block</p></li>
                                                         <li onClick={() => handleRemovePatient(patient?._id)}><p className='bg-red-500 text-white'>Delete</p></li>
                                                     </ul>
                                                 </div>
