@@ -7,10 +7,17 @@ import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
 import { RotatingLines } from 'react-loader-spinner'
 import Swal from 'sweetalert2'
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
 
 const PatientsDashboard = () => {
 
+    const [open, setOpen] = useState(false);
+    const onOpenModal = () => setOpen(true);
+    const onCloseModal = () => setOpen(false);
     const [ispatientLoading, setIsPatientLoading] = useState(false)
+
+
     const { data: patientsData = [], refetch, isLoading: patientLoading } = useQuery({
         queryKey: ["patientsData"],
         queryFn: async () => {
@@ -36,10 +43,11 @@ const PatientsDashboard = () => {
         </div>
     }
 
+    // patient edit system
     const handleEditPatient = (id) => {
-
+        onOpenModal()
     }
-
+    // patient block system
     const handleBlogPatient = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -71,7 +79,7 @@ const PatientsDashboard = () => {
             }
         });
     }
-
+    // patient remove system 
     const handleRemovePatient = async (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -193,7 +201,7 @@ const PatientsDashboard = () => {
                                                         <CiMenuKebab className='text-2xl' />
                                                     </div>
                                                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-3">
-                                                        <li onClick={() => handleEditPatient(patient?._id)}><p className='bg-green-400 text-white'>Edit</p></li>
+                                                        <li onClick={onOpenModal}><p className='bg-green-400 text-white'>Edit</p></li>
                                                         <li onClick={() => handleBlogPatient(patient?._id)}><p className='bg-yellow-500 text-white'>Block</p></li>
                                                         <li onClick={() => handleRemovePatient(patient?._id)}><p className='bg-red-500 text-white'>Delete</p></li>
                                                     </ul>
@@ -209,6 +217,11 @@ const PatientsDashboard = () => {
 
                         </tbody>
                     </table>
+                    <Modal open={open} onClose={onCloseModal} center>
+                       <div>
+                            
+                       </div>
+                    </Modal>
                 </div>
             </div>
         </div>
