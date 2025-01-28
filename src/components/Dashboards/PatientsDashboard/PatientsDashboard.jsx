@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
 import { RotatingLines } from 'react-loader-spinner'
@@ -16,8 +16,11 @@ const PatientsDashboard = () => {
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const [ispatientLoading, setIsPatientLoading] = useState(false)
+    const [patientId, setPatientId] = useState(null)
+    const [patientQueryData, setPatientQueryData] = useState([])
+    console.log('check data and find patient', patientQueryData)
 
-
+    // patient data
     const { data: patientsData = [], refetch, isLoading: patientLoading } = useQuery({
         queryKey: ["patientsData"],
         queryFn: async () => {
@@ -25,7 +28,19 @@ const PatientsDashboard = () => {
             return res.data
         }
     })
-    console.log(patientsData)
+
+
+    // patient edit data
+    useEffect(() => {
+        const patientFind = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/patients/api/patient-query?id=${patientId}`)
+            setPatientQueryData(res.data)
+        }
+        if (patientId) {
+            patientFind()
+        }
+    }, [patientId])
+
 
     if (patientLoading) {
         return <div className='h-[600px] flex justify-center items-center'>
@@ -45,7 +60,6 @@ const PatientsDashboard = () => {
 
     // patient edit system
     const handleEditPatient = (id) => {
-        onOpenModal()
     }
     // patient block system
     const handleBlogPatient = (id) => {
@@ -201,7 +215,10 @@ const PatientsDashboard = () => {
                                                         <CiMenuKebab className='text-2xl' />
                                                     </div>
                                                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-3">
-                                                        <li onClick={onOpenModal}><p className='bg-green-400 text-white'>Edit</p></li>
+                                                        <li onClick={() => {
+                                                            onOpenModal()
+                                                            setPatientId(patient._id)
+                                                        }}><p className='bg-green-400 text-white'>Edit</p></li>
                                                         <li onClick={() => handleBlogPatient(patient?._id)}><p className='bg-yellow-500 text-white'>Block</p></li>
                                                         <li onClick={() => handleRemovePatient(patient?._id)}><p className='bg-red-500 text-white'>Delete</p></li>
                                                     </ul>
@@ -218,13 +235,31 @@ const PatientsDashboard = () => {
                         </tbody>
                     </table>
                     <Modal open={open} onClose={onCloseModal} center>
-                       <div>
-                            
-                       </div>
+                        <div className='flex flex-col justify-center items-center'>
+                            <div className='rounded-full'>
+                                {
+                                    patientQueryData?.image ? (
+                                        <Image className='rounded-full w-32 h-32' src={patientQueryData?.image} width={500} height={300} alt='' />
+                                    ) : (
+                                        <Image src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"} width={500} height={300} alt='' />
+                                    )
+                                }
+                            </div>
+                            <div className='grid grid-cols-2 gap-5'>
+                                <div className='flex flex-col '>
+                                    <label htmlFor="">Name:</label>
+                                    <input className='input input-bordered rounded-none' type="text" />
+                                </div>
+                                <div className='flex flex-col '>
+                                    <label htmlFor="">Email:</label>
+                                    <input className='input input-bordered rounded-none' type="email" />
+                                </div>
+                            </div>
+                        </div>
                     </Modal>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
