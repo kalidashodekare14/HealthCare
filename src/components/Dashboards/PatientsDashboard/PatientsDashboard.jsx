@@ -9,6 +9,9 @@ import { RotatingLines } from 'react-loader-spinner'
 import Swal from 'sweetalert2'
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import './PatientsDashboard'
 
 const PatientsDashboard = () => {
 
@@ -18,7 +21,7 @@ const PatientsDashboard = () => {
     const [ispatientLoading, setIsPatientLoading] = useState(false)
     const [patientId, setPatientId] = useState(null)
     const [patientQueryData, setPatientQueryData] = useState([])
-    console.log('check data and find patient', patientQueryData)
+    const [phoneValue, setPhoneValue] = useState(null)
 
     // patient data
     const { data: patientsData = [], refetch, isLoading: patientLoading } = useQuery({
@@ -241,18 +244,73 @@ const PatientsDashboard = () => {
                                     patientQueryData?.image ? (
                                         <Image className='rounded-full w-32 h-32' src={patientQueryData?.image} width={500} height={300} alt='' />
                                     ) : (
-                                        <Image src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"} width={500} height={300} alt='' />
+                                        <Image className='rounded-full w-32 h-32' src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"} width={500} height={300} alt='' />
                                     )
                                 }
                             </div>
-                            <div className='grid grid-cols-2 gap-5'>
-                                <div className='flex flex-col '>
+                            <div className='grid grid-cols-2 gap-5 font-rubik'>
+                                <div>
                                     <label htmlFor="">Name:</label>
-                                    <input className='input input-bordered rounded-none' type="text" />
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.name || "N/A"}</p>
+                                    </div>
                                 </div>
-                                <div className='flex flex-col '>
+                                <div>
                                     <label htmlFor="">Email:</label>
-                                    <input className='input input-bordered rounded-none' type="email" />
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.email || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Phone Number:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.phone_number || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Gender:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.gender || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Date Of Birth:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.date_of_birth || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Current Address:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.current_address || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Blood group:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.blood_group || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Health condition:</label>
+                                    <div className='border p-3'>
+                                        <p>{patientQueryData?.health_condition || "N/A"}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="">Health condition:</label>
+                                    <div className='border p-3'>
+                                        {
+                                            patientQueryData?.chronic_diseases_history ? (
+                                                patientQueryData?.chronic_diseases_history.map((diseases, index) => (
+                                                    <p key={index}>{diseases?.value}</p>
+                                                ))
+                                            ) : (
+                                                <p>N/A</p>
+                                            )
+                                        }
+                                        { }
+                                    </div>
                                 </div>
                             </div>
                         </div>
