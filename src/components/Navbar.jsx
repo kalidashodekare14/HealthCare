@@ -21,6 +21,7 @@ const Navbar = () => {
   const [user_bio] = UserData()
   const isDashboardRoute = pathname.startsWith('/dashboard')
   const sessionRole = session?.data?.user?.role
+  console.log('role check', sessionRole)
 
   const handleToggle = () => {
     setToggle(!toggle)
@@ -123,17 +124,17 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100  mt-3 w-52 p-2 shadow  ">
+                    className="font-rubik z-50 menu menu-sm dropdown-content bg-base-100  mt-3 w-52 shadow  space-y-3">
                     <li>
                       {
                         sessionRole === 'admin' ? (
-                          <Link href={'/dashboard'}>
+                          <Link className='hover:bg-[#307bc4] hover:text-white' href={'/dashboard'}>
                             <button className="justify-between text-[15px]">
                               Dashboard
                             </button>
                           </Link>
                         ) : (
-                          <Link href={'/profile'}>
+                          <Link className='hover:bg-[#307bc4] hover:text-white' href={'/profile'}>
                             <button className="justify-between text-[15px]">
                               Profile
                             </button>
@@ -142,13 +143,18 @@ const Navbar = () => {
                       }
 
                     </li>
+                    {
+                      sessionRole === 'doctor' && (
+                        <li>
+                          <Link href={"/patient-appoinment"} className='hover:bg-[#307bc4] hover:text-white' >
+                            <button className='text-[15px]'>Patients appoinment</button>
+                          </Link>
+                        </li>
+                      )
+                    }
                     <li>
-                      <button className='text-[15px]'>Settings</button>
+                      <button  className='text-[15px] hover:bg-[#307bc4] hover:text-white' onClick={() => signOut()}>Logout</button>
                     </li>
-                    <li>
-                      <button className='text-[15px]' onClick={() => signOut()}>Logout</button>
-                    </li>
-
                   </ul>
                 </div>
               </div>
