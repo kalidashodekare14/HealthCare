@@ -152,6 +152,15 @@ const Navbar = () => {
                         </li>
                       )
                     }
+                    {
+                      sessionRole === 'patient' && (
+                        <li>
+                          <Link href={"/patient-appoinment"} className='hover:bg-[#307bc4] hover:text-white' >
+                            <button className='text-[15px]'>Patients appoinment</button>
+                          </Link>
+                        </li>
+                      )
+                    }
                     <li>
                       <button  className='text-[15px] hover:bg-[#307bc4] hover:text-white' onClick={() => signOut()}>Logout</button>
                     </li>
