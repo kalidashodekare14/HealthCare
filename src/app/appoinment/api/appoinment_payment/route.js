@@ -14,7 +14,7 @@ export const POST = async (request) => {
         const initateData = {
             store_id: "progr67836033519d2",
             store_passwd: "progr67836033519d2@ssl",
-            total_amount: "500",
+            total_amount: appoinmentInfo?.doctor_fee,
             currency: "BDT",
             tran_id: tnxId,
             success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/appoinment/api/payment-success`,
@@ -26,7 +26,7 @@ export const POST = async (request) => {
             cus_add2: "Dhaka",
             cus_city: appoinmentInfo.address || "None",
             cus_state: "Dhaka",
-            cus_postcode: appoinmentInfo?.doctor_fee,
+            cus_postcode: "5100",
             cus_country: "Bangladesh" || "None",
             cus_phone: appoinmentInfo?.contact_number || "None",
             cus_fax: "01711111111",

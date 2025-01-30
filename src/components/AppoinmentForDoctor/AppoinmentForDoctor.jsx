@@ -137,6 +137,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             doctor_fee: doctorFindData?.service_details?.consultation_fee
         }
 
+        
         if (isPayment) {
             try {
                 console.log('is loading show')
