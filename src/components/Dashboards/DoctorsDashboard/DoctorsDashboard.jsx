@@ -174,100 +174,110 @@ const DoctorsDashboard = () => {
                         </thead>
                         <tbody>
                             {
-                                doctorsData.map(doctor => (
-                                    <tr key={doctor._id}>
-                                        <td>
-                                            <div className='flex items-center gap-3'>
-                                                <div>
-                                                    {
-                                                        doctor?.image ? (
-                                                            <Image
-                                                                className='w-14 h-14 rounded-full'
-                                                                src={doctor?.image}
-                                                                width={500}
-                                                                height={300}
-                                                                alt='doctor picture'
-                                                            />
-                                                        ) : (
-                                                            <Image
-                                                                className='w-14 h-14 rounded-full'
-                                                                src={`https://i.ibb.co.com/WcTWxsN/nav-img.png`}
-                                                                width={500}
-                                                                height={300}
-                                                                alt='doctor picture'
-                                                            />
-                                                        )
-                                                    }
-                                                </div>
-                                                <div>
-                                                    <p>{doctor?.name || "N/A"}</p>
-                                                    <p>{doctor?.patiend_id || "N/A"}</p>
-                                                </div>
-                                            </div>
-
-                                        </td>
-                                        <td>{doctor?.professional_information?.specialization || "N/A"}</td>
-                                        <td>{doctor?.professional_information?.experience || "N/A"} Year</td>
-                                        <td>
-                                            {
-                                                doctor?.service_details?.available_date ? (
-                                                    <div className='space-y-2'>
+                                doctorsData.length < 1 ? (
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Data is currently unavailable.</td>
+                                    </tr>
+                                ) : (
+                                    doctorsData.map(doctor => (
+                                        <tr key={doctor._id}>
+                                            <td>
+                                                <div className='flex items-center gap-3'>
+                                                    <div>
                                                         {
-                                                            doctor?.service_details?.available_date?.map((date, index) => (
-                                                                <p className='' key={index}>{new Date(date).toLocaleDateString()}</p>
-                                                            ))
+                                                            doctor?.image ? (
+                                                                <Image
+                                                                    className='w-14 h-14 rounded-full'
+                                                                    src={doctor?.image}
+                                                                    width={500}
+                                                                    height={300}
+                                                                    alt='doctor picture'
+                                                                />
+                                                            ) : (
+                                                                <Image
+                                                                    className='w-14 h-14 rounded-full'
+                                                                    src={`https://i.ibb.co.com/WcTWxsN/nav-img.png`}
+                                                                    width={500}
+                                                                    height={300}
+                                                                    alt='doctor picture'
+                                                                />
+                                                            )
                                                         }
                                                     </div>
-                                                ) : (
-                                                    <p>N/A</p>
-                                                )
-                                            }
-                                        </td>
-                                        <td>
-                                            {
-                                                doctor?.service_details?.time_and_slots[0] ? (
-                                                    <div className='flex items-center gap-2'>
-                                                        <p>{doctor?.service_details?.time_and_slots[0].start}</p>
-                                                        <span>-</span>
-                                                        <p>{doctor?.service_details?.time_and_slots[0].end}</p>
+                                                    <div>
+                                                        <p>{doctor?.name || "N/A"}</p>
+                                                        <p>{doctor?.patiend_id || "N/A"}</p>
                                                     </div>
-                                                ) : (
-                                                    <p>N/A</p>
-                                                )
-                                            }
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <p>{doctor?.email}</p>
-                                                <p>{doctor?.phone_number}</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="dropdown dropdown-end">
-                                                <div tabIndex={0} role="button" className=" m-1">
-                                                    <CiMenuKebab className='text-2xl' />
                                                 </div>
-                                                <ul tabIndex={0} className="dropdown-content menu bg-base-100 space-y-3 rounded-box z-[1] w-52 p-2 shadow">
-                                                    <li onClick={() => {
-                                                        onOpenModal()
-                                                        setDoctorId(doctor._id)
-                                                    }}
-                                                    className='bg-green-500 text-white'
-                                                    >
-                                                        <p>Details</p>
-                                                    </li>
-                                                    <li onClick={() => handleBlock(doctor?._id)} className='bg-yellow-500 text-white'>
-                                                        <p>Block</p>
-                                                    </li>
-                                                    <li onClick={() => handleDelete(doctor?._id)} className='bg-red-500 text-white'>
-                                                        <p>Delete</p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
+
+                                            </td>
+                                            <td>{doctor?.professional_information?.specialization || "N/A"}</td>
+                                            <td>{doctor?.professional_information?.experience || "N/A"} Year</td>
+                                            <td>
+                                                {
+                                                    doctor?.service_details?.available_date ? (
+                                                        <div className='space-y-2'>
+                                                            {
+                                                                doctor?.service_details?.available_date?.map((date, index) => (
+                                                                    <p className='' key={index}>{new Date(date).toLocaleDateString()}</p>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    ) : (
+                                                        <p>N/A</p>
+                                                    )
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    doctor?.service_details?.time_and_slots[0] ? (
+                                                        <div className='flex items-center gap-2'>
+                                                            <p>{doctor?.service_details?.time_and_slots[0].start}</p>
+                                                            <span>-</span>
+                                                            <p>{doctor?.service_details?.time_and_slots[0].end}</p>
+                                                        </div>
+                                                    ) : (
+                                                        <p>N/A</p>
+                                                    )
+                                                }
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <p>{doctor?.email}</p>
+                                                    <p>{doctor?.phone_number}</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="dropdown dropdown-end">
+                                                    <div tabIndex={0} role="button" className=" m-1">
+                                                        <CiMenuKebab className='text-2xl' />
+                                                    </div>
+                                                    <ul tabIndex={0} className="dropdown-content menu bg-base-100 space-y-3 rounded-box z-[1] w-52 p-2 shadow">
+                                                        <li onClick={() => {
+                                                            onOpenModal()
+                                                            setDoctorId(doctor._id)
+                                                        }}
+                                                            className='bg-green-500 text-white'
+                                                        >
+                                                            <p>Details</p>
+                                                        </li>
+                                                        <li onClick={() => handleBlock(doctor?._id)} className='bg-yellow-500 text-white'>
+                                                            <p>Block</p>
+                                                        </li>
+                                                        <li onClick={() => handleDelete(doctor?._id)} className='bg-red-500 text-white'>
+                                                            <p>Delete</p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )
                             }
+
 
 
                         </tbody>

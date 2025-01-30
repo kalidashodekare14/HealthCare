@@ -157,7 +157,7 @@ const DashboardDoctorsRequest = () => {
                     </div>
 
                 </div>
-                <div className=" bg-white">
+                <div className="overflow-x-auto bg-white">
                     <table className="table font-rubik">
                         {/* head */}
                         <thead>

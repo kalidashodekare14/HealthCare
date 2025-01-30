@@ -161,7 +161,6 @@ const PatientsDashboard = () => {
                 </div>
                 <div className="overflow-x-auto  bg-white">
                     <table className="table font-rubik">
-                        {/* head */}
                         <thead>
                             <tr className='text-[15px]'>
                                 <th></th>
