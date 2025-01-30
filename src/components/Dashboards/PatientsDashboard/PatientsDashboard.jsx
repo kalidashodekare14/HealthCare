@@ -100,7 +100,7 @@ const PatientsDashboard = () => {
     const handleRemovePatient = async (id) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "Want to Delete this doctor?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -114,7 +114,7 @@ const PatientsDashboard = () => {
                     if (res.data.deletedCount > 0) {
                         Swal.fire({
                             title: "Deleted!",
-                            text: "Your file has been deleted.",
+                            text: "Your doctor has been deleted.",
                             icon: "success"
                         });
                         refetch()
