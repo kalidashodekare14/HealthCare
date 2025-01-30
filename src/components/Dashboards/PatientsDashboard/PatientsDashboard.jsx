@@ -248,7 +248,7 @@ const PatientsDashboard = () => {
                                     )
                                 }
                             </div>
-                            <div className='grid grid-cols-2 gap-5 font-rubik'>
+                            <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 font-rubik'>
                                 <div>
                                     <label htmlFor="">Name:</label>
                                     <div className='border p-3'>
