@@ -129,6 +129,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
                 doctor_image: doctorFindData?.image,
                 doctor_name: doctorName,
                 department: doctorFindData?.professional_information?.department,
+                doctor_email: doctorFindData?.email
             },
             appoinment_date: appoinmentDate,
             user_info: session?.data?.user,
@@ -137,7 +138,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
             doctor_fee: doctorFindData?.service_details?.consultation_fee
         }
 
-        
+
         if (isPayment) {
             try {
                 console.log('is loading show')
@@ -214,7 +215,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
     }, [doctorName])
 
-    
+
     const generateTimeSlot = (startTime, endTime, slotDuration) => {
         const today = new Date()
         const date = today.toISOString().split('T')[0];
