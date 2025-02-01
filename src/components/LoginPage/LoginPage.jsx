@@ -77,7 +77,11 @@ const LoginPage = () => {
                                 }
                             </div>
                         </div>
-
+                        <div>
+                            <Link href={"/forget-password"}>
+                                <p className='text-[#307bc4]'>Forget password?</p>
+                            </Link>
+                        </div>
                         {errors.email && <span className='text-red-600'>Password must be required</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
