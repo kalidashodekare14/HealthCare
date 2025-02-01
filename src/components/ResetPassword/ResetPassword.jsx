@@ -15,6 +15,7 @@ const ResetPassword = () => {
     const token = searchParams.get('token')
     const [resetPassLoading, setResetPassLoading] = useState(false)
     const router = useRouter()
+    const [isError, setIsError] = useState("")
 
     const {
         register,
@@ -44,6 +45,9 @@ const ResetPassword = () => {
             }
         } catch (error) {
             console.log(error)
+            if (error.response) {
+                setIsError(error.response.data.message)
+            }
         } finally {
             setResetPassLoading(false)
         }
@@ -58,8 +62,12 @@ const ResetPassword = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full border p-5 space-y-2 '>
                     <h1 className='text-center text-4xl font-rubik'>Reset Password</h1>
                     <div className='flex flex-col gap-2 font-rubik'>
-                        <label htmlFor="">Password</label>
-                        <input {...register("password")} className='input input-bordered' type="text" placeholder='Password' />
+                        <div className='flex items-center justify-between'>
+                            <label htmlFor="">Password</label>
+                            <p className='text-red-500'>{isError}</p>
+                        </div>
+                        <input {...register("password", { required: true })} className='input input-bordered' type="text" placeholder='Password' />
+                        {errors.email && <span className='text-red-500'>Password is Required!</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
                         <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>

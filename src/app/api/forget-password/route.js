@@ -14,7 +14,7 @@ export const POST = async (request) => {
         const query = { email: email }
         const emailMatched = await usersCollection.findOne(query)
         if (!emailMatched) {
-            return NextResponse.json({ message: 'User not Found' }, { status: 404 })
+            return NextResponse.json({ message: 'Could not find user' }, {status: 404})
         }
 
         const token = jwt.sign({ id: emailMatched._id }, process.env.NEXT_JWT_SECRET, { expiresIn: '1h' })

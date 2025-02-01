@@ -11,7 +11,9 @@ const ForgetPassword = () => {
 
 
     const [forgetPasswordLoading, setForgetPasswordLoading] = useState(false)
+    const [isError, setIsError] = useState("")
 
+    console.log(isError)
 
     const {
         register,
@@ -25,7 +27,7 @@ const ForgetPassword = () => {
         try {
             setForgetPasswordLoading(true)
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/forget-password?email=${data.email}`)
-            console.log(res.data)
+            console.log(res)
             if (res.data.status === 200) {
                 Swal.fire({
                     position: "center",
@@ -38,6 +40,9 @@ const ForgetPassword = () => {
             }
         } catch (error) {
             console.log(error)
+            if (error.response) {
+                setIsError(error.response.data.message)
+            }
         } finally {
             setForgetPasswordLoading(false)
         }
@@ -51,10 +56,14 @@ const ForgetPassword = () => {
                     <Image className='w-full h-96' src={rb} width={500} height={300} alt="image" />
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full border p-5 space-y-2 '>
-                    <h1 className='text-center text-4xl font-rubik'>Reset Password</h1>
+                    <h1 className='text-center text-4xl font-rubik my-8'>Reset Password</h1>
                     <div className='flex flex-col gap-2 font-rubik'>
-                        <label htmlFor="">Email</label>
-                        <input {...register("email")} className='input input-bordered' type="email" placeholder='Email' />
+                        <div className='flex items-center justify-between'>
+                            <label htmlFor="">Email</label>
+                            <p className='text-red-500'>{isError}</p>
+                        </div>
+                        <input {...register("email", { required: true })} className='input input-bordered' type="email" placeholder='Email' />
+                        {errors.email && <span className='text-red-500'>Email is Required!</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
                         <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>
