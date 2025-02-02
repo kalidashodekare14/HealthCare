@@ -26,5 +26,5 @@ export const middleware = async (req) => {
 }
 
 export const config = {
-    matcher: ['/profile', '/dashboard', '/dashboard/doctors', '/dashboard/patients']
+    matcher: ['/profile', '/dashboard', '/dashboard/doctors', '/dashboard/patients', '/dashboard/doctors-request', '/dashboard/appoinments']
 }
