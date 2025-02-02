@@ -21,8 +21,11 @@ const DashboardProfile = () => {
     const [personalInfoActive, setPersonalInfoActive] = useState(false)
     const [fullNameActive, setFullNameActive] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
+    const [personalInfoLoading, setPersonalInfoLoading] = useState(false)
+    const [nameLoading, setNameLoading] = useState(false)
     const session = useSession()
     const sessionEmail = session?.data?.user?.email
+
 
     const { data: admin_bio = [], refetch, isLoading: adminLoading } = useQuery({
         queryKey: ["admin_bio", sessionEmail],
@@ -49,19 +52,25 @@ const DashboardProfile = () => {
     } = useForm()
 
     const onPersonalInfoSubmit = async (data) => {
-        console.log(data)
-        const personalInfo = {
-            email: data.email,
-            phone_number: data.phone_number,
-            date_of_birth: data.date_of_birth,
-            gender: data.gender,
-            current_address: data.current_address
-        }
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
-        console.log(res)
-        if (res.data.matchedCount > 0) {
-            setPersonalInfoActive(false)
-            refetch()
+        try {
+            setPersonalInfoLoading(true)
+            const personalInfo = {
+                email: data.email,
+                phone_number: data.phone_number,
+                date_of_birth: data.date_of_birth,
+                gender: data.gender,
+                current_address: data.current_address
+            }
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/personal_information?email=${sessionEmail}`, personalInfo)
+            console.log(res)
+            if (res.data.matchedCount > 0) {
+                setPersonalInfoActive(false)
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setPersonalInfoLoading(false)
         }
     }
 
@@ -74,16 +83,23 @@ const DashboardProfile = () => {
     } = useForm()
 
     const onFullNameSubmit = async (data) => {
-        console.log(data)
-        const fullNameData = {
-            name: data.name
+        try {
+            setNameLoading(true)
+            const fullNameData = {
+                name: data.name
+            }
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/fullname?email=${sessionEmail}`, fullNameData)
+            console.log(res)
+            if (res.data.matchedCount > 0) {
+                setFullNameActive(false)
+                refetch()
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setNameLoading(false)
         }
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/fullname?email=${sessionEmail}`, fullNameData)
-        console.log(res)
-        if (res.data.matchedCount > 0) {
-            setFullNameActive(false)
-            refetch()
-        }
+
     }
 
 
@@ -180,7 +196,6 @@ const DashboardProfile = () => {
                                         }
                                     </div>
                                 )
-
                             }
                         </div>
                         <input onChange={handleImageHosting} hidden type="file" name="" id="" />
@@ -199,9 +214,25 @@ const DashboardProfile = () => {
                                     fullNameActive ? (
                                         <div className='flex items-center gap-3'>
                                             <MdOutlineCancel onClick={handleFullNameEdit} className='text-2xl cursor-pointer' />
-                                            <button type='submit'>
-                                                <FaRegSave className='text-xl cursor-pointer' />
-                                            </button>
+                                            {
+                                                nameLoading ? (
+                                                    <RotatingLines
+                                                        visible={true}
+                                                        height="30"
+                                                        width="30"
+                                                        color="#307bc4"
+                                                        strokeWidth="5"
+                                                        animationDuration="0.75"
+                                                        ariaLabel="rotating-lines-loading"
+                                                        wrapperStyle={{}}
+                                                        wrapperClass=""
+                                                    />
+                                                ) : (
+                                                    <button type='submit'>
+                                                        <FaRegSave className='text-xl cursor-pointer' />
+                                                    </button>
+                                                )
+                                            }
                                         </div>
                                     ) : (
                                         <button>
@@ -232,9 +263,26 @@ const DashboardProfile = () => {
                                                     <button onClick={handlePersonalIntoEdit}>
                                                         <MdCancel className='text-2xl cursor-pointer' />
                                                     </button>
-                                                    <button type='submit'>
-                                                        <FaSave className='text-2xl cursor-pointer' />
-                                                    </button>
+                                                    {
+                                                        personalInfoLoading ? (
+                                                            <RotatingLines
+                                                                visible={true}
+                                                                height="30"
+                                                                width="30"
+                                                                color="#307bc4"
+                                                                strokeWidth="5"
+                                                                animationDuration="0.75"
+                                                                ariaLabel="rotating-lines-loading"
+                                                                wrapperStyle={{}}
+                                                                wrapperClass=""
+                                                            />
+                                                        ) : (
+                                                            <button type='submit'>
+                                                                <FaSave className='text-2xl cursor-pointer' />
+                                                            </button>
+                                                        )
+                                                    }
+
                                                 </div>
 
                                             ) : (

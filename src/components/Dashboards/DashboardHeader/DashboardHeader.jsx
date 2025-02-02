@@ -8,6 +8,7 @@ import { LuMessageSquare } from 'react-icons/lu'
 import userLogo from '../../../../public/image/nav_img.png'
 import Link from 'next/link'
 import { RotatingLines } from 'react-loader-spinner'
+import { signOut } from 'next-auth/react'
 
 const DashboardHeader = ({ isToggle, handleToggle }) => {
 
@@ -90,11 +91,11 @@ const DashboardHeader = ({ isToggle, handleToggle }) => {
                                     isDropdownToggle && (
                                         <div className={`absolute -left-1/2 w-52 h-auto  bg-white shadow-lg space-y-2`}>
                                             <Link href={'/dashboard/profile'}>
-                                                <div className='hover:bg-[#307bc4] border hover:text-white p-2'>
+                                                <div className='hover:bg-[#307bc4] border-b hover:text-white p-2'>
                                                     <h1>Profile</h1>
                                                 </div>
                                             </Link>
-                                            <div className='hover:bg-[#307bc4] hover:text-white p-2'>
+                                            <div onClick={() => signOut()} className='hover:bg-[#307bc4] border-b hover:text-white p-2'>
                                                 <h1>Logout</h1>
                                             </div>
                                         </div>
