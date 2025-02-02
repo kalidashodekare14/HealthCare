@@ -134,8 +134,8 @@ const DashboardProfile = () => {
 
     return (
         <div className=''>
-            <div className='lg:mx-32 '>
-                <div className='h-32 lg:h-80 bg-no-repeat bg-center bg-cover flex justify-center items-center' style={{ backgroundImage: "url(https://i.postimg.cc/xjX3c21v/profile.jpg)" }}>
+            <div className='lg:mx-32'>
+                <div className='h-32 lg:h-32 bg-no-repeat bg-center bg-cover flex justify-center items-center' style={{ backgroundImage: "url(https://i.postimg.cc/xjX3c21v/profile.jpg)" }}>
                     <h1 className='text-4xl text-white font-rubik'>Profile</h1>
                 </div>
                 <div className='lg:mx-[2rem] mx-[5px] flex items-center gap-5'>
@@ -215,7 +215,7 @@ const DashboardProfile = () => {
                         <p>Admin</p>
                     </div>
                 </div >
-                <div className='lg:mx-[2rem] mx-2 my-10'>
+                <div className='lg:mx-[2rem] mx-2 my-5'>
                     <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-5 items-center font-rubik'>
                         <div onClick={() => setIsActive("persoanl_infomation")} className={`cursor-pointer ${isActive === "persoanl_infomation" && "border-b-2  border-[#307bc4]"}`}>
                             <h1>Personal Information</h1>

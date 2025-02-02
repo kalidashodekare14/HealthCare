@@ -20,7 +20,7 @@ const MainDashboard = () => {
     console.log(dataCollection)
 
 
-    const { data: monthlyData = [] } = useQuery({
+    const { data: monthlyData = [], isLoading: monthlyDataLoading } = useQuery({
         queryKey: ["monthlyData"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api/month-patient-doctor`)
@@ -29,16 +29,14 @@ const MainDashboard = () => {
     })
 
 
-    
-    const { data: monthlyRevenue } = useQuery({
-        queryKey: ["monthlyRevenue"],
-        queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api/total-revenues`)
-            return res.data
-        }
-    })
-
-    console.log('monthly revenue', monthlyRevenue)
+    // TODO
+    // const { data: monthlyRevenue } = useQuery({
+    //     queryKey: ["monthlyRevenue"],
+    //     queryFn: async () => {
+    //         const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/api/total-revenues`)
+    //         return res.data
+    //     }
+    // })
 
     const getMonthName = (monthNumber) => {
         const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JULY", "AUGU", "SEP", "OCT", "NOV", "DEC"]
@@ -48,17 +46,15 @@ const MainDashboard = () => {
 
     const allMonth = Array.from({ length: 12 }, (_, index) => index + 1)
 
-
-    console.log(allMonth)
-
-    const formateData2 = allMonth?.map((month, index) => {
-        const monthName = getMonthName(month)
-        const matchedRevenue = monthlyRevenue?.totalRevenues?.find(item => item._id.month === month)
-        return {
-            name: monthName,
-            Revenue: matchedRevenue ? matchedRevenue.totalRevenue : 0,
-        }
-    })
+    // TODO
+    // const formateData2 = allMonth?.map((month, index) => {
+    //     const monthName = getMonthName(month)
+    //     const matchedRevenue = monthlyRevenue?.totalRevenues?.find(item => item._id.month === month)
+    //     return {
+    //         name: monthName,
+    //         Revenue: matchedRevenue ? matchedRevenue.totalRevenue : 0,
+    //     }
+    // })
 
 
 
@@ -76,10 +72,9 @@ const MainDashboard = () => {
         }
     })
 
-    console.log(formateData)
 
 
-    if (loadingData) {
+    if (loadingData || monthlyDataLoading) {
         return <div className='h-[600px] flex justify-center items-center'>
             <RotatingLines
                 visible={true}
@@ -94,7 +89,6 @@ const MainDashboard = () => {
             />
         </div>
     }
-
 
 
     return (
@@ -155,9 +149,9 @@ const MainDashboard = () => {
                         <p>Hospital Earning</p>
                         {
                             dataCollection?.totalRevenues ? (
-                                <p className='text-3xl'>{dataCollection?.totalRevenues[0]?.totalRevenues || 0}</p>
+                                <p className='text-3xl'>$ {dataCollection?.totalRevenues[0]?.totalRevenues || 0}</p>
                             ) : (
-                                <p className='text-3xl'>0</p>
+                                <p className='text-3xl'>$ 0</p>
                             )
                         }
                     </div>

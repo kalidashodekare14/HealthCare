@@ -5,11 +5,12 @@ import Image from 'next/image'
 import React from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaSearch } from 'react-icons/fa'
+import { RotatingLines } from 'react-loader-spinner'
 
 const AppoinmentDashboard = () => {
 
 
-    const { data: appoinmentData = [] } = useQuery({
+    const { data: appoinmentData = [], refetch, isLoading: appoinmentDataLoading } = useQuery({
         queryKey: ["appoinmentData"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/appoinments/api`)
@@ -17,7 +18,21 @@ const AppoinmentDashboard = () => {
         }
     })
 
-    console.log(appoinmentData)
+    if (appoinmentDataLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
     return (
         <div className='bg-[#f6fbf8]'>

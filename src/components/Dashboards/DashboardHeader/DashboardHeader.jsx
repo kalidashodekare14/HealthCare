@@ -1,16 +1,39 @@
 "use client"
 import UserData from '@/hooks/UserData'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaArrowRight, FaBarsStaggered } from 'react-icons/fa6'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { LuMessageSquare } from 'react-icons/lu'
 import userLogo from '../../../../public/image/nav_img.png'
 import Link from 'next/link'
+import { RotatingLines } from 'react-loader-spinner'
 
 const DashboardHeader = ({ isToggle, handleToggle }) => {
 
+    const [isDropdownToggle, setIsDropdownToggle] = useState(false)
     const [user_bio, refetch, userLoading] = UserData()
+
+
+    const handleDropdownToggle = () => {
+        setIsDropdownToggle(!isDropdownToggle)
+    }
+
+    if (userLoading) {
+        return <div className='h-[600px] flex justify-center items-center'>
+            <RotatingLines
+                visible={true}
+                height="96"
+                width="96"
+                color="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>
+    }
 
     return (
         <div className='py-5 lg:px-10 px-3 flex justify-between items-center'>
@@ -42,32 +65,43 @@ const DashboardHeader = ({ isToggle, handleToggle }) => {
                 </div>
                 <div>
                     <div className='flex items-center '>
-                        <div className='z-10  flex justify-end items-center  gap-3 pr-3 h-12 font-rubik bg-none lg:bg-gradient-to-r from-[#307ac43a] to-[#307ac42c] text-[#307bc4] rounded-full'>
-                            <Link href={"/dashboard/profile"}>
-                                <div className='z-20 cursor-pointer w-[50px] h-[50px] rounded-full bg-white'>
-                                    {
-                                        user_bio?.image ? (
-                                            <Image
-                                                className='w-full h-full rounded-full'
-                                                src={user_bio?.image}
-                                                width={500}
-                                                height={300}
-                                                alt={user_bio?.name}
-                                            />
-                                        ) : (
-                                            <Image
-                                                className='w-full h-full rounded-full'
-                                                src={userLogo}
-                                                width={500}
-                                                height={300}
-                                                alt='Image'
-                                            />
-                                        )
-                                    }
-
-                                </div>
-                            </Link>
-                            <p className='lg:flex hidden'>
+                        <div onClick={handleDropdownToggle} className='z-10  flex justify-end items-center  gap-3 pr-3 h-12 font-rubik bg-none lg:bg-gradient-to-r from-[#307ac43a] to-[#307ac42c]  rounded-full'>
+                            <div className='relative z-20 cursor-pointer w-[50px] h-[50px] rounded-full bg-white'>
+                                {
+                                    user_bio?.image ? (
+                                        <Image
+                                            className='w-full h-full rounded-full'
+                                            src={user_bio?.image}
+                                            width={500}
+                                            height={300}
+                                            alt={user_bio?.name}
+                                        />
+                                    ) : (
+                                        <Image
+                                            className='w-full h-full rounded-full'
+                                            src={userLogo}
+                                            width={500}
+                                            height={300}
+                                            alt='Image'
+                                        />
+                                    )
+                                }
+                                {
+                                    isDropdownToggle && (
+                                        <div className={`absolute -left-1/2 w-52 h-auto  bg-white shadow-lg space-y-2`}>
+                                            <Link href={'/dashboard/profile'}>
+                                                <div className='hover:bg-[#307bc4] border hover:text-white p-2'>
+                                                    <h1>Profile</h1>
+                                                </div>
+                                            </Link>
+                                            <div className='hover:bg-[#307bc4] hover:text-white p-2'>
+                                                <h1>Logout</h1>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <p className='lg:flex hidden text-[#307bc4]'>
                                 <span>Hello,</span>
                                 {
                                     user_bio?.name ? (
