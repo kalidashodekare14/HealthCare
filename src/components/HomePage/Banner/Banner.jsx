@@ -55,10 +55,10 @@ const Banner = () => {
                 doctors.map((doctor) => (
                     <SwiperSlide key={doctor.id}>
                         <div style={{ backgroundImage: `url(${doctor.image})` }} className='bg-no-repeat bg-top bg-cover w-full lg:h-[650px] h-[500px]'>
-                            <div className='pt-[14%] lg:pl-[20%] space-y-5'>
+                            <div className='lg:pt-[14%] pt-[30%] px-10 lg:pl-[20%] space-y-5'>
                                 {/* <p className='text-[#2d72b8] font-bold'>{doctor.header}</p> */}
-                                <h1 className='text-5xl w-[30rem] font-poppins font-bold text-white'>{doctor.title}</h1>
-                                <p className='w-[29rem] font-rubik text-[#ffffffc5]'>{doctor.description}</p>
+                                <h1 className='lg:text-5xl text-3xl lg:w-[30rem] font-poppins font-bold text-white'>{doctor.title}</h1>
+                                <p className='lg:w-[29rem] font-rubik text-[#ffffffc5]'>{doctor.description}</p>
                                 <div className='space-x-5'>
                                     <button className='btn bg-[#307bc4] hover:bg-white hover:text-[#307bc4] text-white border-0 w-32'>About Us</button>
                                     <button className='btn hover:bg-[#307bc4] bg-white text-[#307bc4]  hover:text-white border-0 w-32'>Our Services</button>
