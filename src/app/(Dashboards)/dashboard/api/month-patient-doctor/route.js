@@ -10,6 +10,12 @@ export const GET = async (request) => {
         // total patient monthly data
         const monthlyPatient = await usersColleciton.aggregate([
             {
+                $match: {
+                    role: 'patient',
+                    status: 'approved'
+                }
+            },
+            {
                 $group: {
                     _id: { month: { $month: '$createdAt' } },
                     totalPatient: { $sum: 1 }
@@ -17,7 +23,13 @@ export const GET = async (request) => {
             },
             { $sort: { _id: 1 } }
         ]).toArray()
-        const monthlyDoctor = await doctorsColleciton.aggregate([
+        const monthlyDoctor = await usersColleciton.aggregate([
+            {
+                $match: {
+                    role: 'doctor',
+                    status: 'approved'
+                }
+            },
             {
                 $group: {
                     _id: { month: { $month: '$createdAt' } },
@@ -27,6 +39,11 @@ export const GET = async (request) => {
             { $sort: { _id: 1 } }
         ]).toArray()
         const monthlyAppoinment = await appoinmentColleciton.aggregate([
+            {
+                $match: {
+                    status: 'Success'
+                }
+            },
             {
                 $group: {
                     _id: { month: { $month: '$createdAt' } },

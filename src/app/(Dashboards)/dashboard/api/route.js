@@ -5,9 +5,14 @@ export const GET = async (request) => {
     try {
         const db = await connectDB()
         const usersCollection = db.collection('users')
-        const doctorsCollection = db.collection('doctors')
         const appoinmentCollection = db.collection('appoinments')
         const totalPatients = await usersCollection.aggregate([
+            {
+                $match: {
+                    role: 'patient',
+                    status: 'approved'
+                }
+            },
             {
                 $group: {
                     _id: null,
@@ -16,7 +21,13 @@ export const GET = async (request) => {
             },
             { $sort: { _id: 1 } }
         ]).toArray()
-        const totalDoctors = await doctorsCollection.aggregate([
+        const totalDoctors = await usersCollection.aggregate([
+            {
+                $match: {
+                    role: 'doctor',
+                    status: 'approved'
+                }
+            },
             {
                 $group: {
                     _id: null,
@@ -26,6 +37,11 @@ export const GET = async (request) => {
             { $sort: { _id: 1 } }
         ]).toArray()
         const totalAppoinments = await appoinmentCollection.aggregate([
+            {
+                $match: {
+                    status: 'Success'
+                }
+            },
             {
                 $group: {
                     _id: null,
