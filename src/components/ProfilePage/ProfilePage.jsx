@@ -14,8 +14,8 @@ import Select from 'react-select';
 import DatePicker from "react-multi-date-picker";
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
-import 'react-clock/dist/Clock.css';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel'
+import 'react-clock/dist/Clock.css';
 
 const image_hosting_key = process.env.NEXT_PUBLIC_API_KEY
 console.log(image_hosting_key)
@@ -58,15 +58,12 @@ const ProfilePage = () => {
     const [thirdLoading, setThirdLoading] = useState(false)
     const [fourLoading, setFourLoading] = useState(false)
 
-    console.log('date', dates)
 
     const handleTimeChange = (index, filed, value) => {
         const newSlots = [...timeSlots];
         newSlots[index][filed] = value;
         setTimeSlots(newSlots);
     }
-
-    console.log("time", timeSlots)
 
 
     // select default value implement
