@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# HealthCare
 
-First, run the development server:
+
+
+
+## 👤  Admin
+#### Username: Kalidash Odekare
+#### Email: kalidashodekare14@gmail.com
+#### Password: Kalidash84@@##
+
+
+## 🔗 Live Link: [HealthCare](https://health-care14.vercel.app)
+
+## Overview
+The Healthcare project is designed for patients. Here, you can easily book doctor appointments online without any hassle, make payments if required, and receive doctor consultations and treatments. Patients can view their booked appointments, and there is a dashboard that the admin can control.
+
+
+
+## Features
+
+- Patients can easily find and select a doctor by filtering based on doctor name, department, and specialization to receive the care they need.
+
+- Patients can easily book doctor appointments online without any hassle, make payments if required, and receive doctor consultations and treatments.
+
+- Admin Dashboard allows the admin to manage the entire store, including:
+  1. Management: Can view and manage how many doctors, patients, appointments there are.
+  2. Analytics: Can track total revenue, total patients, total doctors, and total appointments for business insights.
+  3. Full Control: Admin can take full control of the dashboard.
+
+
+## Technologies
+[![My Skills](https://skillicons.dev/icons?i=nextjs,tailwind,mongodb)](https://skillicons.dev)
+
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://link-to-project
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+  cd my-project
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies
 
-## Learn More
+```bash
+  npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+  npm run start / dev
+```
