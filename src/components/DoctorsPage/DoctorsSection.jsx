@@ -78,7 +78,7 @@ const DoctorsSection = () => {
 
     return (
         <div className='lg:mx-10 mx-5'>
-            <div className='lg:mx-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 my-3 border p-3 w-full'>
+            <div className='px-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 my-3 border p-3  w-full'>
                 <div className='w-full'>
                     <input
                         onChange={(event) => setDoctorSearch(event.target.value)}
