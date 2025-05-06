@@ -77,12 +77,12 @@ const LoginPage = () => {
                                 }
                             </div>
                         </div>
+                        {errors.email && <span className='text-red-600'>Password must be required</span>}
                         <div>
                             <Link href={"/forget-password"}>
                                 <p className='text-[#307bc4]'>Forget password?</p>
                             </Link>
                         </div>
-                        {errors.email && <span className='text-red-600'>Password must be required</span>}
                     </div>
                     <div className='flex justify-center items-center font-rubik'>
                         <button type='submit' className='btn rounded-none w-32 bg-[#307bc4] text-white'>

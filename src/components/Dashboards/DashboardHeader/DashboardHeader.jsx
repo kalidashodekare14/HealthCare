@@ -38,12 +38,12 @@ const DashboardHeader = ({ isToggle, handleToggle }) => {
 
     return (
         <div className='py-5 lg:px-10 px-3 flex justify-between items-center'>
-            <div className='duration-500 transition-transform'>
+            <div className=' duration-500 transition-transform'>
                 {
                     isToggle ? (
-                        <FaArrowRight onClick={handleToggle} className='text-2xl cursor-pointer transform rotate-180' />
+                        <FaArrowRight onClick={handleToggle} className='lg:hidden text-2xl cursor-pointer transform rotate-180' />
                     ) : (
-                        <FaBarsStaggered onClick={handleToggle} className='text-2xl cursor-pointer transform rotate-180' />
+                        <FaBarsStaggered onClick={handleToggle} className='lg:hidden text-2xl cursor-pointer transform rotate-180' />
                     )
                 }
             </div>
