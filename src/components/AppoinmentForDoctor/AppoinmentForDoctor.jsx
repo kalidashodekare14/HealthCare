@@ -45,6 +45,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
     }
 
 
+    console.log('checking image', user_bio)
 
     useEffect(() => {
         const doctorFind = async () => {
@@ -120,6 +121,7 @@ const AppoinmentForDoctor = ({ doctorId }) => {
 
         const appoinmentData = {
             patient_name: data.full_name,
+            image: user_bio?.image,
             address: data.address,
             date_Of_birth: data.date_of_birth,
             gender: data.gender,

@@ -159,7 +159,7 @@ const ProfilePage = () => {
                 chronic_diseases_history: selectedOption
             }
 
-            if (user_bio.role === 'patient') {
+            if (user_bio?.role === 'patient') {
                 const res = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/profile/api/medical_information?email=${sessionEmail}`, medicalInfo)
                 console.log(res.data)
                 if (res.data.matchedCount > 0) {
@@ -387,7 +387,7 @@ const ProfilePage = () => {
                         </div>
                         <div onClick={() => setIsActive("medical_information")} className={`cursor-pointer ${isActive === "medical_information" && "border-b-2  border-[#307bc4]"}`}>
                             {
-                                user_bio.role === "doctor" ? (
+                                user_bio?.role === "doctor" ? (
                                     <h1>Professional Information</h1>
                                 ) : (
                                     <h1>Medical Information</h1>
@@ -398,7 +398,7 @@ const ProfilePage = () => {
                         </div>
                         <div onClick={() => setIsActive("next_treatment")} className={`cursor-pointer ${isActive === "next_treatment" && "border-b-2  border-[#307bc4]"}`}>
                             {
-                                user_bio.role === "doctor" ? (
+                                user_bio?.role === "doctor" ? (
                                     <h1>Service Details</h1>
                                 ) : (
                                     <h1 > Next Treatment</h1>
@@ -406,7 +406,7 @@ const ProfilePage = () => {
                             }
                         </div>
                         {
-                            user_bio.role === "doctor" ? (
+                            user_bio?.role === "doctor" ? (
                                 ""
                             ) : (
                                 <div onClick={() => setIsActive("medical_record")} className={`cursor-pointer ${isActive === "medical_record" && "border-b-2  border-[#307bc4]"}`}>

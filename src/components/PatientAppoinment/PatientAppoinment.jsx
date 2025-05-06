@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import React from 'react'
 
 const PatientAppoinment = () => {
@@ -105,13 +106,13 @@ const PatientAppoinment = () => {
                                 {/* head */}
                                 <thead>
                                     <tr className='text-[18px] bg-[#307bc4] text-white'>
-                                        <th></th>
                                         <th>Patient name</th>
                                         <th>Address</th>
-                                        <th>DOB and gender</th>
                                         <th>Contact</th>
-                                        <th>Date and time</th>
-                                        <th>Status</th>
+                                        <th>Date/Gender</th>
+                                        <th>Date and Time</th>
+                                        <th>Doctor</th>
+                                        <th>Payment Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,15 +124,34 @@ const PatientAppoinment = () => {
                                         ) : (
                                             myAppoinment.map(Apm => (
                                                 <tr className='font-rubik' key={Apm._id}>
-                                                    <td></td>
-                                                    <td>{Apm?.patient_name || "N/A"}</td>
-                                                    <td>{Apm?.address || "N/A"}</td>
-                                                    <td>
-                                                        <div className='space-y-2'>
-                                                            <p>{Apm?.date_Of_birth}</p>
-                                                            <p>{Apm?.gender}</p>
+                                                    <td className='flex space-x-2'>
+                                                        <div className='w-14 h-14 rounded-full'>
+                                                            {
+                                                                Apm?.image ? (
+                                                                    <Image
+                                                                        className='w-full h-full rounded-full'
+                                                                        src={`${Apm?.image}`}
+                                                                        width={500}
+                                                                        height={300}
+                                                                        alt={`${Apm?.patient_name}`}
+                                                                    />
+                                                                ) : (
+                                                                    <Image
+                                                                        className='w-full h-full rounded-full'
+                                                                        src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
+                                                                        width={500}
+                                                                        height={300}
+                                                                        alt={`${Apm?.patient_name}`}
+                                                                    />
+                                                                )
+                                                            }
+                                                        </div>
+                                                        <div className=''>
+                                                            <p>{Apm?.patient_name || "N/A"}</p>
+                                                            <p>{Apm?.transaction_id || "N/A"}</p>
                                                         </div>
                                                     </td>
+                                                    <td>{Apm?.address || "N/A"}</td>
                                                     <td>
                                                         <div className='space-y-2'>
                                                             <p>{Apm?.email}</p>
@@ -140,8 +160,43 @@ const PatientAppoinment = () => {
                                                     </td>
                                                     <td>
                                                         <div className='space-y-2'>
+                                                            <p>{Apm?.date_Of_birth}</p>
+                                                            <p>{Apm?.gender}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className='space-y-2'>
                                                             <p>{new Date(Apm?.available_time?.[0]).toLocaleDateString()}</p>
                                                             <p>{Apm?.time_slots}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className='flex items-center gap-2'>
+                                                            <div className='w-14 h-14 rounded-full'>
+                                                                {
+                                                                    Apm?.doctorInfo?.doctor_image ? (
+                                                                        <Image
+                                                                            className='w-full h-full rounded-full'
+                                                                            src={`${Apm?.doctorInfo?.doctor_image}`}
+                                                                            width={500}
+                                                                            height={300}
+                                                                            alt={`${Apm?.fullName}`}
+                                                                        />
+                                                                    ) : (
+                                                                        <Image
+                                                                            className='w-full h-full rounded-full'
+                                                                            src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
+                                                                            width={500}
+                                                                            height={300}
+                                                                            alt={`${Apm?.fullName}`}
+                                                                        />
+                                                                    )
+                                                                }
+                                                            </div>
+                                                            <div className='flex flex-col'>
+                                                                <p>{Apm?.doctorInfo?.doctor_name}</p>
+                                                                <p>{Apm?.doctorInfo?.department}</p>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td>

@@ -73,13 +73,13 @@ const AppoinmentDashboard = () => {
                                                 <div className='flex items-center gap-2'>
                                                     <div className='w-14 h-14 rounded-full'>
                                                         {
-                                                            appoinmentData?.user_info?.image ? (
+                                                            appoinmentData?.image ? (
                                                                 <Image
                                                                     className='w-full h-full rounded-full'
-                                                                    src={`${appoinmentData?.user_info?.image}`}
+                                                                    src={`${appoinmentData?.image}`}
                                                                     width={500}
                                                                     height={300}
-                                                                    alt={`${appoinmentData?.user_info?.name}`}
+                                                                    alt={`${appoinmentData.patient_name}`}
                                                                 />
                                                             ) : (
                                                                 <Image
@@ -87,7 +87,7 @@ const AppoinmentDashboard = () => {
                                                                     src={"https://i.ibb.co.com/WcTWxsN/nav-img.png"}
                                                                     width={500}
                                                                     height={300}
-                                                                    alt={`${appoinmentData?.user_info?.name}`}
+                                                                    alt={`${appoinmentData?.patient_name}`}
                                                                 />
                                                             )
                                                         }
